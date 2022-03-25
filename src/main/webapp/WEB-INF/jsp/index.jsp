@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!doctype html>
@@ -10,63 +9,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description"
 	content="A place where kind-hearted people can gather and give away.">
-<link rel="icon" href="">
+<link rel="icon" href="<c:url value="/resources/assets/media/logo.png" />">
 <title>Charity Campaigns Around The World</title>
 
 <!-- Bootstrap 5.1.3 CSS -->
 <link href="<c:url value="/resources/assets/css/bootstrap.min.css" />" rel="stylesheet">
 
-<style>
-.bd-placeholder-img {
-	font-size: 1.125rem;
-	text-anchor: middle;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	user-select: none;
-}
-
-@media ( min-width : 768px) {
-	.bd-placeholder-img-lg {
-		font-size: 3.5rem;
-	}
-}
-</style>
-
-<!-- Custom styles for this template -->
+<!-- Custom styles -->
 <link href="<c:url value="/resources/assets/css/cover.css" />" rel="stylesheet">
 </head>
-<body class="d-flex h-100 text-center text-white bg-dark">
+<body class="d-flex h-100 text-center text-white">
 
 	<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 		<header class="mb-auto">
 			<div>
-				<h3 class="float-md-start mb-0">Cover</h3>
+				<h3 class="float-md-start mb-0">
+					<img src="<c:url value="/resources/assets/media/logo.png" />" 
+						alt="Logo" height="45px"></h3>
 				<nav class="nav nav-masthead justify-content-center float-md-end">
-					<a class="nav-link active" aria-current="page" href="#">Home</a> <a
-						class="nav-link" href="#">Features</a> <a class="nav-link"
-						href="#">Contact</a>
+					<a class="nav-link" href="<c:url value="/explore" />">Explore</a> 
+					<a class="nav-link" href="<c:url value="/login" />">Login</a> 
+					<a class="nav-link" href="<c:url value="/register" />">Sign-up</a>
 				</nav>
 			</div>
 		</header>
 
 		<main class="px-3">
-			<h1>Cover your page.</h1>
-			<p class="lead">Cover is a one-page template for building simple
-				and beautiful home pages. Download, edit the text, and add your own
-				fullscreen background photo to make it your own.</p>
+			<h1>Help To Give Hope</h1>
+			<figure class="text-center">
+			  <blockquote class="blockquote">
+			    <p>“We know only too well that what we are doing is nothing more than a drop in the ocean. But if the drop were not there, the ocean would be missing something."</p>
+			  </blockquote>
+			  <figcaption class="blockquote-footer">
+			    <cite title="Source Title">Mother Teresa</cite>
+			  </figcaption>
+			</figure>
 			<p class="lead">
-				<a href="#"
-					class="btn btn-lg btn-secondary fw-bold border-white bg-white">Learn
-					more</a>
+				<a href="<c:url value="/explore" />"
+					class="btn btn-lg btn-secondary fw-bold border-white bg-white">
+					Learn more</a>
 			</p>
 		</main>
 
 		<footer class="mt-auto text-white-50">
-			<p>
-				Cover template for <a href="https://getbootstrap.com/"
-					class="text-white">Bootstrap</a>, by <a
-					href="https://twitter.com/mdo" class="text-white">@mdo</a>.
-			</p>
+			<p>&#174;Copyright 2022</p>
 		</footer>
 	</div>
 	
