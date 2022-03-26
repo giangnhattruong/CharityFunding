@@ -1,13 +1,12 @@
 package com.funix.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.funix.controller.service.Navigation;
 
 @Controller
 @RequestMapping("/")
@@ -30,7 +29,7 @@ public class MainController {
 				new ModelAndView();
 		
 		// Get and send campaign object
-		addNavItemMap(mv);
+		Navigation.addMainNavItemMap(mv);
 		mv.setViewName("main/explore");
 		
         return mv;
@@ -42,7 +41,7 @@ public class MainController {
 		ModelAndView mv =
 				new ModelAndView();
 		
-		addNavItemMap(mv);
+		Navigation.addMainNavItemMap(mv);
 		mv.setViewName("main/about");
 		
 		return mv;
@@ -54,7 +53,7 @@ public class MainController {
 		ModelAndView mv =
 				new ModelAndView();
 		
-		addNavItemMap(mv);
+		Navigation.addMainNavItemMap(mv);
 		mv.setViewName("main/contact");
 		
 		return mv;
@@ -67,20 +66,10 @@ public class MainController {
 				new ModelAndView();
 		
 		// Get and send campaign object
-		addNavItemMap(mv);
+		Navigation.addMainNavItemMap(mv);
 		mv.setViewName("main/campaignDetails");
 		
 		return mv;
-	}
-
-	private void addNavItemMap(ModelAndView mv) {
-		Map<String, String> navItemMap = 
-				new HashMap<>();
-		
-		navItemMap.put("About", "/about");
-		navItemMap.put("Contact", "/contact");
-
-		mv.addObject("navItemMap", navItemMap);
 	}
 	
 }

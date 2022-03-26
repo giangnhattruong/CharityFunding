@@ -6,6 +6,6 @@
 	<c:param name="navItemMap">${navItemMap}</c:param>
 </c:import>
 
-<h1>Error</h1>
+<h1 class="text-center">${message}</h1>
 
 <c:import url="/WEB-INF/jsp/common/footer.jsp"></c:import>

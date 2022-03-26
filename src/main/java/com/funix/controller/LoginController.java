@@ -1,12 +1,11 @@
 package com.funix.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.funix.controller.service.Navigation;
 
 @Controller
 @RequestMapping("/login")
@@ -19,7 +18,7 @@ public class LoginController {
 		ModelAndView mv =
 				new ModelAndView();
 		
-		addNavItemMap(mv);
+		Navigation.addMainNavItemMap(mv);
 		mv.setViewName("user/login");
 		
 		return mv;
@@ -32,7 +31,7 @@ public class LoginController {
 		
 		//HttpSession -> add userID/adminID
 		
-		addNavItemMap(mv);
+		Navigation.addMainNavItemMap(mv);
 		mv.setViewName("redirect:/explore");
 		
 		return mv;
@@ -44,7 +43,7 @@ public class LoginController {
 		ModelAndView mv =
 				new ModelAndView();
 		
-		addNavItemMap(mv);
+		Navigation.addMainNavItemMap(mv);
 		mv.setViewName("user/forgotPassword");
 		
 		return mv;
@@ -56,7 +55,7 @@ public class LoginController {
 		ModelAndView mv =
 				new ModelAndView();
 		
-		addNavItemMap(mv);
+		Navigation.addMainNavItemMap(mv);
 		
 		//Get email -> find user ID in DB
 		//if ID exists
@@ -71,16 +70,6 @@ public class LoginController {
 //		mv.setViewName("user/forgotPassword");
 		
 		return mv;
-	}
-	
-	private void addNavItemMap(ModelAndView mv) {
-		Map<String, String> navItemMap = 
-				new HashMap<>();
-		
-		navItemMap.put("About", "/about");
-		navItemMap.put("Contact", "/contact");
-
-		mv.addObject("navItemMap", navItemMap);
 	}
 	
 }

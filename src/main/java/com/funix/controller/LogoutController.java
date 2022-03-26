@@ -1,12 +1,11 @@
 package com.funix.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.funix.controller.service.Navigation;
 
 @Controller
 @RequestMapping("/logout")
@@ -21,21 +20,11 @@ public class LogoutController {
 		
 		//invalidate session
 		
-		addNavItemMap(mv);
+		Navigation.addMainNavItemMap(mv);
 		mv.addObject("message", "You have logged out successful. See you again soon!");
 		mv.setViewName("main/success");
 		
 		return mv;
-	}
-
-	private void addNavItemMap(ModelAndView mv) {
-		Map<String, String> navItemMap = 
-				new HashMap<>();
-		
-		navItemMap.put("About", "/about");
-		navItemMap.put("Contact", "/contact");
-
-		mv.addObject("navItemMap", navItemMap);
 	}
 	
 }

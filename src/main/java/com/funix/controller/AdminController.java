@@ -1,24 +1,24 @@
 package com.funix.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.funix.controller.service.Navigation;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView getAdminDashboard() {
+	public String getAdminDashboard() {
 		//if session does not contain adminID, redirect to explore
 		
-		return manageCampaigns();
+		return "redirect:/admin/campaigns";
 	}
 	
 	@RequestMapping(value = "campaigns", 
@@ -28,8 +28,8 @@ public class AdminController {
 				new ModelAndView();
 		
 		//Get and send campaignList
-		addNavItemMap(mv);
-		mv.setViewName("admin/campaigns");
+		Navigation.addAdminNavItemMap(mv);
+		mv.setViewName(getRoute("admin/campaigns"));
 		
         return mv;
 	}
@@ -41,8 +41,8 @@ public class AdminController {
 				new ModelAndView();
 		
 		//Get and send userList
-		addNavItemMap(mv);
-		mv.setViewName("admin/users");
+		Navigation.addAdminNavItemMap(mv);
+		mv.setViewName(getRoute("admin/users"));
 		
         return mv;
 	}
@@ -55,8 +55,8 @@ public class AdminController {
 		
 		//if (url is update && id exists) 
 		//-> get and send campaign object
-		addNavItemMap(mv);
-		mv.setViewName("admin/createOrUpdateCampaign");
+		Navigation.addAdminNavItemMap(mv);
+		mv.setViewName(getRoute("admin/createOrUpdateCampaign"));
 		
         return mv;
 	}
@@ -109,8 +109,8 @@ public class AdminController {
 		
 		//if (url is update && id exists) 
 		//-> get and send user object
-		addNavItemMap(mv);
-		mv.setViewName("admin/createOrUpdateUser");
+		Navigation.addAdminNavItemMap(mv);
+		mv.setViewName(getRoute("admin/createOrUpdateUser"));
 		
         return mv;
 	}
@@ -154,15 +154,15 @@ public class AdminController {
 		
 		return mv;
 	}
-
-	private void addNavItemMap(ModelAndView mv) {
-		Map<String, String> navItemMap = 
-				new HashMap<>();
+	
+	private String getRoute(String url) {
+		/*if session not contains adminID
+		 *redirect to landing page*/
+		if (true) {
+			return "redirect:/explore";
+		}
 		
-		navItemMap.put("Campaigns", "/admin/campaigns");
-		navItemMap.put("Users", "/admin/users");
-
-		mv.addObject("navItemMap", navItemMap);
+		return url;
 	}
 	
 }

@@ -1,23 +1,19 @@
 package com.funix.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.funix.controller.service.Navigation;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView getUserDashboard() {
-		//if session does not contain userID, redirect to explore
-		
-		return getHistories();
+	public String getUserDashboard() {
+		return "redirect:/user/histories";
 	}
 
 	@RequestMapping(value = "histories", 
@@ -27,8 +23,8 @@ public class UserController {
 				new ModelAndView();
 		
 		//Get and send campaignList
-		addNavItemMap(mv);
-		mv.setViewName("user/histories");
+		Navigation.addUserNavItemMap(mv);
+		mv.setViewName(getRoute("user/histories"));
 		
         return mv;
 	}
@@ -40,8 +36,8 @@ public class UserController {
 				new ModelAndView();
 		
 		//-> get and send user object
-		addNavItemMap(mv);
-		mv.setViewName("user/profile");
+		Navigation.addUserNavItemMap(mv);
+		mv.setViewName(getRoute("user/profile"));
 		
         return mv;
 	}
@@ -66,8 +62,8 @@ public class UserController {
 				new ModelAndView();
 		
 		//-> get and send password String
-		addNavItemMap(mv);
-		mv.setViewName("user/updatePassword");
+		Navigation.addUserNavItemMap(mv);
+		mv.setViewName(getRoute("user/updatePassword"));
 		
         return mv;
 	}
@@ -85,14 +81,14 @@ public class UserController {
 		return mv;
 	}
 	
-	private void addNavItemMap(ModelAndView mv) {
-		Map<String, String> navItemMap = 
-				new HashMap<>();
+	private String getRoute(String url) {
+		/*if session not contains userID
+		 *redirect to landing page*/
+		if (true) {
+			return "redirect:/explore";
+		}
 		
-		navItemMap.put("Histories", "/user/histories");
-		navItemMap.put("Profile", "/user/profile");
-
-		mv.addObject("navItemMap", navItemMap);
+		return url;
 	}
 	
 }
