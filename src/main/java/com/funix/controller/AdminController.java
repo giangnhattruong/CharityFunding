@@ -48,14 +48,13 @@ public class AdminController {
 		String close = request.getParameter("close");
 		String sort = request.getParameter("sort");
 		
-		System.out.println(keyword);
-		System.out.println(location);
-		System.out.println(open);
-		System.out.println(close);
-		System.out.println(sort);
-		
 		//Get and send campaignList
 		Navigation.addAdminNavItemMap(mv);
+		mv.addObject("keyword", keyword);
+		mv.addObject("location", location);
+		mv.addObject("open", open);
+		mv.addObject("close", close);
+		mv.addObject("sort", sort);
 		mv.setViewName(getRoute("admin/campaigns"));
 		
 		return mv;
@@ -80,8 +79,17 @@ public class AdminController {
 		ModelAndView mv =
 				new ModelAndView();
 		
+		String keyword = request.getParameter("keyword");
+		String active = request.getParameter("active");
+		String inactive = request.getParameter("inactive");
+		String sort = request.getParameter("sort");
+		
 		//Get and send userList
 		Navigation.addAdminNavItemMap(mv);
+		mv.addObject("keyword", keyword);
+		mv.addObject("active", active);
+		mv.addObject("inactive", inactive);
+		mv.addObject("sort", sort);
 		mv.setViewName(getRoute("admin/users"));
 		
 		return mv;
@@ -211,11 +219,23 @@ public class AdminController {
 	@RequestMapping(value = "donation-history", 
 			method = RequestMethod.POST)
 	public ModelAndView searchDonationHistory(HttpServletRequest request) {
-		ModelAndView mv =
-				new ModelAndView();
+		ModelAndView mv = new ModelAndView();
+		
+		String userKeyword = request.getParameter("userKeyword");
+		String campaignKeyword = request.getParameter("campaignKeyword");
+		String transactionKeyword = request.getParameter("transactionKeyword");
+		String received = request.getParameter("received");
+		String notReceived = request.getParameter("notReceived");
+		String sort = request.getParameter("sort");
 		
 		//Get and send donationHistory
 		Navigation.addAdminNavItemMap(mv);
+		mv.addObject("userKeyword", userKeyword);
+		mv.addObject("campaignKeyword", campaignKeyword);
+		mv.addObject("transactionKeyword", transactionKeyword);
+		mv.addObject("received", received);
+		mv.addObject("notReceived", notReceived);
+		mv.addObject("sort", sort);
 		mv.setViewName(getRoute("admin/donationHistory"));
 		
 		return mv;

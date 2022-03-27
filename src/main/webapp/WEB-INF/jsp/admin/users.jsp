@@ -6,6 +6,8 @@
 	<c:param name="navItemMap">${navItemMap}</c:param>
 </c:import>
 
-<h1>Users</h1>
+<h1 class="display-5 text-center">Users</h1>
+
+<c:import url="/WEB-INF/jsp/admin/searchUsers.jsp"></c:import>
 
 <c:import url="/WEB-INF/jsp/common/footer.jsp"></c:import>

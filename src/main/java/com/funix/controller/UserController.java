@@ -1,5 +1,7 @@
 package com.funix.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +29,30 @@ public class UserController {
 		mv.setViewName(getRoute("user/donationHistory"));
 		
         return mv;
+	}
+	
+	@RequestMapping(value = "donation-history", 
+			method = RequestMethod.POST)
+	public ModelAndView searchHistory(HttpServletRequest request) {
+		ModelAndView mv =
+				new ModelAndView();
+		
+		String campaignKeyword = request.getParameter("campaignKeyword");
+		String transactionKeyword = request.getParameter("transactionKeyword");
+		String delivered = request.getParameter("delivered");
+		String notDelivered = request.getParameter("notDelivered");
+		String sort = request.getParameter("sort");
+		
+		//Get and send campaignList
+		Navigation.addUserNavItemMap(mv);
+		mv.addObject("campaignKeyword", campaignKeyword);
+		mv.addObject("transactionKeyword", transactionKeyword);
+		mv.addObject("delivered", delivered);
+		mv.addObject("notDelivered", notDelivered);
+		mv.addObject("sort", sort);
+		mv.setViewName(getRoute("user/donationHistory"));
+		
+		return mv;
 	}
 	
 	@RequestMapping(value = "update-profile", 
