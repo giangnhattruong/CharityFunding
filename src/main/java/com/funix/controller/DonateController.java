@@ -5,14 +5,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.funix.controller.service.Navigation;
+import com.funix.service.Navigation;
 
 @Controller
 @RequestMapping("/donate")
 public class DonateController {
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView getDonatePage() {
+	public ModelAndView getDonationPage() {
 		ModelAndView mv =
 				new ModelAndView();
 		
@@ -24,11 +24,13 @@ public class DonateController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView processDonate() {
+	public ModelAndView processTransaction() {
 		ModelAndView mv =
 				new ModelAndView();
 		
+		//Randomly hash transactionCode to stimulate bank API
 		//Get and add history object to DB
+		
 		Navigation.addMainNavItemMap(mv);
 		mv.addObject("message", "Thank you for your support. "
 				+ "Your help will save many hoping hearts!");

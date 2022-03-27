@@ -6,11 +6,6 @@
 	<c:param name="navItemMap">${navItemMap}</c:param>
 </c:import>
 
-<h1 class="display-5 text-center">Campaigns</h1>
-
-<c:import url="/WEB-INF/jsp/common/searchCampaigns.jsp">
-	<c:param name="action">campaigns</c:param>
-</c:import>
-
+<h1>Donation History</h1>
 
 <c:import url="/WEB-INF/jsp/common/footer.jsp"></c:import>

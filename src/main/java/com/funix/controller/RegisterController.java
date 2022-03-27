@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.funix.controller.service.Navigation;
+import com.funix.service.Navigation;
 
 @Controller
 @RequestMapping("/register")
@@ -25,36 +25,32 @@ public class RegisterController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView verifyEmail() {
+	public ModelAndView addUser() {
 		ModelAndView mv =
 				new ModelAndView();
 		
-		//if user does not exist in DB
-		//HttpSession -> add user object
-		//HttpResponse -> encodeURL("/register/create-user")
-		//send encodeURL to email
-//		addNavItemMap(mv);
-//		mv.addObject("message", "Email has been sent. Please check your email to verify the new account.");
-//		mv.setViewName("main/success");
+		//add user to DB
+		//set session with userID
+		//encodeURL(register/verify) and send email
 		
-		//if user exists
-//		mv.addObject("message", "User already exists, please login.")
-//		mv.setViewName("redirect:/login");
+		Navigation.addMainNavItemMap(mv);
+		mv.addObject("message", "Your account has been created. Please check your email to verify.");
+		mv.setViewName("main/success");
 		
 		return mv;
 	}
 	
-	@RequestMapping(value = "create-user",
+	@RequestMapping(value = "verify",
 			method = RequestMethod.GET)
-	public ModelAndView createUser() {
+	public ModelAndView verifyUser() {
 		ModelAndView mv =
 				new ModelAndView();
 		
-		//session -> user object
-		//add user to DB
+		//session -> get userID
+		//updateUserStatus to 1
 		
 		Navigation.addMainNavItemMap(mv);
-		mv.addObject("message", "Your account has been created. Please login to confirm.");
+		mv.addObject("message", "Your account has been verified. Please login to confirm.");
 		mv.setViewName("redirect:/login");
 		
 		return mv;

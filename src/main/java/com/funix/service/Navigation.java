@@ -1,4 +1,4 @@
-package com.funix.controller.service;
+package com.funix.service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +23,7 @@ public class Navigation {
 		
 		navItemMap.put("Campaigns", "/admin/campaigns");
 		navItemMap.put("Users", "/admin/users");
+		navItemMap.put("Donation history", "/admin/donation-history");
 
 		mv.addObject("navItemMap", navItemMap);
 	}
@@ -31,8 +32,8 @@ public class Navigation {
 		Map<String, String> navItemMap = 
 				new HashMap<>();
 		
-		navItemMap.put("Histories", "/user/histories");
-		navItemMap.put("Profile", "/user/profile");
+		navItemMap.put("Donation history", "/user/donation-history");
+		navItemMap.put("Update profile", "/user/update-profile");
 
 		mv.addObject("navItemMap", navItemMap);
 	}

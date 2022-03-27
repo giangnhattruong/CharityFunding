@@ -2,13 +2,15 @@ package com.funix.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.funix.controller.service.Navigation;
+import com.funix.service.Navigation;
 
 @Controller
 @RequestMapping("/admin")
@@ -34,6 +36,31 @@ public class AdminController {
         return mv;
 	}
 	
+	@RequestMapping(value = "campaigns", 
+			method = RequestMethod.POST)
+	public ModelAndView searchCampaigns(HttpServletRequest request) {
+		ModelAndView mv =
+				new ModelAndView();
+		
+		String keyword = request.getParameter("keyword");
+		String location = request.getParameter("location");
+		String open = request.getParameter("open");
+		String close = request.getParameter("close");
+		String sort = request.getParameter("sort");
+		
+		System.out.println(keyword);
+		System.out.println(location);
+		System.out.println(open);
+		System.out.println(close);
+		System.out.println(sort);
+		
+		//Get and send campaignList
+		Navigation.addAdminNavItemMap(mv);
+		mv.setViewName(getRoute("admin/campaigns"));
+		
+		return mv;
+	}
+	
 	@RequestMapping(value = "users", 
 			method = RequestMethod.GET)
 	public ModelAndView manageUsers() {
@@ -45,6 +72,19 @@ public class AdminController {
 		mv.setViewName(getRoute("admin/users"));
 		
         return mv;
+	}
+	
+	@RequestMapping(value = "users", 
+			method = RequestMethod.POST)
+	public ModelAndView searchUsers(HttpServletRequest request) {
+		ModelAndView mv =
+				new ModelAndView();
+		
+		//Get and send userList
+		Navigation.addAdminNavItemMap(mv);
+		mv.setViewName(getRoute("admin/users"));
+		
+		return mv;
 	}
 	
 	@RequestMapping(value = {"campaigns/new", "campaigns/update"}, 
@@ -155,10 +195,36 @@ public class AdminController {
 		return mv;
 	}
 	
+	@RequestMapping(value = "donation-history", 
+			method = RequestMethod.GET)
+	public ModelAndView getDonationHistory() {
+		ModelAndView mv =
+				new ModelAndView();
+		
+		//Get and send donationHistory
+		Navigation.addAdminNavItemMap(mv);
+		mv.setViewName(getRoute("admin/donationHistory"));
+		
+        return mv;
+	}
+	
+	@RequestMapping(value = "donation-history", 
+			method = RequestMethod.POST)
+	public ModelAndView searchDonationHistory(HttpServletRequest request) {
+		ModelAndView mv =
+				new ModelAndView();
+		
+		//Get and send donationHistory
+		Navigation.addAdminNavItemMap(mv);
+		mv.setViewName(getRoute("admin/donationHistory"));
+		
+		return mv;
+	}
+	
 	private String getRoute(String url) {
 		/*if session not contains adminID
 		 *redirect to landing page*/
-		if (true) {
+		if (false) {
 			return "redirect:/explore";
 		}
 		

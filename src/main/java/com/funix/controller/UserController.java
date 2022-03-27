@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.funix.controller.service.Navigation;
+import com.funix.service.Navigation;
 
 @Controller
 @RequestMapping("/user")
@@ -13,23 +13,23 @@ public class UserController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String getUserDashboard() {
-		return "redirect:/user/histories";
+		return "redirect:/user/donation-history";
 	}
 
-	@RequestMapping(value = "histories", 
+	@RequestMapping(value = "donation-history", 
 			method = RequestMethod.GET)
-	public ModelAndView getHistories() {
+	public ModelAndView getHistory() {
 		ModelAndView mv =
 				new ModelAndView();
 		
 		//Get and send campaignList
 		Navigation.addUserNavItemMap(mv);
-		mv.setViewName(getRoute("user/histories"));
+		mv.setViewName(getRoute("user/donationHistory"));
 		
         return mv;
 	}
 	
-	@RequestMapping(value = "profile", 
+	@RequestMapping(value = "update-profile", 
 			method = RequestMethod.GET)
 	public ModelAndView getProfileForm() {
 		ModelAndView mv =
@@ -37,12 +37,12 @@ public class UserController {
 		
 		//-> get and send user object
 		Navigation.addUserNavItemMap(mv);
-		mv.setViewName(getRoute("user/profile"));
+		mv.setViewName(getRoute("user/updateProfile"));
 		
         return mv;
 	}
 	
-	@RequestMapping(value = "profile", 
+	@RequestMapping(value = "updateProfile", 
 			method = RequestMethod.POST)
 	public ModelAndView updateProfile() {
 		ModelAndView mv =
@@ -50,7 +50,7 @@ public class UserController {
 		
 		//Get and update user info in DB
 		mv.addObject("message", "Infomation has been successfully updated.");
-		mv.setViewName("redirect:/user/histories");
+		mv.setViewName("redirect:/user/donation-history");
 		
 		return mv;
 	}
@@ -76,7 +76,7 @@ public class UserController {
 		
 		//Get and update user password in DB
 		mv.addObject("message", "Password has been successfully updated.");
-		mv.setViewName("redirect:/user/histories");
+		mv.setViewName("redirect:/user/donation-history");
 		
 		return mv;
 	}
@@ -84,7 +84,7 @@ public class UserController {
 	private String getRoute(String url) {
 		/*if session not contains userID
 		 *redirect to landing page*/
-		if (true) {
+		if (false) {
 			return "redirect:/explore";
 		}
 		
