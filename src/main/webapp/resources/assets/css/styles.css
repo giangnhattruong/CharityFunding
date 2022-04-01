@@ -1,14 +1,27 @@
 #navbar, #footer {
 	background-color: #fff;
 	box-shadow: 0 0 15px 0 #000;
-	z-index: 1
 }
 
 #main-body {
-	background-color: rgba(0, 0, 0, 0.1);
-	z-index: 0
+	background-color: rgba(0, 0, 0, 0.01);
 }
 
 #navbar .link-secondary:hover {
 	color: #0f0;
+}
+
+.my-modal {
+	display: none;
+	position: fixed;
+	left: 0;
+	top: 0;
+	background-color: rgba(0, 0, 0, 0.75);
+	width: 100vw;
+	height: 100vh;
+	z-index: 10;
+}
+
+.notify-modal {
+	display: block;
 }

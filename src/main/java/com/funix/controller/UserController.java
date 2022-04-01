@@ -12,38 +12,36 @@ import com.funix.service.Navigation;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	public String getUserDashboard() {
 		return "redirect:/user/donation-history";
 	}
 
-	@RequestMapping(value = "donation-history", 
-			method = RequestMethod.GET)
+	@RequestMapping(value = "donation-history", method = RequestMethod.GET)
 	public ModelAndView getHistory() {
-		ModelAndView mv =
-				new ModelAndView();
-		
-		//Get and send campaignList
+		ModelAndView mv = new ModelAndView();
+
+		// Get and send campaignList
 		Navigation.addUserNavItemMap(mv);
+		mv.addObject("delivered", "true");
+		mv.addObject("notDelivered", "true");
 		mv.setViewName(getRoute("user/donationHistory"));
-		
-        return mv;
+
+		return mv;
 	}
-	
-	@RequestMapping(value = "donation-history", 
-			method = RequestMethod.POST)
+
+	@RequestMapping(value = "donation-history", method = RequestMethod.POST)
 	public ModelAndView searchHistory(HttpServletRequest request) {
-		ModelAndView mv =
-				new ModelAndView();
-		
+		ModelAndView mv = new ModelAndView();
+
 		String campaignKeyword = request.getParameter("campaignKeyword");
 		String transactionKeyword = request.getParameter("transactionKeyword");
 		String delivered = request.getParameter("delivered");
 		String notDelivered = request.getParameter("notDelivered");
 		String sort = request.getParameter("sort");
-		
-		//Get and send campaignList
+
+		// Get and send campaignList
 		Navigation.addUserNavItemMap(mv);
 		mv.addObject("campaignKeyword", campaignKeyword);
 		mv.addObject("transactionKeyword", transactionKeyword);
@@ -51,70 +49,63 @@ public class UserController {
 		mv.addObject("notDelivered", notDelivered);
 		mv.addObject("sort", sort);
 		mv.setViewName(getRoute("user/donationHistory"));
-		
+
 		return mv;
 	}
-	
-	@RequestMapping(value = "update-profile", 
-			method = RequestMethod.GET)
+
+	@RequestMapping(value = "update-profile", method = RequestMethod.GET)
 	public ModelAndView getProfileForm() {
-		ModelAndView mv =
-				new ModelAndView();
-		
-		//-> get and send user object
+		ModelAndView mv = new ModelAndView();
+
+		// -> get and send user object
 		Navigation.addUserNavItemMap(mv);
 		mv.setViewName(getRoute("user/updateProfile"));
-		
-        return mv;
+
+		return mv;
 	}
-	
-	@RequestMapping(value = "updateProfile", 
-			method = RequestMethod.POST)
+
+	@RequestMapping(value = "updateProfile", method = RequestMethod.POST)
 	public ModelAndView updateProfile() {
-		ModelAndView mv =
-				new ModelAndView();
-		
-		//Get and update user info in DB
+		ModelAndView mv = new ModelAndView();
+
+		// Get and update user info in DB
 		mv.addObject("message", "Infomation has been successfully updated.");
 		mv.setViewName("redirect:/user/donation-history");
-		
+
 		return mv;
 	}
-	
-	@RequestMapping(value = "update-password", 
-			method = RequestMethod.GET)
+
+	@RequestMapping(value = "update-password", method = RequestMethod.GET)
 	public ModelAndView getPasswordForm() {
-		ModelAndView mv =
-				new ModelAndView();
-		
-		//-> get and send password String
+		ModelAndView mv = new ModelAndView();
+
+		// -> get and send password String
 		Navigation.addUserNavItemMap(mv);
 		mv.setViewName(getRoute("user/updatePassword"));
-		
-        return mv;
-	}
-	
-	@RequestMapping(value = "update-password", 
-			method = RequestMethod.POST)
-	public ModelAndView updatePassword() {
-		ModelAndView mv =
-				new ModelAndView();
-		
-		//Get and update user password in DB
-		mv.addObject("message", "Password has been successfully updated.");
-		mv.setViewName("redirect:/user/donation-history");
-		
+
 		return mv;
 	}
-	
+
+	@RequestMapping(value = "update-password", method = RequestMethod.POST)
+	public ModelAndView updatePassword() {
+		ModelAndView mv = new ModelAndView();
+
+		// Get and update user password in DB
+		mv.addObject("message", "Password has been successfully updated.");
+		mv.setViewName("redirect:/user/donation-history");
+
+		return mv;
+	}
+
 	private String getRoute(String url) {
-		/*if session not contains userID
-		 *redirect to landing page*/
+		/*
+		 * if session not contains userID redirect to landing page
+		 */
 		if (false) {
 			return "redirect:/explore";
 		}
-		
+
 		return url;
 	}
-	
+
 }

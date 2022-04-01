@@ -7,7 +7,7 @@ public class MVCServletInitializer extends AbstractAnnotationConfigDispatcherSer
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		// TODO Auto-generated method stub
-		return new Class[] {};
+		return new Class[] {DatabaseConfig.class};
 	}
 
 	@Override
