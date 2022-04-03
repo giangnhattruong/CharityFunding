@@ -2,11 +2,12 @@ package com.funix.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.springframework.jdbc.core.RowMapper;
 
 import com.funix.model.User;
+import com.funix.service.NullConvert;
 
 public class UserRowMapper implements RowMapper<User> {
 
@@ -19,11 +20,14 @@ public class UserRowMapper implements RowMapper<User> {
 		String address = resultSet.getString("address");
 		String phone = resultSet.getString("phone");
 		int role = resultSet.getInt("role");
-		int userStatus = resultSet.getInt("userStatus");
-		Date dateCreated = resultSet.getDate("dateCreated");
+		int status = resultSet.getInt("userStatus");
+		boolean userStatus = status == 1 ? true : false;
+		LocalDate dateCreated = NullConvert
+				.toLocalDate(resultSet.getDate("dateCreated"));
 		double totalDonations = resultSet.getDouble("totalDonations");
 		int donationTimes = resultSet.getInt("donationTimes");
-		Date latestDonationDate = resultSet.getDate("latestDonationDate");
+		LocalDate latestDonationDate = NullConvert
+				.toLocalDate(resultSet.getDate("latestDonationDate"));
 		
 		return new User(userID, email, password, fullname, 
 				address, phone, role, userStatus, dateCreated, 

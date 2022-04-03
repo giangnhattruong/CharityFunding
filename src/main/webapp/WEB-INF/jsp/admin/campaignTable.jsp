@@ -99,7 +99,7 @@
 	    <td>${campaign.totalDonations}</td>
 	    <td>${campaign.totalSupporters}</td>
 	    <td>${campaign.dateCreated}</td>
-	    <td>${campaign.campaignStatus == 1 ? "Open" : "Closed"}</td>
+	    <td>${campaign.campaignStatus == true ? "Open" : "Closed"}</td>
 	  </tr>
 	</c:if>
 	</c:forEach>

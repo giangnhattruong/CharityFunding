@@ -29,3 +29,28 @@ $("#reset-campaign-search").on("click", function() {
 	$("[name=sort]").val("date-desc");
 	$("#search-campaigns").submit();
 })
+
+$("#submitButton").on("click", function() {
+	$("#submitForm").submit();
+	$(this).addClass("disabled");
+})
+
+/*$(".needs-validation").on("submit", function(e) {
+	e.preventDefault();
+	let isAllValidated = true;
+	
+	$(".needs-validation input, .needs-validation textarea")
+		.not("input[type=checkbox]")
+		.each(function() {
+	    if (!$(this).val()) {
+			isAllValidated = false;
+	        $(this).next().removeClass("d-none");
+	    } else {
+			$(this).next().addClass("d-none");
+		}
+	})
+	    
+    if (isAllValidated) {
+		$(".needs-validation").submit();
+	}
+})*/

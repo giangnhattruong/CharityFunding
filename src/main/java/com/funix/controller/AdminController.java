@@ -1,13 +1,16 @@
 package com.funix.controller;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,22 +18,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cloudinary.Cloudinary;
 import com.funix.dao.CampaignDAOImpl;
+import com.funix.dao.ICampaignDAO;
 import com.funix.model.Campaign;
 import com.funix.model.CampaignFilter;
+import com.funix.multipart.CloudinaryImpl;
+import com.funix.multipart.IImageAPI;
 import com.funix.service.Navigation;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
+import com.funix.service.NullConvert;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-
-	@Autowired
-	private CampaignDAOImpl campaignDAO;
 	
 	@Autowired
-	public CampaignFilter filter;
-
+	private DataSource dataSource;
+	
+	@Autowired
+	private Cloudinary cloudinary;
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public String getAdminDashboard() {
 		// if session does not contain adminID, redirect to explore
@@ -77,10 +84,12 @@ public class AdminController {
 
 	@RequestMapping(value = "campaigns", method = RequestMethod.GET)
 	public ModelAndView manageCampaigns(
-			@ModelAttribute("message") String message
+			@ModelAttribute("message") String message,
+			@ModelAttribute("filter") CampaignFilter filter
 			) {
 		ModelAndView mv = new ModelAndView();
-		
+		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
+		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource, imageAPI);
 		List<Campaign> campaignList = campaignDAO.getManyCampaigns(filter);
 		
 		Navigation.addAdminNavItemMap(mv);
@@ -93,53 +102,133 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "campaigns", method = RequestMethod.POST)
-	public ModelAndView searchCampaigns(HttpServletRequest request) {
+	public ModelAndView searchCampaigns(HttpServletRequest request,
+			RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView();
+		CampaignFilter filter = new CampaignFilter();
 		String keyword = request.getParameter("keyword");
 		String location = request.getParameter("location");
 		String open = request.getParameter("open");
 		String closed = request.getParameter("closed");
 		String sort = request.getParameter("sort");
-		
 		filter.setFilter(keyword, location, open, closed, sort);
 
-		Navigation.addAdminNavItemMap(mv);
+		redirectAttributes.addFlashAttribute("filter", filter);
 		mv.setViewName("redirect:/admin/campaigns");
 
 		return mv;
 	}
 
-	@RequestMapping(value = { "campaigns/new", "campaigns/update" }, method = RequestMethod.GET)
-	public ModelAndView getCampaignForm() {
+	@RequestMapping(value = { "campaigns/new", "campaigns/update" }, 
+			method = RequestMethod.GET)
+	public ModelAndView getCampaignForm(
+			@ModelAttribute("message") String message, 
+			@ModelAttribute("campaign") Campaign campaign, 
+			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
+		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
+		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource, imageAPI);
+		String currentURI = request.getRequestURI();
+		String formTitle = "";
+		String formAction = "";
 
-		// if (url is update && id exists)
-		// -> get and send campaign object
+		if (currentURI.endsWith("new")) {
+			formTitle = "Create";
+			formAction = "/admin/campaigns/new";
+		} else if (currentURI.endsWith("update")) {
+			formTitle = "Update";
+			formAction = "/admin/campaigns/update";
+			String id = request.getParameter("id");
+			int campaignID = NullConvert.toInt(id);
+			
+			if (campaignID != 0) {
+				campaign = campaignDAO.getCampaign(campaignID);
+			}
+			
+			String imgURL = campaign.getImgURL();
+			
+			if (imgURL != null) {
+				String imgHTML = imageAPI
+						.transformImage(imgURL, 80, 60);
+				mv.addObject("imgHTML", imgHTML);
+			}
+		}
+		
 		Navigation.addAdminNavItemMap(mv);
+		mv.addObject("formTitle", formTitle);
+		mv.addObject("formAction", formAction);
+		mv.addObject("campaign", campaign);
 		mv.setViewName(getRoute("admin/createOrUpdateCampaign"));
 
 		return mv;
 	}
 
 	@RequestMapping(value = "campaigns/new", method = RequestMethod.POST)
-	public ModelAndView createCampaign() {
+	public ModelAndView createCampaign(
+			@ModelAttribute("campaign")Campaign campaign, 
+		    BindingResult result,
+		    HttpServletRequest request,
+		    RedirectAttributes redirectAttributes)  {
 		ModelAndView mv = new ModelAndView();
-
-		// Get and add campaign to DB
-		mv.addObject("message", "Campaign has been successfully created.");
-		mv.setViewName("redirect:/admin/campaigns");
-
+		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
+		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource, imageAPI);
+		String message = "";
+		String startDateString = request.getParameter("startDate");
+		String endDateString = request.getParameter("endDate");
+		LocalDate startDate = NullConvert.toLocalDate(startDateString);
+		LocalDate endDate = NullConvert.toLocalDate(endDateString);
+		campaign.setStartDate(startDate);
+		campaign.setEndDate(endDate);
+		
+		message = campaignDAO.create(campaign);
+		
+		if (message.equals("success")) {
+			redirectAttributes
+				.addFlashAttribute("message", 
+						"Campaign has been successfully created.");
+			mv.setViewName("redirect:/admin/campaigns");
+		} else {
+			redirectAttributes
+				.addFlashAttribute("message", message);
+			redirectAttributes
+			.addFlashAttribute("campaign", campaign);
+			mv.setViewName("redirect:/admin/campaigns/new");
+		}
+		
 		return mv;
 	}
 
 	@RequestMapping(value = "campaigns/update", method = RequestMethod.POST)
-	public ModelAndView updateCampaign() {
+	public ModelAndView updateCampaign(
+			@ModelAttribute("campaign")Campaign campaign, 
+		    BindingResult result,
+		    HttpServletRequest request,
+		    RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView();
-
-		// Get and update campaign in DB
-		mv.addObject("message", "Campaign has been successfully updated.");
-		mv.setViewName("redirect:/admin/campaigns");
-
+		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
+		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource, imageAPI);
+		String message = "";
+		String startDateString = request.getParameter("startDate");
+		String endDateString = request.getParameter("endDate");
+		LocalDate startDate = NullConvert.toLocalDate(startDateString);
+		LocalDate endDate = NullConvert.toLocalDate(endDateString);
+		campaign.setStartDate(startDate);
+		campaign.setEndDate(endDate);
+		message = campaignDAO.update(campaign.getCampaignID(), campaign);
+		
+		if (message.equals("success")) {
+			redirectAttributes
+				.addFlashAttribute("message", 
+						"Campaign has been successfully updated.");
+			mv.setViewName("redirect:/admin/campaigns");
+		} else {
+			redirectAttributes
+				.addFlashAttribute("message", message);
+			redirectAttributes
+			.addFlashAttribute("campaign", campaign);
+			mv.setViewName("redirect:/admin/campaigns/update");
+		}
+		
 		return mv;
 	}
 
@@ -147,7 +236,9 @@ public class AdminController {
 	public ModelAndView deleteCampaign(HttpServletRequest request,
 			RedirectAttributes redirectAttrs) {
 		ModelAndView mv = new ModelAndView();
-		String message = "Delete campaign(s) successful.";
+		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
+		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource, imageAPI);
+		String message = "";
 		
 		String[] campaignIDArray = request.getParameterValues("campaignIDs");
 		String campaignIDs = Arrays.toString(campaignIDArray)
@@ -155,8 +246,9 @@ public class AdminController {
 		
 		if (campaignIDArray != null) {
 			campaignDAO.delete(campaignIDs);
+			message = "Delete campaign(s) successful.";
 		} else {
-			message = "Delete failed.";
+			message = "Delete failed. No items selected.";
 		}
 		
 		redirectAttrs.addFlashAttribute("message", message);

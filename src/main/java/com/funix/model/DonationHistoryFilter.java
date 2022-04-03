@@ -1,30 +1,36 @@
 package com.funix.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.funix.service.CampaignFilterMapping;
-import com.funix.service.DonationHistoryFilterMapping;
+import com.funix.service.FilterMapping;
 
 public class DonationHistoryFilter {
-	@Autowired
-	private DonationHistoryFilterMapping donationHistoryFilterMapping;
-
 	private String userKeyword;
 	private String campaignKeyword;
 	private String transactionKeyword;
-	private String status;
-	private String orderBy;
+	private String statusOn;
+	private String statusOff;
+	private String sortBy;
 
-	public DonationHistoryFilter(String userKeyword, String campaignKeyword, String transactionKeyword, String statusOn,
+	public DonationHistoryFilter() {
+		userKeyword = "";
+		campaignKeyword = "";
+		transactionKeyword = "";
+		statusOn = "true";
+		statusOff = "true";
+		sortBy = "date-desc";
+	}
+
+	public void setFilter(String statusOn, String statusOff, String sortBy) {
+		this.setFilter(null, null, null, statusOn, statusOff, sortBy);
+	}
+
+	public void setFilter(String userKeyword, String campaignKeyword, String transactionKeyword, String statusOn,
 			String statusOff, String sortBy) {
-		donationHistoryFilterMapping.setStatusOn(statusOn);
-		donationHistoryFilterMapping.setStatusOff(statusOff);
-		donationHistoryFilterMapping.setSortBy(sortBy);
 		this.userKeyword = userKeyword;
 		this.campaignKeyword = campaignKeyword;
 		this.transactionKeyword = transactionKeyword;
-		this.status = donationHistoryFilterMapping.convertStatus();
-		this.orderBy = donationHistoryFilterMapping.convertOrder();
+		this.statusOn = statusOn;
+		this.statusOff = statusOff;
+		this.sortBy = sortBy;
 	}
 
 	public String getUserKeyword() {
@@ -39,12 +45,36 @@ public class DonationHistoryFilter {
 		return transactionKeyword;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getStatusOn() {
+		return statusOn;
 	}
 
-	public String getOrderBy() {
-		return orderBy;
+	public String getStatusOff() {
+		return statusOff;
+	}
+
+	public String getSortBy() {
+		return sortBy;
+	}
+
+	public String getUserKeywordFilter() {
+		return FilterMapping.convertKeyword(userKeyword);
+	}
+
+	public String getCampaignKeywordFilter() {
+		return FilterMapping.convertKeyword(campaignKeyword);
+	}
+
+	public String getTransactionKeywordFilter() {
+		return FilterMapping.convertKeyword(transactionKeyword);
+	}
+
+	public String getStatusFilter() {
+		return FilterMapping.convertStatus(statusOn, statusOff);
+	}
+
+	public String getSortByFilter() {
+		return FilterMapping.convertDonationHistoryOrder(sortBy);
 	}
 
 }

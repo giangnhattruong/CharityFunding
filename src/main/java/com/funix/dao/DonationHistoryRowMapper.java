@@ -2,12 +2,12 @@ package com.funix.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.springframework.jdbc.core.RowMapper;
 
 import com.funix.model.DonationHistory;
-import com.funix.model.User;
+import com.funix.service.NullConvert;
 
 public class DonationHistoryRowMapper implements RowMapper<DonationHistory> {
 
@@ -21,12 +21,15 @@ public class DonationHistoryRowMapper implements RowMapper<DonationHistory> {
 		String title = resultSet.getString("title");
 		String location = resultSet.getString("location");
 		double donation = resultSet.getDouble("donation");
-		Date donationDate = resultSet.getDate("donationDate");
+		LocalDate donationDate = NullConvert
+				.toLocalDate(resultSet.getDate("donationDate"));
 		String transactionCode = resultSet.getString("transactionCode");
+		int status = resultSet.getInt("donationStatus");
+		boolean donationStatus = status == 1 ? true : false;
 		
 		return new DonationHistory(donationHistoryID, userID, 
 				email, fullname, campaignID, title, location, 
-				donation, donationDate, transactionCode);
+				donation, donationDate, transactionCode, donationStatus);
 	}
 
 }

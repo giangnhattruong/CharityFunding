@@ -1,6 +1,10 @@
 package com.funix.model;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.Objects;
+
+import org.springframework.lang.NonNull;
+import org.springframework.web.multipart.MultipartFile;
 
 public class Campaign {
 	private int campaignID;
@@ -9,20 +13,25 @@ public class Campaign {
 	private double targetAmount;
 	private String location;
 	private String imgURL;
-	private Date startDate;
-	private Date endDate;
-	private int campaignStatus;
-	private Date dateCreated;
+	private LocalDate startDate;
+	private LocalDate endDate;
+	private boolean campaignStatus;
+	private LocalDate dateCreated;
 	private double totalDonations;
 	private int totalSupporters;
-	private Date latestDonationDate;
+	private LocalDate latestDonationDate;
+	private MultipartFile file;
+	private int validateErrorCount;
 
 	public Campaign() {
+		startDate = LocalDate.now();
+		endDate = startDate.plusMonths(3);
+		campaignStatus = true;
 	}
-
+	
 	public Campaign(String title, String description, 
 			double targetAmount, String location, String imgURL,
-			Date startDate, Date endDate, int campaignStatus) {
+			LocalDate startDate, LocalDate endDate, boolean campaignStatus) {
 		this(0, title, description, targetAmount, 
 				location, imgURL, startDate, endDate, 
 				campaignStatus, null, 0, 0, null);
@@ -30,9 +39,9 @@ public class Campaign {
 
 	public Campaign(int campaignID, String title, String description, 
 			double targetAmount, String location, String imgURL, 
-			Date startDate, Date endDate, int campaignStatus, 
-			Date dateCreated, double totalDonations,
-			int totalSupporters, Date latestDonationDate) {
+			LocalDate startDate, LocalDate endDate, boolean campaignStatus, 
+			LocalDate dateCreated, double totalDonations,
+			int totalSupporters, LocalDate latestDonationDate) {
 		this.campaignID = campaignID;
 		this.title = title;
 		this.description = description;
@@ -46,6 +55,70 @@ public class Campaign {
 		this.totalDonations = totalDonations;
 		this.totalSupporters = totalSupporters;
 		this.latestDonationDate = latestDonationDate;
+	}
+	
+	public boolean validateTextFieldsOnly() {
+		validate();
+		return validateErrorCount == 1;
+	}
+	
+	public String validate() {
+		StringBuilder messages = new StringBuilder();
+		messages.append("Please fulfill all requirements below and re-submit:");
+		messages.append("</br>");
+		validateErrorCount = 0;
+		
+		if (title == null || title.length() < 3 || 
+				title.length() > 60) {
+			messages.append(++validateErrorCount + ". ");
+			messages.append("Title must contains at least 3 characters"
+					+ " and can not exceed 60 characters.");
+			messages.append("</br>");
+		}
+		
+		if (description == null || description.length() < 120) {
+			messages.append(++validateErrorCount + ". ");
+			messages.append("Description must contains "
+					+ "at least 120 characters.");
+			messages.append("</br>");
+		}
+		
+		if (targetAmount < 1000) {
+			messages.append(++validateErrorCount + ". ");
+			messages.append("Target amount can not less than 1000.");
+			messages.append("</br>");
+		}
+		
+		if (location == null || location.length() < 3 || 
+				location.length() > 60) {
+			messages.append(++validateErrorCount + ". ");
+			messages.append("Location must contains at least 3 characters"
+					+ " and can not exceed 60 characters.\n");
+			messages.append("</br>");
+		}
+		
+		if (imgURL == null || !imgURL.startsWith("http")) {
+			messages.append(++validateErrorCount + ". ");
+			messages.append("There must be 1 cover image.\n");
+			messages.append("</br>");
+		}
+		
+		if (startDate.plusMonths(3).isBefore(LocalDate.now()) ||
+				startDate.minusMonths(3).isAfter(LocalDate.now())) {
+			messages.append(++validateErrorCount + ". ");
+			messages.append("Campaign start date must be with in 3 months"
+					+ " prior to today or within 3 months after today.\n");
+			messages.append("</br>");
+		}
+		
+		if (endDate.minusMonths(1).isBefore(startDate)) {
+			messages.append(++validateErrorCount + ". ");
+			messages.append("Campaign end date must be at least 1 months"
+					+ " after start date.\n");
+			messages.append("</br>");
+		}
+		
+		return validateErrorCount == 0 ? "success" : messages.toString();
 	}
 
 	public int getCampaignID() {
@@ -96,35 +169,35 @@ public class Campaign {
 		this.imgURL = imgURL;
 	}
 
-	public Date getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 
-	public int getCampaignStatus() {
+	public boolean getCampaignStatus() {
 		return campaignStatus;
 	}
 
-	public void setCampaignStatus(int campaignStatus) {
+	public void setCampaignStatus(boolean campaignStatus) {
 		this.campaignStatus = campaignStatus;
 	}
 
-	public Date getDateCreated() {
+	public LocalDate getDateCreated() {
 		return dateCreated;
 	}
 
-	public void setDateCreated(Date dateCreated) {
+	public void setDateCreated(LocalDate dateCreated) {
 		this.dateCreated = dateCreated;
 	}
 
@@ -144,12 +217,59 @@ public class Campaign {
 		this.totalSupporters = totalSupporters;
 	}
 
-	public Date getLatestDonationDate() {
+	public LocalDate getLatestDonationDate() {
 		return latestDonationDate;
 	}
 
-	public void setLatestDonationDate(Date latestDonationDate) {
+	public void setLatestDonationDate(LocalDate latestDonationDate) {
 		this.latestDonationDate = latestDonationDate;
 	}
+	
+	public MultipartFile getFile() {
+		return file;
+	}
 
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(campaignID, campaignStatus, dateCreated, 
+				description, endDate, imgURL, location, startDate,
+				targetAmount, title);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Campaign other = (Campaign) obj;
+		return campaignID == other.campaignID && 
+				campaignStatus == other.campaignStatus && 
+				Objects.equals(dateCreated, other.dateCreated) && 
+				Objects.equals(description, other.description) && 
+				Objects.equals(endDate, other.endDate) && 
+				Objects.equals(imgURL, other.imgURL) && 
+				Objects.equals(location, other.location) && 
+				Objects.equals(startDate, other.startDate) && 
+				Double.doubleToLongBits(targetAmount) == 
+						Double.doubleToLongBits(other.targetAmount) && 
+				Objects.equals(title, other.title);
+	}
+
+	@Override
+	public String toString() {
+		return "Campaign [campaignID=" + campaignID + ", title=" 
+				+ title + ", description=" + description
+				+ ", targetAmount=" + targetAmount + ", location=" 
+				+ location + ", imgURL=" + imgURL + ", startDate="
+				+ startDate + ", endDate=" + endDate + ", campaignStatus=" 
+				+ campaignStatus + ", dateCreated=" + dateCreated + "]";
+	}
+	
 }

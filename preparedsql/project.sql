@@ -57,6 +57,7 @@ CREATE TABLE campaignTbl (
 GO
 
 CREATE TABLE donationHistoryTbl (
+	donationHistoryID int IDENTITY(1, 1) PRIMARY KEY,
 	userID int,
 	campaignID int,
 	donation money NOT NULL,
@@ -111,7 +112,8 @@ GO
 CREATE OR ALTER FUNCTION dbo.getDonationHistory()
 RETURNS TABLE AS RETURN
 (
-    SELECT H.userID, U.email, U.fullname, H.campaignID, C.title, C.location, 
+    SELECT H.donationHistoryID, H.userID, U.email, U.fullname, 
+		H.campaignID, C.title, C.location, 
 		H.donation, H.donationDate, H.transactionCode, 
 		H.donationStatus
 	FROM userTbl AS U
@@ -183,10 +185,10 @@ CREATE OR ALTER TRIGGER dbo.deleteUser
     AS
     BEGIN
     SET NOCOUNT ON
-	DECLARE @userID AS int
-	SELECT @userID = userID FROM deleted
-	DELETE donationHistoryTbl WHERE userID = @userID
-	DELETE userTbl WHERE userID = @userID
+	DELETE donationHistoryTbl 
+	WHERE userID IN (SELECT userID FROM deleted)
+	DELETE userTbl 
+	WHERE userID IN (SELECT userID FROM deleted)
     END
 GO
 
@@ -196,10 +198,10 @@ CREATE OR ALTER TRIGGER dbo.deleteCampaign
     AS
     BEGIN
     SET NOCOUNT ON
-	DECLARE @campaignID AS int
-	SELECT @campaignID = campaignID FROM deleted
-	DELETE donationHistoryTbl WHERE campaignID = @campaignID
-	DELETE campaignTbl WHERE campaignID = @campaignID
+	DELETE donationHistoryTbl
+	WHERE campaignID IN (SELECT campaignID FROM deleted)
+	DELETE campaignTbl
+	WHERE campaignID IN (SELECT campaignID FROM deleted)
     END
 GO
 

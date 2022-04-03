@@ -2,11 +2,12 @@ package com.funix.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.springframework.jdbc.core.RowMapper;
 
 import com.funix.model.Campaign;
+import com.funix.service.NullConvert;
 
 public class CampaignRowMapper implements RowMapper<Campaign> {
 
@@ -18,13 +19,17 @@ public class CampaignRowMapper implements RowMapper<Campaign> {
 		double targetAmount = resultSet.getDouble("targetAmount");
 		String location = resultSet.getString("location");
 		String imgURL = resultSet.getString("imgURL");
-		Date startDate = resultSet.getDate("startDate");
-		Date endDate = resultSet.getDate("endDate");
-		int campaignStatus = resultSet.getInt("campaignStatus");
-		Date dateCreated = resultSet.getDate("dateCreated");
+		LocalDate startDate = NullConvert
+				.toLocalDate(resultSet.getDate("startDate"));
+		LocalDate endDate = NullConvert
+				.toLocalDate(resultSet.getDate("endDate"));
+		int status = resultSet.getInt("campaignStatus");
+		boolean campaignStatus = status == 1 ? true : false;
+		LocalDate dateCreated = resultSet.getDate("dateCreated").toLocalDate();
 		double totalDonations = resultSet.getDouble("totalDonations");
 		int totalSupporters = resultSet.getInt("totalSupporters");
-		Date latestDonationDate = resultSet.getDate("latestDonationDate");
+		LocalDate latestDonationDate = NullConvert
+				.toLocalDate(resultSet.getDate("latestDonationDate"));
 		
 		return new Campaign(campaignID, title, description, 
 				targetAmount, location, imgURL, startDate, 

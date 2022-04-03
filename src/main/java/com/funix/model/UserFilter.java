@@ -1,37 +1,57 @@
 package com.funix.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.funix.service.UserFilterMapping;
+import com.funix.service.FilterMapping;
 
 public class UserFilter {
-
-	@Autowired
-	private UserFilterMapping userFilterMapping;
-
 	private String keyword;
-	private String status;
-	private String orderBy;
+	private String statusOn;
+	private String statusOff;
+	private String sortBy;
 
-	public UserFilter(String keyword, String statusOn, String statusOff, String sortBy) {
-		userFilterMapping.setStatusOn(statusOn);
-		userFilterMapping.setStatusOff(statusOff);
-		userFilterMapping.setSortBy(sortBy);
+	public UserFilter() {
+		keyword = "";
+		statusOn = "true";
+		statusOff = "true";
+		sortBy = "date-desc";
+	}
+
+	public void setFilter(String statusOn, String statusOff, String sortBy) {
+		this.setFilter(null, statusOn, statusOff, sortBy);
+	}
+
+	public void setFilter(String keyword, String statusOn, String statusOff, String sortBy) {
 		this.keyword = keyword;
-		this.status = userFilterMapping.convertStatus();
-		this.orderBy = userFilterMapping.convertOrder();
+		this.statusOn = statusOn;
+		this.statusOff = statusOff;
+		this.sortBy = sortBy;
 	}
 
 	public String getKeyword() {
 		return keyword;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getStatusOn() {
+		return statusOn;
 	}
 
-	public String getOrderBy() {
-		return orderBy;
+	public String getStatusOff() {
+		return statusOff;
+	}
+
+	public String getSortBy() {
+		return sortBy;
+	}
+
+	public String getKeywordFilter() {
+		return FilterMapping.convertKeyword(keyword);
+	}
+
+	public String getStatusOnFilter() {
+		return FilterMapping.convertStatus(statusOn, statusOff);
+	}
+
+	public String getSortByFilter() {
+		return FilterMapping.convertUserOrder(sortBy);
 	}
 
 }

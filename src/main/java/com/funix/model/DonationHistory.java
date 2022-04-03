@@ -1,6 +1,6 @@
 package com.funix.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class DonationHistory {
 	private int donationHistoryID;
@@ -11,22 +11,24 @@ public class DonationHistory {
 	private String title;
 	private String location;
 	private double donation;
-	private Date donationDate;
+	private LocalDate donationDate;
 	private String transactionCode;
+	private boolean donationStatus;
 
 	public DonationHistory() {
 	}
 	
-	public DonationHistory(int userID,  int campaignID, 
-			double donation, String transactionCode) {
+	public DonationHistory(int userID,  int campaignID, double donation, 
+			String transactionCode, boolean donationStatus) {
 		this(0, userID, null, null, campaignID, 
-				null, null, 0, null, transactionCode);
+				null, null, 0, null, transactionCode, donationStatus);
 	}
 
 	public DonationHistory(int donationHistoryID, int userID, 
 			String email, String fullname, int campaignID,
 			String title, String location, double donation, 
-			Date donationDate, String transactionCode) {
+			LocalDate donationDate, String transactionCode,
+			boolean donationStatus) {
 		this.donationHistoryID = donationHistoryID;
 		this.userID = userID;
 		this.email = email;
@@ -37,6 +39,7 @@ public class DonationHistory {
 		this.donation = donation;
 		this.donationDate = donationDate;
 		this.transactionCode = transactionCode;
+		this.donationStatus = donationStatus;
 	}
 
 	public int getDonationHistoryID() {
@@ -103,11 +106,11 @@ public class DonationHistory {
 		this.donation = donation;
 	}
 
-	public Date getDonationDate() {
+	public LocalDate getDonationDate() {
 		return donationDate;
 	}
 
-	public void setDonationDate(Date donationDate) {
+	public void setDonationDate(LocalDate donationDate) {
 		this.donationDate = donationDate;
 	}
 
@@ -117,6 +120,14 @@ public class DonationHistory {
 
 	public void setTransactionCode(String transactionCode) {
 		this.transactionCode = transactionCode;
+	}
+
+	public boolean getDonationStatus() {
+		return donationStatus;
+	}
+
+	public void setDonationStatus(boolean donationStatus) {
+		this.donationStatus = donationStatus;
 	}
 
 }

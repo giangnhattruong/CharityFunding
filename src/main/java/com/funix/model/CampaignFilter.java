@@ -1,10 +1,7 @@
 package com.funix.model;
 
-import org.springframework.stereotype.Component;
-
 import com.funix.service.FilterMapping;
 
-@Component
 public class CampaignFilter {
 	private String keyword;
 	private String location;

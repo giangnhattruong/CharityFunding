@@ -1,6 +1,6 @@
 package com.funix.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class User {
 	private int userID;
@@ -10,26 +10,26 @@ public class User {
 	private String address;
 	private String phone;
 	private int role;
-	private int userStatus;
-	private Date dateCreated;
+	private boolean userStatus;
+	private LocalDate dateCreated;
 	private double totalDonations;
 	private int donationTimes;
-	private Date latestDonationDate;
+	private LocalDate latestDonationDate;
 
 	public User() {
 	}
 	
 	public User(String email, String password, String fullname, 
-			String address, String phone, int role, int userStatus) {
+			String address, String phone, int role, boolean userStatus) {
 		this(0, email, password, fullname, address, 
 				phone, role, userStatus, null, 0, 0, null);
 	}
 
 	public User(int userID, String email, String password, 
 			String fullname, String address, String phone, 
-			int role, int userStatus, Date dateCreated, 
+			int role, boolean userStatus, LocalDate dateCreated, 
 			double totalDonations, int donationTimes, 
-			Date latestDonationDate) {
+			LocalDate latestDonationDate) {
 		this.userID = userID;
 		this.email = email;
 		this.password = password;
@@ -100,19 +100,19 @@ public class User {
 		this.role = role;
 	}
 
-	public int getUserStatus() {
+	public boolean getUserStatus() {
 		return userStatus;
 	}
 
-	public void setUserStatus(int userStatus) {
+	public void setUserStatus(boolean userStatus) {
 		this.userStatus = userStatus;
 	}
 
-	public Date getDateCreated() {
+	public LocalDate getDateCreated() {
 		return dateCreated;
 	}
 
-	public void setDateCreated(Date dateCreated) {
+	public void setDateCreated(LocalDate dateCreated) {
 		this.dateCreated = dateCreated;
 	}
 
@@ -132,11 +132,11 @@ public class User {
 		this.donationTimes = donationTimes;
 	}
 
-	public Date getLatestDonationDate() {
+	public LocalDate getLatestDonationDate() {
 		return latestDonationDate;
 	}
 
-	public void setLatestDonationDate(Date latestDonationDate) {
+	public void setLatestDonationDate(LocalDate latestDonationDate) {
 		this.latestDonationDate = latestDonationDate;
 	}
 

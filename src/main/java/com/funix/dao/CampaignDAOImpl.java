@@ -4,33 +4,46 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.funix.model.Campaign;
 import com.funix.model.CampaignFilter;
+import com.funix.multipart.IImageAPI;
 
-@Component
 public class CampaignDAOImpl implements ICampaignDAO {
 	private JdbcTemplate jdbcTemplate;
+	private IImageAPI imageAPI;
 	
-	@Autowired
-	public CampaignDAOImpl(DataSource dataSource) {
+	public CampaignDAOImpl(DataSource dataSource, IImageAPI imageAPI) {
 		jdbcTemplate = new JdbcTemplate(dataSource);
+		this.imageAPI = imageAPI;
 	}
 	
 	@Override
-	public void create(Campaign newCampaign) {
+	public String create(Campaign newCampaign) {
 		String SQL = "INSERT INTO campaignTbl (title, description, "
 				+ "targetAmount, location, imgURL, startDate, endDate, "
 				+ "campaignStatus) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-		jdbcTemplate.update(SQL, newCampaign.getTitle(),
-				newCampaign.getDescription(), newCampaign.getTargetAmount(),
-				newCampaign.getLocation(), newCampaign.getImgURL(),
-				newCampaign.getStartDate(), newCampaign.getEndDate(),
-				newCampaign.getCampaignStatus());
+		String message = "";
+		
+		if (newCampaign.validateTextFieldsOnly()) {
+			newCampaign.setImgURL(imageAPI.uploadImage(newCampaign.getFile()));
+			message = newCampaign.validate();
+			
+			if (message.equals("success")) {
+				jdbcTemplate.update(SQL, newCampaign.getTitle(),
+						newCampaign.getDescription(), newCampaign.getTargetAmount(),
+						newCampaign.getLocation(), newCampaign.getImgURL(),
+						newCampaign.getStartDate(), newCampaign.getEndDate(),
+						newCampaign.getCampaignStatus());
+			}
+		} else {
+			message = newCampaign.validate();
+		}
+		
+		return message;
 	}
 
 	@Override
@@ -71,16 +84,30 @@ public class CampaignDAOImpl implements ICampaignDAO {
 	}
 
 	@Override
-	public void update(int campaignID, Campaign newCampaign) {
+	public String update(int campaignID, Campaign newCampaign) {
 		String SQL = "UPDATE campaignTbl "
 				+ "SET title = ?, description = ?, targetAmount = ?, location = ?, "
 				+ "	imgURL = ?, startDate = ?, endDate = ?, campaignStatus = ? "
 				+ "WHERE campaignID = ?";
-		jdbcTemplate.update(SQL, newCampaign.getTitle(),
-				newCampaign.getDescription(), newCampaign.getTargetAmount(),
-				newCampaign.getLocation(), newCampaign.getImgURL(),
-				newCampaign.getStartDate(), newCampaign.getEndDate(),
-				newCampaign.getCampaignStatus(), newCampaign.getCampaignID());
+		String message = "";
+		MultipartFile newFile = newCampaign.getFile();
+		
+		if (newFile.getSize() != 0) {
+			imageAPI.deleteImage(newCampaign.getImgURL());
+			newCampaign.setImgURL(imageAPI.uploadImage(newFile));
+		}
+		
+		message = newCampaign.validate();
+		
+		if (message.equals("success")) {
+			jdbcTemplate.update(SQL, newCampaign.getTitle(),
+					newCampaign.getDescription(), newCampaign.getTargetAmount(),
+					newCampaign.getLocation(), newCampaign.getImgURL(),
+					newCampaign.getStartDate(), newCampaign.getEndDate(),
+					newCampaign.getCampaignStatus(), newCampaign.getCampaignID());
+		}
+		
+		return message;
 	}
 
 	@Override
@@ -89,7 +116,24 @@ public class CampaignDAOImpl implements ICampaignDAO {
 				+ "DELETE campaignTbl "
 				+ "WHERE campaignID IN " + campaignIDs
 				+ " COMMIT TRANSACTION";
+		deleteManyImages(campaignIDs);
 		jdbcTemplate.update(SQL);
+	}
+	
+	private void deleteManyImages(String campaignIDs) {
+		List<String> imgURLs = getManyImgURLs(campaignIDs);
+		
+		for (String imgURL: imgURLs) {
+			imageAPI.deleteImage(imgURL);
+		}
+	}
+	
+	private List<String> getManyImgURLs(String campaignIDs) {
+		String SQL = "SELECT imgURL "
+				+ "FROM campaignTbl "
+				+ "WHERE campaignID IN " + campaignIDs;
+		
+		return jdbcTemplate.queryForList(SQL, String.class);
 	}
 
 }
