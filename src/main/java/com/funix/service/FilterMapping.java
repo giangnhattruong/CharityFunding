@@ -138,30 +138,4 @@ public class FilterMapping {
 		return orderBy;
 	}
 	
-	public static String convertUserDonationHistoryOrder(String sortBy) {
-		String orderBy = "ORDER BY ";
-
-		switch (sortBy) {
-		case "date-desc":
-			orderBy += "donationDate DESC";
-			break;
-		case "donation-desc":
-			orderBy += "donation DESC";
-			break;
-		case "transaction-code-desc":
-			orderBy += "transactionCode DESC";
-			break;
-		case "date-asc":
-			orderBy += "donationDate ASC";
-			break;
-		case "donation-asc":
-			orderBy += "donation ASC";
-			break;
-		case "transaction-code-asc":
-			orderBy += "transactionCode ASC";
-			break;
-		}
-
-		return orderBy;
-	}
 }

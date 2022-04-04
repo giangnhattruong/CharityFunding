@@ -21,7 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cloudinary.Cloudinary;
 import com.funix.dao.CampaignDAOImpl;
+import com.funix.dao.DonationHistoryDAOImpl;
 import com.funix.dao.ICampaignDAO;
+import com.funix.dao.IDonationHistoryDAO;
 import com.funix.dao.IUserDAO;
 import com.funix.dao.UserDAOImpl;
 import com.funix.model.Campaign;
@@ -55,9 +57,14 @@ public class AdminController {
 	public ModelAndView getDonationHistory(
 			@ModelAttribute("filter") DonationHistoryFilter filter) {
 		ModelAndView mv = new ModelAndView();
-		//.....................
+		IDonationHistoryDAO historyDAO = 
+				new DonationHistoryDAOImpl(dataSource);
+		List<DonationHistory> historyList = historyDAO
+				.getManyAdminHistories(filter);
+		
 		Navigation.addAdminNavItemMap(mv);
 		mv.addObject("filter", filter);
+		mv.addObject("historyList", historyList);
 		mv.setViewName(getRoute("admin/donationHistory"));
 		return mv;
 	}

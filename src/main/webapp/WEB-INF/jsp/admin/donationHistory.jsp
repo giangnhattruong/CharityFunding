@@ -10,4 +10,6 @@
 
 <c:import url="/WEB-INF/jsp/admin/searchAdminDonationHistory.jsp"></c:import>
 
+<c:import url="/WEB-INF/jsp/admin/adminDonationHistoryTable.jsp"></c:import>
+
 <c:import url="/WEB-INF/jsp/common/footer.jsp"></c:import>
