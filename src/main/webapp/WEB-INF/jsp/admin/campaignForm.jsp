@@ -6,6 +6,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
+<c:url var="action" value="${formAction}" />
 <c:set var="startDate" value="${campaign.startDate.toString()}"></c:set>
 <c:set var="endDate" value="${campaign.endDate.toString()}"></c:set>
 
@@ -15,14 +16,18 @@
 	${fn:toLowerCase(formTitle)} a campaign.</p>
 </div>
 
-<c:url var="action" value="${formAction}" scope="page" />
-
 <div class="container">
 <p class="small text-danger offset-1">${message}</p>
 <form:form id="submitForm"
-	cssClass="needs-validation" 
+	cssClass="resetForm" 
 	method="POST" modelAttribute="campaign"
 	action="${action}" enctype="multipart/form-data">
+
+<c:if test="${formTitle == 'Create'}">
+<input type="reset" value="&#8634; CLEAR"
+	class="btn btn-outline-secondary resetFormButton my-3 offset-1">
+</c:if>
+
 <div class="row g-md-5 mb-3">
 <div class="col-md-5 offset-md-1 col-lg-6">
 <div class="mb-3">
@@ -105,7 +110,7 @@ ${imgHTML}
 
 <div class="form-check form-switch">
 <form:checkbox path="campaignStatus" cssClass="form-check-input"
-	id="campaignStatus" value="1"/>
+	id="campaignStatus"/>
  <form:label cssClass="form-check-label" path="campaignStatus">
  Campaign status</form:label>
 </div>
@@ -113,11 +118,12 @@ ${imgHTML}
 </div>
 
 <div class="d-flex justify-content-center">
-<input id="submitButton" class="btn btn-primary btn-lg px-5" 
+<a id="returnBackButton" class="btn btn-secondary btn-lg px-5 me-3" 
+href="<c:url value="/admin/campaigns" />">Return</a>
+<input id="submitButton" class="btn btn-primary btn-lg px-5 me-3" 
 	type="submit" value="Submit">
 </div>
 
 <form:hidden path="imgURL" value="${campaign.imgURL}"/>
-<form:hidden path="campaignID" value="${campaign.campaignID}"/>
 </form:form>
 </div>

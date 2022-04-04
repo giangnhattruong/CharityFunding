@@ -5,49 +5,54 @@ import com.funix.service.FilterMapping;
 public class CampaignFilter {
 	private String keyword;
 	private String location;
-	private String statusOn;
-	private String statusOff;
+	private boolean statusOpen;
+	private boolean statusClosed;
 	private String sortBy;
-	
-	public CampaignFilter() {
-		keyword = "";
-		location = "";
-		statusOn = "true";
-		statusOff = "true";
-		sortBy = "date-desc";
-	}
 
-	public void setFilter(String statusOn, String statusOff, String sortBy) {
-		this.setFilter(null, null, statusOn, statusOff, sortBy);
-	}
-	
-	public void setFilter(String keyword, String location, 
-			String statusOn, String statusOff, String sortBy) {
-		this.keyword = keyword;
-		this.location = location;
-		this.statusOn = statusOn;
-		this.statusOff = statusOff;
-		this.sortBy = sortBy;
+	public CampaignFilter() {
+		statusOpen = true;
+		statusClosed = true;
+		sortBy = "date-desc";
 	}
 
 	public String getKeyword() {
 		return keyword;
 	}
 
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
 	public String getLocation() {
 		return location;
 	}
 
-	public String getStatusOn() {
-		return statusOn;
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
-	public String getStatusOff() {
-		return statusOff;
+	public boolean getStatusOpen() {
+		return statusOpen;
+	}
+
+	public void setStatusOpen(boolean statusOpen) {
+		this.statusOpen = statusOpen;
+	}
+
+	public boolean getStatusClosed() {
+		return statusClosed;
+	}
+
+	public void setStatusClosed(boolean statusClosed) {
+		this.statusClosed = statusClosed;
 	}
 
 	public String getSortBy() {
 		return sortBy;
+	}
+
+	public void setSortBy(String sortBy) {
+		this.sortBy = sortBy;
 	}
 
 	public String getKeywordFilter() {
@@ -59,7 +64,7 @@ public class CampaignFilter {
 	}
 
 	public String getStatusFilter() {
-		return FilterMapping.convertStatus(statusOn, statusOff);
+		return FilterMapping.convertStatus(statusOpen, statusClosed);
 	}
 
 	public String getOrderByFilter() {

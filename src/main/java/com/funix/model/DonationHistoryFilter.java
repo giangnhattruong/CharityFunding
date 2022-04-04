@@ -6,55 +6,62 @@ public class DonationHistoryFilter {
 	private String userKeyword;
 	private String campaignKeyword;
 	private String transactionKeyword;
-	private String statusOn;
-	private String statusOff;
+	private boolean statusOk;
+	private boolean statusNotOk;
 	private String sortBy;
 
 	public DonationHistoryFilter() {
-		userKeyword = "";
-		campaignKeyword = "";
-		transactionKeyword = "";
-		statusOn = "true";
-		statusOff = "true";
+		statusOk = true;
+		statusNotOk = true;
 		sortBy = "date-desc";
-	}
-
-	public void setFilter(String statusOn, String statusOff, String sortBy) {
-		this.setFilter(null, null, null, statusOn, statusOff, sortBy);
-	}
-
-	public void setFilter(String userKeyword, String campaignKeyword, String transactionKeyword, String statusOn,
-			String statusOff, String sortBy) {
-		this.userKeyword = userKeyword;
-		this.campaignKeyword = campaignKeyword;
-		this.transactionKeyword = transactionKeyword;
-		this.statusOn = statusOn;
-		this.statusOff = statusOff;
-		this.sortBy = sortBy;
 	}
 
 	public String getUserKeyword() {
 		return userKeyword;
 	}
 
+	public void setUserKeyword(String userKeyword) {
+		this.userKeyword = userKeyword;
+	}
+
 	public String getCampaignKeyword() {
 		return campaignKeyword;
+	}
+
+	public void setCampaignKeyword(String campaignKeyword) {
+		this.campaignKeyword = campaignKeyword;
 	}
 
 	public String getTransactionKeyword() {
 		return transactionKeyword;
 	}
 
-	public String getStatusOn() {
-		return statusOn;
+	public void setTransactionKeyword(String transactionKeyword) {
+		this.transactionKeyword = transactionKeyword;
 	}
 
-	public String getStatusOff() {
-		return statusOff;
+	public boolean getStatusOk() {
+		return statusOk;
+	}
+
+	public void setStatusOk(boolean statusOk) {
+		this.statusOk = statusOk;
+	}
+
+	public boolean getStatusNotOk() {
+		return statusNotOk;
+	}
+
+	public void setStatusNotOk(boolean statusNotOk) {
+		this.statusNotOk = statusNotOk;
 	}
 
 	public String getSortBy() {
 		return sortBy;
+	}
+
+	public void setSortBy(String sortBy) {
+		this.sortBy = sortBy;
 	}
 
 	public String getUserKeywordFilter() {
@@ -70,7 +77,7 @@ public class DonationHistoryFilter {
 	}
 
 	public String getStatusFilter() {
-		return FilterMapping.convertStatus(statusOn, statusOff);
+		return FilterMapping.convertStatus(statusOk, statusNotOk);
 	}
 
 	public String getSortByFilter() {

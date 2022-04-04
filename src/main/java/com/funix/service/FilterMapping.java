@@ -7,14 +7,14 @@ public class FilterMapping {
 							"%" + keyword + "%";
 	}
 	
-	public static String convertStatus(String statusOn, String statusOff) {
+	public static String convertStatus(boolean statusOn, boolean statusOff) {
 		String status = "";
 
-		if (statusOn != null && statusOff != null) {
+		if (statusOn == true && statusOff == true) {
 			status = "%%";
-		} else if (statusOn != null && statusOff == null) {
+		} else if (statusOn == true && statusOff == false) {
 			status = "%1%";
-		} else if (statusOn == null && statusOff != null) {
+		} else if (statusOn == false && statusOff == true) {
 			status = "%0%";
 		}
 

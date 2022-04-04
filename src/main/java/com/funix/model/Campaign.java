@@ -23,20 +23,31 @@ public class Campaign {
 	private MultipartFile file;
 	private int validateErrorCount;
 
+	/**
+	 * Default constructor
+	 */
 	public Campaign() {
 		startDate = LocalDate.now();
 		endDate = startDate.plusMonths(3);
 		campaignStatus = true;
 	}
 	
-	public Campaign(String title, String description, 
-			double targetAmount, String location, String imgURL,
-			LocalDate startDate, LocalDate endDate, boolean campaignStatus) {
-		this(0, title, description, targetAmount, 
-				location, imgURL, startDate, endDate, 
-				campaignStatus, null, 0, 0, null);
-	}
-
+	/**
+	 * Constructor used in CampaignRowMapper class
+	 * @param campaignID
+	 * @param title
+	 * @param description
+	 * @param targetAmount
+	 * @param location
+	 * @param imgURL
+	 * @param startDate
+	 * @param endDate
+	 * @param campaignStatus
+	 * @param dateCreated
+	 * @param totalDonations
+	 * @param totalSupporters
+	 * @param latestDonationDate
+	 */
 	public Campaign(int campaignID, String title, String description, 
 			double targetAmount, String location, String imgURL, 
 			LocalDate startDate, LocalDate endDate, boolean campaignStatus, 
@@ -231,45 +242,6 @@ public class Campaign {
 
 	public void setFile(MultipartFile file) {
 		this.file = file;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(campaignID, campaignStatus, dateCreated, 
-				description, endDate, imgURL, location, startDate,
-				targetAmount, title);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Campaign other = (Campaign) obj;
-		return campaignID == other.campaignID && 
-				campaignStatus == other.campaignStatus && 
-				Objects.equals(dateCreated, other.dateCreated) && 
-				Objects.equals(description, other.description) && 
-				Objects.equals(endDate, other.endDate) && 
-				Objects.equals(imgURL, other.imgURL) && 
-				Objects.equals(location, other.location) && 
-				Objects.equals(startDate, other.startDate) && 
-				Double.doubleToLongBits(targetAmount) == 
-						Double.doubleToLongBits(other.targetAmount) && 
-				Objects.equals(title, other.title);
-	}
-
-	@Override
-	public String toString() {
-		return "Campaign [campaignID=" + campaignID + ", title=" 
-				+ title + ", description=" + description
-				+ ", targetAmount=" + targetAmount + ", location=" 
-				+ location + ", imgURL=" + imgURL + ", startDate="
-				+ startDate + ", endDate=" + endDate + ", campaignStatus=" 
-				+ campaignStatus + ", dateCreated=" + dateCreated + "]";
 	}
 	
 }

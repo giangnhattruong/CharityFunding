@@ -5,7 +5,7 @@
 
 <!-- Calculate page values for pagination -->
 <fmt:formatNumber var="totalItems" 
-	value="${campaignList.size()}" type="number" pattern="#" />
+	value="${userList.size()}" type="number" pattern="#" />
 <fmt:formatNumber var="pageSize" 
 	value="${6}" type="number" pattern="#" />
 
@@ -43,14 +43,14 @@
 <a class="btn btn-success me-3 mb-3"
 	href="<c:url value="/admin/campaigns/new" />">
 	<i class="bi bi-plus-circle"></i>
-	Add new campaign</a>
+	Add new user</a>
 <button id="deleteBtn" class="btn btn-danger mb-3 d-none">
 	<i class="bi bi-trash"></i>
-	Remove selected campaign(s)</button>
+	Remove selected user(s)</button>
 </div>
 
 <c:choose>
-<c:when test="${campaignList.size() == 0}">
+<c:when test="${userList.size() == 0}">
 <h3>No record found.</h3>
 </c:when>
 <c:otherwise>
@@ -76,7 +76,7 @@
     </thead>
 	<tbody>
 	
-	<c:forEach varStatus="loopStatus" var="campaign" items="${campaignList}">
+	<c:forEach varStatus="loopStatus" var="campaign" items="${userList}">
 	<c:if test="${loopStatus.index >= startIndex &&
 					loopStatus.index <= endIndex}">
 	  <tr>

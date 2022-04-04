@@ -52,7 +52,6 @@ public class CampaignDAOImpl implements ICampaignDAO {
 				+ "WHERE campaignID = ?";
 		Campaign campaign = jdbcTemplate.queryForObject(SQL, 
 				new CampaignRowMapper(), campaignID);
-		
 		return campaign;
 	}
 	
@@ -71,7 +70,6 @@ public class CampaignDAOImpl implements ICampaignDAO {
 				+ "	LOWER(location) LIKE ? AND "
 				+ "	campaignStatus LIKE ? "
 				+ campaignFilter.getOrderByFilter();
-		
 		updateAllCampaignStatus();
 		List<Campaign> campaignList = jdbcTemplate.query(SQL, 
 				new CampaignRowMapper(), 
@@ -79,7 +77,6 @@ public class CampaignDAOImpl implements ICampaignDAO {
 				campaignFilter.getKeywordFilter(), 
 				campaignFilter.getLocationFilter(),
 				campaignFilter.getStatusFilter());
-		
 		return campaignList;
 	}
 
@@ -89,22 +86,20 @@ public class CampaignDAOImpl implements ICampaignDAO {
 				+ "SET title = ?, description = ?, targetAmount = ?, location = ?, "
 				+ "	imgURL = ?, startDate = ?, endDate = ?, campaignStatus = ? "
 				+ "WHERE campaignID = ?";
-		String message = "";
 		MultipartFile newFile = newCampaign.getFile();
-		
-		if (newFile.getSize() != 0) {
-			imageAPI.deleteImage(newCampaign.getImgURL());
-			newCampaign.setImgURL(imageAPI.uploadImage(newFile));
-		}
-		
-		message = newCampaign.validate();
+		String message = newCampaign.validate();
 		
 		if (message.equals("success")) {
+			if (newFile.getSize() != 0) {
+				imageAPI.deleteImage(newCampaign.getImgURL());
+				newCampaign.setImgURL(imageAPI.uploadImage(newFile));
+			}
+			
 			jdbcTemplate.update(SQL, newCampaign.getTitle(),
 					newCampaign.getDescription(), newCampaign.getTargetAmount(),
 					newCampaign.getLocation(), newCampaign.getImgURL(),
 					newCampaign.getStartDate(), newCampaign.getEndDate(),
-					newCampaign.getCampaignStatus(), newCampaign.getCampaignID());
+					newCampaign.getCampaignStatus(), campaignID);
 		}
 		
 		return message;
@@ -132,7 +127,6 @@ public class CampaignDAOImpl implements ICampaignDAO {
 		String SQL = "SELECT imgURL "
 				+ "FROM campaignTbl "
 				+ "WHERE campaignID IN " + campaignIDs;
-		
 		return jdbcTemplate.queryForList(SQL, String.class);
 	}
 

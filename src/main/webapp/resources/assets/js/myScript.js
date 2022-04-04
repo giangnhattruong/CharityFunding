@@ -20,14 +20,8 @@ $("#deleteForm input:checkbox").on("change", function() {
 	}
 })
 
-$("#reset-campaign-search").on("click", function() {
-	$("#search-campaigns input").each(function() {
-		$(this).val("");
-	})
-	$("[name=open]").prop("checked", true);
-	$("[name=closed]").prop("checked", true);
-	$("[name=sort]").val("date-desc");
-	$("#search-campaigns").submit();
+$("#resetSearchButton").on("click", function() {
+	location.reload();
 })
 
 $("#submitButton").on("click", function() {
@@ -35,22 +29,8 @@ $("#submitButton").on("click", function() {
 	$(this).addClass("disabled");
 })
 
-/*$(".needs-validation").on("submit", function(e) {
-	e.preventDefault();
-	let isAllValidated = true;
-	
-	$(".needs-validation input, .needs-validation textarea")
-		.not("input[type=checkbox]")
-		.each(function() {
-	    if (!$(this).val()) {
-			isAllValidated = false;
-	        $(this).next().removeClass("d-none");
-	    } else {
-			$(this).next().addClass("d-none");
-		}
+$("#resetFormButton").on("click", function(e) {
+	$(".resetForm input").each(function() {
+		$(this).val("");
 	})
-	    
-    if (isAllValidated) {
-		$(".needs-validation").submit();
-	}
-})*/
+})

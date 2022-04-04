@@ -8,6 +8,29 @@ import java.io.IOException;
 public class Test {
 
 	public static void main(String[] args) {
+		testEmail("abc@test.com");
+		testPassword("sdB123#asf");
+		testPhone("0978523650");
+	}
+	
+	public static boolean testEmail(String email) {
+		String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+		System.out.println("Email: " + email.matches(emailRegex));
+		return email.matches(emailRegex);
+	}
+	
+	public static boolean testPassword(String password) {
+		String passwordRegex = 
+				"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)"
+				+ "(?=.*[@#$!%*?&])[A-Za-z\\d@#$!%*?&]{8,10}$";
+		System.out.println("Password: " + password.matches(passwordRegex));
+		return password.matches(passwordRegex);
+	}
+	
+	public static boolean testPhone(String phone) {
+		String phoneRegex = "^\\d{10}$";
+		System.out.println("Phone: " + phone.matches(phoneRegex));
+		return phone.matches(phoneRegex);
 	}
 
 	public static void testIO() {

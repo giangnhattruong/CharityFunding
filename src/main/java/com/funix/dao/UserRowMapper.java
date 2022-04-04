@@ -19,7 +19,7 @@ public class UserRowMapper implements RowMapper<User> {
 		String fullname = resultSet.getString("fullname");
 		String address = resultSet.getString("address");
 		String phone = resultSet.getString("phone");
-		int role = resultSet.getInt("role");
+		int userRole = resultSet.getInt("userRole");
 		int status = resultSet.getInt("userStatus");
 		boolean userStatus = status == 1 ? true : false;
 		LocalDate dateCreated = NullConvert
@@ -30,7 +30,7 @@ public class UserRowMapper implements RowMapper<User> {
 				.toLocalDate(resultSet.getDate("latestDonationDate"));
 		
 		return new User(userID, email, password, fullname, 
-				address, phone, role, userStatus, dateCreated, 
+				address, phone, userRole, userStatus, dateCreated, 
 				totalDonations, donationTimes, latestDonationDate);
 	}
 

@@ -4,50 +4,54 @@ import com.funix.service.FilterMapping;
 
 public class UserFilter {
 	private String keyword;
-	private String statusOn;
-	private String statusOff;
+	private boolean statusActive;
+	private boolean statusInactive;
 	private String sortBy;
 
 	public UserFilter() {
-		keyword = "";
-		statusOn = "true";
-		statusOff = "true";
+		statusActive = true;
+		statusInactive = true;
 		sortBy = "date-desc";
-	}
-
-	public void setFilter(String statusOn, String statusOff, String sortBy) {
-		this.setFilter(null, statusOn, statusOff, sortBy);
-	}
-
-	public void setFilter(String keyword, String statusOn, String statusOff, String sortBy) {
-		this.keyword = keyword;
-		this.statusOn = statusOn;
-		this.statusOff = statusOff;
-		this.sortBy = sortBy;
 	}
 
 	public String getKeyword() {
 		return keyword;
 	}
 
-	public String getStatusOn() {
-		return statusOn;
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 
-	public String getStatusOff() {
-		return statusOff;
+	public boolean getStatusActive() {
+		return statusActive;
+	}
+
+	public void setStatusActive(boolean statusActive) {
+		this.statusActive = statusActive;
+	}
+
+	public boolean getStatusInactive() {
+		return statusInactive;
+	}
+
+	public void setStatusInactive(boolean statusInactive) {
+		this.statusInactive = statusInactive;
 	}
 
 	public String getSortBy() {
 		return sortBy;
 	}
 
+	public void setSortBy(String sortBy) {
+		this.sortBy = sortBy;
+	}
+
 	public String getKeywordFilter() {
 		return FilterMapping.convertKeyword(keyword);
 	}
 
-	public String getStatusOnFilter() {
-		return FilterMapping.convertStatus(statusOn, statusOff);
+	public String getStatusFilter() {
+		return FilterMapping.convertStatus(statusActive, statusInactive);
 	}
 
 	public String getSortByFilter() {

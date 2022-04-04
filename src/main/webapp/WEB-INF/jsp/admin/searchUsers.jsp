@@ -1,53 +1,58 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <div id="search" class="container p-5 mb-5 border-bottom border-success">
-<form id="search-campaigns" method="post" 
-	action="<c:url value="/admin/users" />" >
+<form:form id="search-campaigns" method="POST" 
+	modelAttribute="filter"
+	action="users" >
 <div class="row">
 <div class="col-12 col-md mb-3">
-<input class="form-control me-3" type="text" name="keyword"
+<form:input cssClass="form-control me-3" type="text" path="keyword"
 	placeholder="Search  for user email or fullname..." 
-	aria-label="search for user email or fullname"
-	value="${keyword}">
+	aria-label="search for user email or fullname"/>
 </div>
 </div>
 
 <div class="d-flex flex-wrap">
 <div class="form-check me-3 mb-3">
-<input class="form-check-input" type="checkbox" name="active"
-	value="true" id="flexCheckDefault" ${active == "true"? "checked": ""}>
-<label class="form-check-label" for="flexCheckDefault">Active</label>
+<form:checkbox cssClass="form-check-input" path="statusActive"
+	id="statusActive"/>
+<form:label cssClass="form-check-label" path="statusActive">
+	Active</form:label>
 </div>
 <div class="form-check me-3 mb-3">
-<input class="form-check-input" type="checkbox" name="inactive"
-	value="true" id="flexCheckChecked" ${inactive == "true"? "checked": ""}>
-<label class="form-check-label" for="flexCheckChecked">Inactive</label>
+<form:checkbox class="form-check-input" path="statusInactive"
+	id="statusInactive"/>
+<form:label cssClass="form-check-label" path="statusInactive">
+	Inactive</form:label>
 </div>
-<select class="form-select form-select-sm ms-auto" name="sort"
+<form:select class="form-select form-select-sm ms-auto" path="sortBy"
 	style="width: 300px">
-  <option ${sort == "date-desc"? "selected": ""} 
-  	value="date-desc">Sort by descending date joined(default)</option>
-  <option ${sort == "email-desc"? "selected": ""} 
-  	value="email-desc">Sort by descending email</option>
-  <option ${sort == "total-donations-desc"? "selected": ""} 
-  	value="total-donations-desc">Sort by descending total donations</option>
-  <option ${sort == "donation-date-desc"? "selected": ""} 
-	value="donation-date-desc">Sort by descending donation date</option>
-  <option ${sort == "date-asc"? "selected": ""} 
-	value="date-asc">Sort by ascending date joined</option>
-  <option ${sort == "email-asc"? "selected": ""} 
-	value="email-asc">Sort by ascending email</option>
-  <option ${sort == "total-donations-asc"? "selected": ""} 
-	value="total-donations-asc">Sort by ascending total donations</option>
-  <option ${sort == "donation-date-asc"? "selected": ""} 
-	value="donation-date-asc">Sort by ascending donation date</option>
-</select>
+  <form:option value="date-desc">
+  	Sort by descending date joined(default)</form:option>
+  <form:option value="email-desc">
+  	Sort by descending email</form:option>
+  <form:option value="total-donations-desc">
+  	Sort by descending total donations</form:option>
+  <form:option value="donation-date-desc">
+  	Sort by descending donation date</form:option>
+  <form:option value="date-asc">
+  	Sort by ascending date joined</form:option>
+  <form:option value="email-asc">
+  	Sort by ascending email</form:option>
+  <form:option value="total-donations-asc">
+	Sort by ascending total donations</form:option>
+  <form:option value="donation-date-asc">
+  	Sort by ascending donation date</form:option>
+</form:select>
 </div>
 
 <div class="d-flex justify-content-center mt-3">
-<button class="btn btn-success px-5">Search</button>
+<input type="submit" class="btn btn-success me-3 px-5" 
+	value="Search">
+<span id="resetSearchButton" class="btn btn-secondary me-3 px-5">Reset</span>
 </div>
-</form>
+</form:form>
 </div>

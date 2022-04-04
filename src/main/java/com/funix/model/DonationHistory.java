@@ -15,15 +15,26 @@ public class DonationHistory {
 	private String transactionCode;
 	private boolean donationStatus;
 
+	/**
+	 * Default constructor
+	 */
 	public DonationHistory() {
 	}
 	
-	public DonationHistory(int userID,  int campaignID, double donation, 
-			String transactionCode, boolean donationStatus) {
-		this(0, userID, null, null, campaignID, 
-				null, null, 0, null, transactionCode, donationStatus);
-	}
-
+	/**
+	 * Constructor used in DonationHistoryRowMapper
+	 * @param donationHistoryID
+	 * @param userID
+	 * @param email
+	 * @param fullname
+	 * @param campaignID
+	 * @param title
+	 * @param location
+	 * @param donation
+	 * @param donationDate
+	 * @param transactionCode
+	 * @param donationStatus
+	 */
 	public DonationHistory(int donationHistoryID, int userID, 
 			String email, String fullname, int campaignID,
 			String title, String location, double donation, 
@@ -40,6 +51,19 @@ public class DonationHistory {
 		this.donationDate = donationDate;
 		this.transactionCode = transactionCode;
 		this.donationStatus = donationStatus;
+	}
+	
+	public String validate() {
+		String message = "";
+		
+		if (donation < 5 || donation > 1000) {
+			message = "Donation amount must be greater than $5 and "
+					+ "below $1000.";
+		} else {
+			message = "success";
+		}
+		
+		return message;
 	}
 
 	public int getDonationHistoryID() {

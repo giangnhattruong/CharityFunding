@@ -9,25 +9,38 @@ public class User {
 	private String fullname;
 	private String address;
 	private String phone;
-	private int role;
+	private int userRole;
 	private boolean userStatus;
 	private LocalDate dateCreated;
 	private double totalDonations;
 	private int donationTimes;
 	private LocalDate latestDonationDate;
+	private int validateErrorCount;
 
+	/**
+	 * Default constructor
+	 */
 	public User() {
 	}
 	
-	public User(String email, String password, String fullname, 
-			String address, String phone, int role, boolean userStatus) {
-		this(0, email, password, fullname, address, 
-				phone, role, userStatus, null, 0, 0, null);
-	}
-
+	/**
+	 * Constructor used in UserRowMapper class
+	 * @param userID
+	 * @param email
+	 * @param password
+	 * @param fullname
+	 * @param address
+	 * @param phone
+	 * @param userRole
+	 * @param userStatus
+	 * @param dateCreated
+	 * @param totalDonations
+	 * @param donationTimes
+	 * @param latestDonationDate
+	 */
 	public User(int userID, String email, String password, 
 			String fullname, String address, String phone, 
-			int role, boolean userStatus, LocalDate dateCreated, 
+			int userRole, boolean userStatus, LocalDate dateCreated, 
 			double totalDonations, int donationTimes, 
 			LocalDate latestDonationDate) {
 		this.userID = userID;
@@ -36,12 +49,63 @@ public class User {
 		this.fullname = fullname;
 		this.address = address;
 		this.phone = phone;
-		this.role = role;
+		this.userRole = userRole;
 		this.userStatus = userStatus;
 		this.dateCreated = dateCreated;
 		this.totalDonations = totalDonations;
 		this.donationTimes = donationTimes;
 		this.latestDonationDate = latestDonationDate;
+	}
+	
+	public String validate() {
+		StringBuilder messages = new StringBuilder();
+		messages.append("Please fulfill all requirements below and re-submit:");
+		messages.append("</br>");
+		validateErrorCount = 0;
+		String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+		String passwordRegex = 
+				"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)"
+				+ "(?=.*[@#$!%*?&])[A-Za-z\\d@#$!%*?&]{6,12}$";
+		String phoneRegex = "^\\d{10}$";
+		
+		if (email == null || !email.matches(emailRegex)) {
+			messages.append(++validateErrorCount + ". ");
+			messages.append("There must be a valid email address.");
+			messages.append("</br>");
+		}
+		
+		if (password == null || !password.matches(passwordRegex)) {
+			messages.append(++validateErrorCount + ". ");
+			messages.append("Password must be 6-12 characters and contains "
+					+ "a minimum of one uppercase letter (A-Z), "
+					+ "a minimum of one lowercase letter (a-z), "
+					+ "a minimum of one special character (@#$!%*?&) and "
+					+ "a minimum of one digit (0-9).");
+			messages.append("</br>");
+		}
+		
+		if (fullname == null || fullname.length() < 3 ||
+				fullname.length() > 60) {
+			messages.append(++validateErrorCount + ". ");
+			messages.append("Fullname must be 3-60 characters.");
+			messages.append("</br>");
+		}
+		
+		if ((address != null || !address.equals("")) && 
+				(address.length() < 3 || address.length() > 60)) {
+			messages.append(++validateErrorCount + ". ");
+			messages.append("Address must be 3-60 characters.");
+			messages.append("</br>");
+		}
+		
+		if ((phone != null || !phone.equals("")) && 
+				!phone.matches(phoneRegex)) {
+			messages.append(++validateErrorCount + ". ");
+			messages.append("Phone must be a 10 digits number.");
+			messages.append("</br>");
+		}
+		
+		return validateErrorCount == 0 ? "success" : messages.toString();
 	}
 
 	public int getUserID() {
@@ -92,12 +156,12 @@ public class User {
 		this.phone = phone;
 	}
 
-	public int getRole() {
-		return role;
+	public int getUserRole() {
+		return userRole;
 	}
 
-	public void setRole(int role) {
-		this.role = role;
+	public void setUserRole(int userRole) {
+		this.userRole = userRole;
 	}
 
 	public boolean getUserStatus() {
@@ -139,5 +203,5 @@ public class User {
 	public void setLatestDonationDate(LocalDate latestDonationDate) {
 		this.latestDonationDate = latestDonationDate;
 	}
-
+	
 }

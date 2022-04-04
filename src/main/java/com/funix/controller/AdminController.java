@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,8 +22,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cloudinary.Cloudinary;
 import com.funix.dao.CampaignDAOImpl;
 import com.funix.dao.ICampaignDAO;
+import com.funix.dao.IUserDAO;
+import com.funix.dao.UserDAOImpl;
 import com.funix.model.Campaign;
 import com.funix.model.CampaignFilter;
+import com.funix.model.DonationHistory;
+import com.funix.model.DonationHistoryFilter;
+import com.funix.model.User;
+import com.funix.model.UserFilter;
 import com.funix.multipart.CloudinaryImpl;
 import com.funix.multipart.IImageAPI;
 import com.funix.service.Navigation;
@@ -41,131 +48,76 @@ public class AdminController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String getAdminDashboard() {
 		// if session does not contain adminID, redirect to explore
-
 		return "redirect:/admin/donation-history";
 	}
 
 	@RequestMapping(value = "donation-history", method = RequestMethod.GET)
-	public ModelAndView getDonationHistory() {
+	public ModelAndView getDonationHistory(
+			@ModelAttribute("filter") DonationHistoryFilter filter) {
 		ModelAndView mv = new ModelAndView();
-
-		// Get and send donationHistory
+		//.....................
 		Navigation.addAdminNavItemMap(mv);
-		mv.addObject("received", "true");
-		mv.addObject("notReceived", "true");
+		mv.addObject("filter", filter);
 		mv.setViewName(getRoute("admin/donationHistory"));
-
 		return mv;
 	}
 
 	@RequestMapping(value = "donation-history", method = RequestMethod.POST)
-	public ModelAndView searchDonationHistory(HttpServletRequest request) {
+	public ModelAndView searchDonationHistory(
+			@ModelAttribute("filter") DonationHistoryFilter filter, 
+		    BindingResult result,
+		    RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView();
-
-		String userKeyword = request.getParameter("userKeyword");
-		String campaignKeyword = request.getParameter("campaignKeyword");
-		String transactionKeyword = request.getParameter("transactionKeyword");
-		String received = request.getParameter("received");
-		String notReceived = request.getParameter("notReceived");
-		String sort = request.getParameter("sort");
-
-		// Get and send donationHistory
-		Navigation.addAdminNavItemMap(mv);
-		mv.addObject("userKeyword", userKeyword);
-		mv.addObject("campaignKeyword", campaignKeyword);
-		mv.addObject("transactionKeyword", transactionKeyword);
-		mv.addObject("received", received);
-		mv.addObject("notReceived", notReceived);
-		mv.addObject("sort", sort);
-		mv.setViewName(getRoute("admin/donationHistory"));
-
+		redirectAttributes.addFlashAttribute("filter", filter);
+		mv.setViewName(getRoute("redirect:/admin/donation-history"));
 		return mv;
 	}
 
 	@RequestMapping(value = "campaigns", method = RequestMethod.GET)
 	public ModelAndView manageCampaigns(
 			@ModelAttribute("message") String message,
-			@ModelAttribute("filter") CampaignFilter filter
-			) {
+			@ModelAttribute("filter") CampaignFilter filter) {
 		ModelAndView mv = new ModelAndView();
 		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
 		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource, imageAPI);
-		List<Campaign> campaignList = campaignDAO.getManyCampaigns(filter);
+		List<Campaign> campaignList = campaignDAO
+				.getManyCampaigns(filter);
 		
 		Navigation.addAdminNavItemMap(mv);
 		mv.addObject("message", message);
 		mv.addObject("filter", filter);
 		mv.addObject("campaignList", campaignList);
 		mv.setViewName(getRoute("admin/campaigns"));
-		
 		return mv;
 	}
 
 	@RequestMapping(value = "campaigns", method = RequestMethod.POST)
-	public ModelAndView searchCampaigns(HttpServletRequest request,
+	public ModelAndView searchCampaigns(
+			@ModelAttribute("filter") CampaignFilter filter,
+			BindingResult result,
 			RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView();
-		CampaignFilter filter = new CampaignFilter();
-		String keyword = request.getParameter("keyword");
-		String location = request.getParameter("location");
-		String open = request.getParameter("open");
-		String closed = request.getParameter("closed");
-		String sort = request.getParameter("sort");
-		filter.setFilter(keyword, location, open, closed, sort);
-
 		redirectAttributes.addFlashAttribute("filter", filter);
 		mv.setViewName("redirect:/admin/campaigns");
-
 		return mv;
 	}
 
-	@RequestMapping(value = { "campaigns/new", "campaigns/update" }, 
-			method = RequestMethod.GET)
-	public ModelAndView getCampaignForm(
+	@RequestMapping(value = "campaigns/new", method = RequestMethod.GET)
+	public ModelAndView getCampaignCreateForm(
 			@ModelAttribute("message") String message, 
-			@ModelAttribute("campaign") Campaign campaign, 
-			HttpServletRequest request) {
+			@ModelAttribute("campaign") Campaign campaign) {
 		ModelAndView mv = new ModelAndView();
-		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
-		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource, imageAPI);
-		String currentURI = request.getRequestURI();
-		String formTitle = "";
-		String formAction = "";
-
-		if (currentURI.endsWith("new")) {
-			formTitle = "Create";
-			formAction = "/admin/campaigns/new";
-		} else if (currentURI.endsWith("update")) {
-			formTitle = "Update";
-			formAction = "/admin/campaigns/update";
-			String id = request.getParameter("id");
-			int campaignID = NullConvert.toInt(id);
-			
-			if (campaignID != 0) {
-				campaign = campaignDAO.getCampaign(campaignID);
-			}
-			
-			String imgURL = campaign.getImgURL();
-			
-			if (imgURL != null) {
-				String imgHTML = imageAPI
-						.transformImage(imgURL, 80, 60);
-				mv.addObject("imgHTML", imgHTML);
-			}
-		}
-		
 		Navigation.addAdminNavItemMap(mv);
-		mv.addObject("formTitle", formTitle);
-		mv.addObject("formAction", formAction);
+		mv.addObject("formTitle", "Create");
+		mv.addObject("formAction", "/admin/campaigns/new");
 		mv.addObject("campaign", campaign);
 		mv.setViewName(getRoute("admin/createOrUpdateCampaign"));
-
 		return mv;
 	}
 
 	@RequestMapping(value = "campaigns/new", method = RequestMethod.POST)
 	public ModelAndView createCampaign(
-			@ModelAttribute("campaign")Campaign campaign, 
+			@ModelAttribute("campaign") Campaign campaign, 
 		    BindingResult result,
 		    HttpServletRequest request,
 		    RedirectAttributes redirectAttributes)  {
@@ -197,10 +149,47 @@ public class AdminController {
 		
 		return mv;
 	}
+	
+	@RequestMapping(value = "campaigns/update/{pathID}", 
+			method = RequestMethod.GET)
+	public ModelAndView getCampaignUpdateForm(
+			@PathVariable int pathID, 
+			@ModelAttribute("message") String message, 
+			@ModelAttribute("campaign") Campaign campaign, 
+			HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView();
+		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
+		ICampaignDAO campaignDAO = 
+				new CampaignDAOImpl(dataSource, imageAPI);
+		int campaignID = pathID;
+			
+		if (campaign.getCampaignID() == 0) {
+			campaign = campaignDAO.getCampaign(campaignID);
+		}
+		
+		String imgURL = campaign.getImgURL();
+		
+		if (imgURL != null) {
+			String imgHTML = imageAPI
+					.transformImage(imgURL, 80, 60);
+			mv.addObject("imgHTML", imgHTML);
+		}
+		
+		Navigation.addAdminNavItemMap(mv);
+		mv.addObject("formTitle", "Update");
+		mv.addObject("formAction", 
+				"/admin/campaigns/update/" + campaignID);
+		mv.addObject("campaign", campaign);
+		mv.setViewName(getRoute("admin/createOrUpdateCampaign"));
+		
+		return mv;
+	}
 
-	@RequestMapping(value = "campaigns/update", method = RequestMethod.POST)
+	@RequestMapping(value = "campaigns/update/{campaignID}", 
+			method = RequestMethod.POST)
 	public ModelAndView updateCampaign(
-			@ModelAttribute("campaign")Campaign campaign, 
+			@PathVariable int campaignID, 
+			@ModelAttribute("campaign") Campaign campaign, 
 		    BindingResult result,
 		    HttpServletRequest request,
 		    RedirectAttributes redirectAttributes) {
@@ -214,7 +203,7 @@ public class AdminController {
 		LocalDate endDate = NullConvert.toLocalDate(endDateString);
 		campaign.setStartDate(startDate);
 		campaign.setEndDate(endDate);
-		message = campaignDAO.update(campaign.getCampaignID(), campaign);
+		message = campaignDAO.update(campaignID, campaign);
 		
 		if (message.equals("success")) {
 			redirectAttributes
@@ -222,11 +211,12 @@ public class AdminController {
 						"Campaign has been successfully updated.");
 			mv.setViewName("redirect:/admin/campaigns");
 		} else {
+			campaign.setCampaignID(campaignID);
 			redirectAttributes
 				.addFlashAttribute("message", message);
 			redirectAttributes
 			.addFlashAttribute("campaign", campaign);
-			mv.setViewName("redirect:/admin/campaigns/update");
+			mv.setViewName("redirect:/admin/campaigns/update/" + campaignID);
 		}
 		
 		return mv;
@@ -258,35 +248,28 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "users", method = RequestMethod.GET)
-	public ModelAndView manageUsers() {
+	public ModelAndView manageUsers(
+			@ModelAttribute("message") String message,
+			@ModelAttribute("filter") UserFilter filter) {
 		ModelAndView mv = new ModelAndView();
-
-		// Get and send userList
+		IUserDAO userDao = new UserDAOImpl(dataSource);
+		List<User> userList = userDao.getManyUsers(filter);
 		Navigation.addAdminNavItemMap(mv);
-		mv.addObject("active", "true");
-		mv.addObject("inactive", "true");
+		mv.addObject("message", message);
+		mv.addObject("filter", filter);
+		mv.addObject("userList", userList);
 		mv.setViewName(getRoute("admin/users"));
-
 		return mv;
 	}
 
 	@RequestMapping(value = "users", method = RequestMethod.POST)
-	public ModelAndView searchUsers(HttpServletRequest request) {
+	public ModelAndView searchUsers(
+			@ModelAttribute("filter") UserFilter filter,
+			BindingResult result, 
+			RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView();
-
-		String keyword = request.getParameter("keyword");
-		String active = request.getParameter("active");
-		String inactive = request.getParameter("inactive");
-		String sort = request.getParameter("sort");
-
-		// Get and send userList
-		Navigation.addAdminNavItemMap(mv);
-		mv.addObject("keyword", keyword);
-		mv.addObject("active", active);
-		mv.addObject("inactive", inactive);
-		mv.addObject("sort", sort);
-		mv.setViewName(getRoute("admin/users"));
-
+		redirectAttributes.addFlashAttribute("filter", filter);
+		mv.setViewName("redirect:/admin/users");
 		return mv;
 	}
 
