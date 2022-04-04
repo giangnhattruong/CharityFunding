@@ -1,44 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<!-- Calculate page values for pagination -->
-<fmt:formatNumber var="totalItems" 
-	value="${userList.size()}" type="number" pattern="#" />
-<fmt:formatNumber var="pageSize" 
-	value="${6}" type="number" pattern="#" />
-
-<!-- Add 0.4999 for ceiling the result -->
-<fmt:formatNumber var="totalPages" 
-	value="${totalItems / pageSize + 0.4999}" 
-	type="number" pattern="#" />
-
-<!-- Get current page number -->
-<c:choose>
-<c:when test="${param.page == null || param.page <= 0}">
-<fmt:formatNumber var="pageNumber" 
-	value="1" type="number" pattern="#" />
-</c:when>
-<c:when test="${param.page >= totalPages}">
-<fmt:formatNumber var="pageNumber" 
-	value="${totalPages}" type="number" pattern="#" />
-</c:when>
-<c:otherwise>
-<fmt:formatNumber var="pageNumber" 
-	value="${param.page}" type="number" pattern="#" />
-</c:otherwise>
-</c:choose>
-
-<!-- Get index range of items -->
-<fmt:formatNumber var="startIndex" 
-	value="${(pageNumber - 1) * pageSize}" 
-	type="number" pattern="#" />
-<fmt:formatNumber var="endIndex" 
-	value="${pageNumber * pageSize - 1}" 
-	type="number" pattern="#" />
-
-<!-- Table content -->
 <div class="d-flex justify-content-start pt-3">
 <a class="btn btn-success me-3 mb-3"
 	href="<c:url value="/admin/campaigns/new" />">
@@ -63,45 +26,41 @@
         <th scope="col"></th>
         <th scope="col">Selected</th>
         <th scope="col">No</th>
-        <th scope="col">Title</th>
-        <th scope="col">Location</th>
-        <th scope="col">Start</th>
-        <th scope="col">End</th>
-        <th scope="col">Target(USD)</th>
+        <th scope="col">Email</th>
+        <th scope="col">Full-name</th>
+        <th scope="col">Address</th>
+        <th scope="col">Phone</th>
         <th scope="col">Donations(USD)</th>
-        <th scope="col">Supporters</th>
+        <th scope="col">Donation times</th>
         <th scope="col">Latest donation</th>
+        <th scope="col">Date joined</th>
+        <th scope="col">Role</th>
         <th scope="col">Status</th>
       </tr>
     </thead>
 	<tbody>
 	
-	<c:forEach varStatus="loopStatus" var="campaign" items="${userList}">
-	<c:if test="${loopStatus.index >= startIndex &&
-					loopStatus.index <= endIndex}">
-	  <tr>
-	    <td class="text-center">
-	    <a  class="btn btn-outline-primary"
-	    	href="<c:url value="/admin/campaigns/update/${campaign.campaignID}" />">
-	    	<i class="bi bi-pencil-square"></i>
-	    	Edit</a>
-	    </td>
+	<c:forEach varStatus="loopStatus" var="user" items="${userList}">
+	  <tr id="row-${loopStatus.index + 1}">
+	    <td class="text-center"><a class="btn btn-outline-primary"
+	    	href="<c:url value="/admin/users/update/${user.userID}" />">
+	    	<i class="bi bi-pencil-square"></i>Edit</a></td>
 	    <td class="text-center">
 	    <input class="form-check-input" type="checkbox" 
-	    	name="campaignIDs" value="${campaign.campaignID}">
+	    	name="userIDs" value="${user.userID}">
 	    </td>
 	    <td>${loopStatus.index + 1}</td>
-	    <td>${campaign.title}</td>
-	    <td>${campaign.location}</td>
-	    <td>${campaign.startDate}</td>
-	    <td>${campaign.endDate}</td>
-	    <td>${campaign.targetAmount}</td>
-	    <td>${campaign.totalDonations}</td>
-	    <td>${campaign.totalSupporters}</td>
-	    <td>${campaign.dateCreated}</td>
-	    <td>${campaign.campaignStatus == true ? "Open" : "Closed"}</td>
+	    <td>${user.email}</td>
+	    <td>${user.fullname}</td>
+	    <td>${user.address}</td>
+	    <td>${user.phone}</td>
+	    <td>${user.totalDonations}</td>
+	    <td>${user.donationTimes}</td>
+	    <td>${user.latestDonationDate}</td>
+	    <td>${user.dateCreated}</td>
+	    <td>${user.userRole == 1 ? "Admin" : "User"}</td>
+	    <td>${user.userStatus == true ? "Active" : "In-active"}</td>
 	  </tr>
-	</c:if>
 	</c:forEach>
 	</tbody>
 </table>
@@ -109,8 +68,11 @@
 </div>
 
 <c:import url="/WEB-INF/jsp/common/pagination.jsp">
-<c:param name="pageNumber">${pageNumber}</c:param>
-<c:param name="totalPages">${totalPages}</c:param>
+<c:param name="totalItems">${userList.size()}</c:param>
+<c:param name="pageSize">6</c:param>
 </c:import>
 </c:otherwise>
 </c:choose>
+
+<script defer src="<c:url value="/resources/assets/js/pagination.js"/>">
+</script>

@@ -24,6 +24,29 @@
 	new campaign.</p>
 </div>
 
+<nav aria-label="Table navigation" class="d-flex justify-content-center mt-3">
+<p id="totalItems" class="p-3">12</p>
+<p id="pageSize" class="p-3">6</p>
+<input id="currentPage" value="1">
+ <ul class="pagination">
+ 	<li class="page-item"><span id="pagePrevious"
+		class="page-link" aria-label="Previous" 
+	    aria-hidden="true">&laquo;</span></li>
+   <li class="page-item">
+   	<span class="page-link page-number">1</span>
+   	</li>
+   <li class="page-item">
+   	<span class="page-link page-number">2</span>
+   	</li>
+   <li class="page-item">
+   	<span class="page-link page-number">3</span>
+   	</li>
+   	<li class="page-item"><span id="pageNext"
+		class="page-link" aria-label="Next" 
+	    aria-hidden="true">&raquo;</span></li>
+ </ul>
+</nav>
+
 <div class="container">
 <form class="needs-validation" novalidate method="post"
 	action="<c:url value='${formAction}' />">

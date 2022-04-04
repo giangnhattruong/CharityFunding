@@ -25,3 +25,7 @@
 .notify-modal {
 	display: block;
 }
+
+.page-link {
+	cursor: pointer;
+}

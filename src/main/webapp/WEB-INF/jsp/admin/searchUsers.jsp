@@ -26,7 +26,7 @@
 <form:checkbox class="form-check-input" path="statusInactive"
 	id="statusInactive"/>
 <form:label cssClass="form-check-label" path="statusInactive">
-	Inactive</form:label>
+	In-active</form:label>
 </div>
 <form:select class="form-select form-select-sm ms-auto" path="sortBy"
 	style="width: 300px">
