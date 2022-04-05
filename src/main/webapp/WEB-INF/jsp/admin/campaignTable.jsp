@@ -56,7 +56,7 @@
 	    <td>${campaign.targetAmount}</td>
 	    <td>${campaign.totalDonations}</td>
 	    <td>${campaign.totalSupporters}</td>
-	    <td>${campaign.dateCreated}</td>
+	    <td>${campaign.latestDonationDate}</td>
 	    <td>${campaign.campaignStatus == true ? "Open" : "Closed"}</td>
 	  </tr>
 	</c:forEach>

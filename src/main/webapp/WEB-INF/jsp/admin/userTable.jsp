@@ -4,7 +4,7 @@
 
 <div class="d-flex justify-content-start pt-3">
 <a class="btn btn-success me-3 mb-3"
-	href="<c:url value="/admin/campaigns/new" />">
+	href="<c:url value="/admin/users/new" />">
 	<i class="bi bi-plus-circle"></i>
 	Add new user</a>
 <button id="deleteBtn" class="btn btn-danger mb-3 d-none">
@@ -19,7 +19,7 @@
 <c:otherwise>
 <div class="table-responsive">
 <form method="post" id="deleteForm"
-	action="<c:url value="/admin/campaigns/delete" />">
+	action="<c:url value="/admin/users/delete" />">
 <table style="width: 1500px" class="table table-fixed table-hover table-sm">
     <thead>
       <tr>

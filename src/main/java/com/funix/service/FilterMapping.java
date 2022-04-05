@@ -74,7 +74,7 @@ public class FilterMapping {
 			orderBy += "userID DESC";
 			break;
 		case "email-desc":
-			orderBy += "email, userID DESC";
+			orderBy += "email DESC, userID DESC";
 			break;
 		case "total-donations-desc":
 			orderBy += "totalDonations DESC, userID DESC";
@@ -83,10 +83,10 @@ public class FilterMapping {
 			orderBy += "latestDonationDate DESC, userID DESC";
 			break;
 		case "date-asc":
-			orderBy += "userID";
+			orderBy += "userID ASC";
 			break;
 		case "email-asc":
-			orderBy += "email DESC, userID DESC";
+			orderBy += "email ASC, userID DESC";
 			break;
 		case "total-donations-asc":
 			orderBy += "totalDonations ASC, userID DESC";

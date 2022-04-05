@@ -280,47 +280,118 @@ public class AdminController {
 		return mv;
 	}
 
-	@RequestMapping(value = { "users/new", "users/update" }, method = RequestMethod.GET)
-	public ModelAndView getUserForm(@RequestParam int id) {
+	@RequestMapping(value = "users/new", method = RequestMethod.GET)
+	public ModelAndView getUserCreateForm(
+			@ModelAttribute("message") String message, 
+			@ModelAttribute("user") User user) {
 		ModelAndView mv = new ModelAndView();
-
-		// if (url is update && id exists)
-		// -> get and send user object
 		Navigation.addAdminNavItemMap(mv);
+		mv.addObject("formTitle", "Create");
+		mv.addObject("formAction", "/admin/users/new");
+		mv.addObject("user", user);
 		mv.setViewName(getRoute("admin/createOrUpdateUser"));
-
 		return mv;
 	}
 
 	@RequestMapping(value = "users/new", method = RequestMethod.POST)
-	public ModelAndView createUser() {
+	public ModelAndView createUser(
+			@ModelAttribute("user") User user, 
+		    BindingResult result,
+		    HttpServletRequest request,
+		    RedirectAttributes redirectAttributes)  {
 		ModelAndView mv = new ModelAndView();
-
-		// Get and add user to DB
-		mv.addObject("message", "User has been successfully created.");
-		mv.setViewName("redirect:/admin/users");
-
+		IUserDAO userDAO = new UserDAOImpl(dataSource);
+		String message = user.validate();
+		
+		if (message.equals("success")) {
+			userDAO.create(user);
+			redirectAttributes
+				.addFlashAttribute("message", 
+						"User has been successfully created.");
+			mv.setViewName("redirect:/admin/users");
+		} else {
+			redirectAttributes
+				.addFlashAttribute("message", message);
+			redirectAttributes
+			.addFlashAttribute("user", user);
+			mv.setViewName("redirect:/admin/users/new");
+		}
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "users/update/{pathID}", 
+			method = RequestMethod.GET)
+	public ModelAndView getUserUpdateForm(
+			@PathVariable int pathID, 
+			@ModelAttribute("message") String message, 
+			@ModelAttribute("user") User user) {
+		ModelAndView mv = new ModelAndView();
+		IUserDAO userDAO = new UserDAOImpl(dataSource);
+		int userID = pathID;
+			
+		if (user.getUserID() == 0) {
+			user = userDAO.getUser(userID);
+		}
+		
+		Navigation.addAdminNavItemMap(mv);
+		mv.addObject("formTitle", "Update");
+		mv.addObject("formAction", 
+				"/admin/users/update/" + userID);
+		mv.addObject("user", user);
+		mv.setViewName(getRoute("admin/createOrUpdateUser"));
+		
 		return mv;
 	}
 
-	@RequestMapping(value = "users/update", method = RequestMethod.POST)
-	public ModelAndView updateUser() {
+	@RequestMapping(value = "users/update/{userID}", 
+			method = RequestMethod.POST)
+	public ModelAndView updateUser(
+			@PathVariable int userID, 
+			@ModelAttribute("user") User user, 
+		    BindingResult result,
+		    RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView();
+		IUserDAO userDAO = new UserDAOImpl(dataSource);
+		String message = user.validate();
 
-		// Get and update campaign in DB
-		mv.addObject("message", "User has been successfully updated.");
-		mv.setViewName("redirect:/admin/users");
-
+		if (message.equals("success")) {
+			userDAO.update(userID, user);
+			redirectAttributes
+				.addFlashAttribute("message", 
+						"User has been successfully updated.");
+			mv.setViewName("redirect:/admin/users");
+		} else {
+			user.setUserID(userID);
+			redirectAttributes
+				.addFlashAttribute("message", message);
+			redirectAttributes
+			.addFlashAttribute("user", user);
+			mv.setViewName("redirect:/admin/users/update/" + userID);
+		}
+		
 		return mv;
 	}
 
 	@RequestMapping(value = "users/delete", method = RequestMethod.POST)
-	public ModelAndView deleteUser(@RequestParam Map<String, String> requestParams) {
+	public ModelAndView deleteUser(
+			HttpServletRequest request,
+			RedirectAttributes redirectAttrs) {
 		ModelAndView mv = new ModelAndView();
-
-		// Get requestParams.values() -> campaignIDs
-		// Delete many campaign in a transaction in DB
-		mv.addObject("message", "Delete user(s) successful.");
+		IUserDAO userDAO = new UserDAOImpl(dataSource);
+		String message = "";
+		String[] userIDArray = request.getParameterValues("userIDs");
+		String userIDs = Arrays.toString(userIDArray)
+				.replace('[', '(').replace(']', ')');
+		
+		if (userIDArray != null) {
+			userDAO.delete(userIDs);
+			message = "Delete user(s) successful.";
+		} else {
+			message = "Delete failed. No items selected.";
+		}
+		
+		redirectAttrs.addFlashAttribute("message", message);
 		mv.setViewName("redirect:/admin/users");
 
 		return mv;
