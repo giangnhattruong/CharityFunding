@@ -285,6 +285,8 @@ public class AdminController {
 			@ModelAttribute("message") String message, 
 			@ModelAttribute("user") User user) {
 		ModelAndView mv = new ModelAndView();
+		user.setPassword("");
+		user.setConfirmPassword("");
 		Navigation.addAdminNavItemMap(mv);
 		mv.addObject("formTitle", "Create");
 		mv.addObject("formAction", "/admin/users/new");

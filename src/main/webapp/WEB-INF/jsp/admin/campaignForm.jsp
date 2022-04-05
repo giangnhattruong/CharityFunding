@@ -3,7 +3,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <c:url var="action" value="${formAction}" />
@@ -12,12 +11,12 @@
 
 <div class="py-5 text-center">
 <h2>${formTitle} campaign</h2>
-<p class="lead">Please fill all the informations below to 
+<p class="lead">Please fill all the required informations below to 
 	${fn:toLowerCase(formTitle)} a campaign.</p>
 </div>
 
 <div class="container">
-<p class="small text-danger offset-1">${message}</p>
+<p class="small text-danger offset-lg-1">${message}</p>
 <form:form id="submitForm"
 	cssClass="resetForm" 
 	method="POST" modelAttribute="campaign"
@@ -25,40 +24,41 @@
 
 <c:if test="${formTitle == 'Create'}">
 <input type="reset" value="&#8634; CLEAR"
-	class="btn btn-outline-secondary resetFormButton my-3 offset-1">
+	class="btn btn-outline-secondary resetFormButton my-3 offset-lg-1">
 </c:if>
 
 <div class="row g-md-5 mb-3">
-<div class="col-md-5 offset-md-1 col-lg-6">
+<div class="col-md col-lg-5 offset-lg-1">
 <div class="mb-3">
-<form:label path="title" cssClass="form-label">Title</form:label>
+<form:label path="title" cssClass="form-label lead">
+	Title</form:label>
 <span class="text-danger">*</span>
 <form:input type="text" cssClass="form-control" 
 	id="title" path="title"
 	placeholder="Enter campaign title (below 60 characters)"/>
 </div>
 
-<div class="row g-3 mb-3">
-<div class="col">
-<form:label path="location" cssClass="form-label">Location</form:label>
+<div class="mb-3">
+<form:label path="location" cssClass="form-label lead">
+	Location</form:label>
 <span class="text-danger">*</span>
-<form:input type="text" cssClass="form-control" id="location" path="location"
+<form:input type="text" cssClass="form-control" 
+	id="location" path="location"
 	placeholder="Enter campaign region"/>
-<div class="small text-danger d-none">
-Please enter campaign region.</div>
 </div>
 
-<div class="col">
-<form:label path="targetAmount" cssClass="form-label">Target amount</form:label>
+<div class="mb-3">
+<form:label path="targetAmount" cssClass="form-label lead">
+	Target amount</form:label>
 <span class="text-danger">*</span>
 <form:input type="number" step="0.01" cssClass="form-control" 
 	id="targetAmount" path="targetAmount"
 	placeholder="Enter campaign target amount"/>
 </div>
-</div>
 
 <div class="mb-3">
-<form:label path="description" cssClass="form-label">Description</form:label>
+<form:label path="description" cssClass="form-label lead">
+	Description</form:label>
 <span class="text-danger">*</span>
 <form:textarea style="height: 180px" cssClass="form-control"
 	aria-label="Campaign description"
@@ -67,21 +67,21 @@ Please enter campaign region.</div>
 </div>
 
 <hr class="my-4 d-md-none">
-
 </div>
 
-<div class="col-md-5 col-lg-4">
+<div class="col-md col-lg-5">
 <div class="mb-3">
-<form:label path="startDate" cssClass="form-label">Start date</form:label> 
+<form:label path="startDate" cssClass="form-label lead">
+	Start date</form:label> 
 <span class="text-danger">*</span>
 <form:input type="date" cssClass="form-select" 
 	id="startDate" path="startDate"
 	value="${startDate}"/>
 </div>
 
-
 <div class="mb-3">
-<form:label path="endDate" cssClass="form-label">End date</form:label>
+<form:label path="endDate" cssClass="form-label lead">
+	End date</form:label>
 <span class="text-danger">*</span>
 <form:input type="date" cssClass="form-select" 
 	id="endDate" path="endDate"

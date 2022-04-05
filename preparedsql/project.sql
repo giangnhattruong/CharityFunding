@@ -124,15 +124,6 @@ RETURNS TABLE AS RETURN
 )
 GO
 
-CREATE OR ALTER FUNCTION dbo.getUserDonationHistory(@userID int)
-RETURNS TABLE AS RETURN
-(
-    SELECT *
-	FROM dbo.getDonationHistory()
-	WHERE userID = @userID
-)
-GO
-
 CREATE OR ALTER PROCEDURE dbo.updateUserStatus
 	@userStatus int,
 	@userID int

@@ -29,3 +29,9 @@
 .page-link {
 	cursor: pointer;
 }
+
+@media (min-width: 768px) {
+	.border-start-md {
+		border-left: 1px solid #dee2e6;
+	}
+}

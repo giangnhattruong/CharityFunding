@@ -6,6 +6,7 @@ public class User {
 	private int userID;
 	private String email;
 	private String password;
+	private String confirmPassword;
 	private String fullname;
 	private String address;
 	private String phone;
@@ -46,6 +47,7 @@ public class User {
 		this.userID = userID;
 		this.email = email;
 		this.password = password;
+		this.confirmPassword = password;
 		this.fullname = fullname;
 		this.address = address;
 		this.phone = phone;
@@ -81,6 +83,12 @@ public class User {
 					+ "a minimum of one lowercase letter (a-z), "
 					+ "a minimum of one special character (@#$!%*?&) and "
 					+ "a minimum of one digit (0-9).");
+			messages.append("</br>");
+		}
+		
+		if (!password.equals(confirmPassword)) {
+			messages.append(++validateErrorCount + ". ");
+			messages.append("Password must be matched.");
 			messages.append("</br>");
 		}
 		
@@ -132,6 +140,14 @@ public class User {
 		this.password = password;
 	}
 
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+	
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+	
 	public String getFullname() {
 		return fullname;
 	}
