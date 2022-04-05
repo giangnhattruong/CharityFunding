@@ -5,6 +5,7 @@
 
 <div id="search" class="container p-5 mb-5 border-bottom border-success">
 <form:form id="search-campaigns" method="POST" 
+	cssClass="search-form"
 	modelAttribute="filter"
 	action="${param.action}" >
 <div class="row">
@@ -33,8 +34,8 @@
 <form:label cssClass="form-check-label" path="statusClosed">
 	Closed</form:label>
 </div>
-<form:select cssClass="form-select form-select-sm ms-auto" path="sortBy"
-	style="width: 300px">
+<form:select cssClass="form-select form-select-sm ms-auto sort-form" 
+	path="sortBy" style="width: 300px">
   <form:option value="date-desc">
 	Sort by descending date(default)</form:option>
   <form:option value="target-desc">

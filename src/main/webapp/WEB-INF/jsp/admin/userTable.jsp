@@ -24,7 +24,10 @@
     <thead>
       <tr>
         <th scope="col"></th>
-        <th scope="col">Selected</th>
+        <th scope="col">
+	        <input class="form-check-input" type="checkbox"
+				id="selectOrDeselectAll">
+				<span class="ms-1">Select all</span></th>
         <th scope="col">No</th>
         <th scope="col">Email</th>
         <th scope="col">Full-name</th>
@@ -46,7 +49,7 @@
 	    	href="<c:url value="/admin/users/update/${user.userID}" />">
 	    	<i class="bi bi-pencil-square"></i>Edit</a></td>
 	    <td class="text-center">
-	    <input class="form-check-input" type="checkbox" 
+	    <input class="form-check-input table-row" type="checkbox" 
 	    	name="userIDs" value="${user.userID}">
 	    </td>
 	    <td>${loopStatus.index + 1}</td>
@@ -74,5 +77,7 @@
 </c:otherwise>
 </c:choose>
 
+<script defer src="<c:url value="/resources/assets/js/checkTableRow.js"/>">
+</script>
 <script defer src="<c:url value="/resources/assets/js/pagination.js"/>">
 </script>

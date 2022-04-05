@@ -5,8 +5,6 @@ const showActive = function(currentPage) {
 		let pageNumber = Number.parseInt($(this).text());
 		
 		if (pageNumber === currentPage) {
-			console.log(pageNumber);
-			console.log(pageNumber == currentPage);
 			$(this).addClass("active");
 		}
 	})

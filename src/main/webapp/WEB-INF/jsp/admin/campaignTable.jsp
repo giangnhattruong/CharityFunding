@@ -20,11 +20,15 @@
 <div class="table-responsive">
 <form method="post" id="deleteForm"
 	action="<c:url value="/admin/campaigns/delete" />">
-<table style="width: 1500px" class="table table-fixed table-hover table-sm">
+<table style="width: 1500px" 
+		class="table table-fixed table-hover table-sm">
     <thead>
       <tr>
         <th scope="col"></th>
-        <th scope="col">Selected</th>
+        <th scope="col">
+	        <input class="form-check-input" type="checkbox"
+				id="selectOrDeselectAll">
+				<span class="ms-1">Select all</span></th>
         <th scope="col">No</th>
         <th scope="col">Title</th>
         <th scope="col">Location</th>
@@ -39,13 +43,14 @@
     </thead>
 	<tbody>
 	
-	<c:forEach varStatus="loopStatus" var="campaign" items="${campaignList}">
+	<c:forEach varStatus="loopStatus" 
+		var="campaign" items="${campaignList}">
 	  <tr id="row-${loopStatus.index + 1}">
 	    <td class="text-center"><a class="btn btn-outline-primary"
 	    	href="<c:url value="/admin/campaigns/update/${campaign.campaignID}" />">
 	    	<i class="bi bi-pencil-square"></i>Edit</a></td>
 	    <td class="text-center">
-	    <input class="form-check-input" type="checkbox" 
+	    <input class="form-check-input table-row" type="checkbox" 
 	    	name="campaignIDs" value="${campaign.campaignID}">
 	    </td>
 	    <td>${loopStatus.index + 1}</td>
@@ -72,5 +77,7 @@
 </c:otherwise>
 </c:choose>
 
+<script defer src="<c:url value="/resources/assets/js/checkTableRow.js"/>">
+</script>
 <script defer src="<c:url value="/resources/assets/js/pagination.js"/>">
 </script>
