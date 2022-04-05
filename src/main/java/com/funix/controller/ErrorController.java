@@ -1,3 +1,7 @@
+/*
+ * ErrorController.java    1.00    2022-04-05
+ */
+
 package com.funix.controller;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,9 +13,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.funix.service.Navigation;
 
+/**
+ * Handle HTTP errors Controller.
+ * @author HP
+ *
+ */
 @Controller
 public class ErrorController {
 
+	/**
+	 * Route to error page with related error message.
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/errors",
 			method = RequestMethod.GET)
 	public ModelAndView getErrorPage(HttpServletRequest request) {
@@ -50,6 +64,11 @@ public class ErrorController {
 		return mv;
 	}
 	
+	/**
+	 * Get error code from request.
+	 * @param request
+	 * @return
+	 */
 	private int getErrorCode(HttpServletRequest request) {
 		return (Integer) request
 				.getAttribute("javax.servlet.error.status_code");

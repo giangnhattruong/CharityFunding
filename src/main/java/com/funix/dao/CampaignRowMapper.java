@@ -1,3 +1,7 @@
+/*
+ * CampaignRowMapper.java    1.00    2022-04-05
+ */
+
 package com.funix.dao;
 
 import java.sql.ResultSet;
@@ -9,8 +13,16 @@ import org.springframework.jdbc.core.RowMapper;
 import com.funix.model.Campaign;
 import com.funix.service.NullConvert;
 
+/**
+ * Row mapper for campaign record.
+ * @author Giang_Nhat_Truong
+ *
+ */
 public class CampaignRowMapper implements RowMapper<Campaign> {
 
+	/**
+	 * Map to get all campaign fields in a record/row.
+	 */
 	@Override
 	public Campaign mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 		int campaignID = resultSet.getInt("campaignID");

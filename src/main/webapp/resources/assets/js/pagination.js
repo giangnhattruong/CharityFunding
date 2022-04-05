@@ -10,7 +10,7 @@ const showActive = function(currentPage) {
 	})
 }
 
-// Paginate page
+// Paginate table (show and hide related row)
 const pagination = function() {
 	let currentPage = Number.parseInt($("#currentPage").val());
 	let totalItems = Number.parseInt($("#totalItems").text());
@@ -31,10 +31,10 @@ const pagination = function() {
 	showActive(currentPage);
 }
 
-// Initial pagination
+// Initial pagination on page first time visiting
 pagination();
 
-// Paginate on previous button click event
+// Paginate when user click on page previous button
 $("#pagePrevious").on("click", function() {
 	let currentPage = Number.parseInt($("#currentPage").val());
     let pageNumber = Math.max(currentPage - 1, 1);
@@ -42,7 +42,7 @@ $("#pagePrevious").on("click", function() {
     pagination();
 })
 
-// Paginate on next button click event
+// Paginate when user click on page next button
 $("#pageNext").on("click", function() {
 	let totalPages = Number.parseInt($("#totalPages").text());
 	let currentPage = Number.parseInt($("#currentPage").val());
@@ -51,7 +51,7 @@ $("#pageNext").on("click", function() {
     pagination();
 })
 
-// Paginate on page number button click event
+// Paginate when user click on page number button
 $(".page-number").on("click", function() {
     let pageNumber = Number.parseInt($(this).text());
     $("#currentPage").val(pageNumber);

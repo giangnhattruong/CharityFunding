@@ -1,28 +1,82 @@
+/*
+ * DonationHistory.java    1.00    2022-04-05
+ */
+
 package com.funix.model;
 
 import java.time.LocalDate;
 
+/**
+ * Donation history model which contains all
+ * information of a donation/transaction history.
+ * @author Giang_Nhat_Truong
+ *
+ */
 public class DonationHistory {
+	
+	/**
+	 * Donation history ID from database.
+	 */
 	private int donationHistoryID;
+	
+	/**
+	 * User ID who donated to a campaign.
+	 */
 	private int userID;
+	
+	/**
+	 * User email who donated to a campaign.
+	 */
 	private String email;
+	
+	/**
+	 * User full name who donated to a campaign.
+	 */
 	private String fullname;
+	
+	/**
+	 * Campaign ID got donation.
+	 */
 	private int campaignID;
+	
+	/**
+	 * Campaign title got donation.
+	 */
 	private String title;
+	
+	/**
+	 * Campaign location got donation.
+	 */
 	private String location;
+	
+	/**
+	 * Donation amount of the user to campaign.
+	 */
 	private double donation;
+	
+	/**
+	 * Donation/transaction date.
+	 */
 	private LocalDate donationDate;
+	
+	/**
+	 * Bank transaction code.
+	 */
 	private String transactionCode;
+	
+	/**
+	 * Donation status: verified or not verified.
+	 */
 	private boolean donationStatus;
 
 	/**
-	 * Default constructor
+	 * Default constructor.
 	 */
 	public DonationHistory() {
 	}
 	
 	/**
-	 * Constructor used in DonationHistoryRowMapper
+	 * Constructor used in DonationHistoryRowMapper.
 	 * @param donationHistoryID
 	 * @param userID
 	 * @param email
@@ -53,6 +107,11 @@ public class DonationHistory {
 		this.donationStatus = donationStatus;
 	}
 	
+	/**
+	 * Validate all donation history fields to prepare for 
+	 * creating history record in donation history table in database.
+	 * @return
+	 */
 	public String validate() {
 		String message = "";
 		
@@ -66,6 +125,7 @@ public class DonationHistory {
 		return message;
 	}
 
+	//Getters and setters.
 	public int getDonationHistoryID() {
 		return donationHistoryID;
 	}

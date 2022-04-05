@@ -1,31 +1,101 @@
+/*
+ * User.java    1.00    2022-04-05
+ */
+
 package com.funix.model;
 
 import java.time.LocalDate;
 
+/**
+ * User model which contains all
+ * information of a user.
+ * @author Giang_Nhat_Truong
+ *
+ */
 public class User {
+	
+	/**
+	 * User ID from database.
+	 */
 	private int userID;
+	
+	/**
+	 * User email address.
+	 */
 	private String email;
+	
+	/**
+	 * User account password.
+	 */
 	private String password;
+	
+	/**
+	 * User confirm password, used for
+	 * validating when creating or updating
+	 * user informations.
+	 */
 	private String confirmPassword;
+	
+	/**
+	 * User full name.
+	 */
 	private String fullname;
+	
+	/**
+	 * User physical address.
+	 */
 	private String address;
+	
+	/**
+	 * User phone number.
+	 */
 	private String phone;
+	
+	/**
+	 * User role: admin or normal user.
+	 */
 	private int userRole;
+	
+	/**
+	 * User status: verified or unverified.
+	 */
 	private boolean userStatus;
+	
+	/**
+	 * User created date in database.
+	 */
 	private LocalDate dateCreated;
+	
+	/**
+	 * Total donations of the user
+	 * at current time.
+	 */
 	private double totalDonations;
+	
+	/**
+	 * User's total number of donations
+	 * at current time.
+	 */
 	private int donationTimes;
+	
+	/**
+	 * Latest donation date of user.
+	 */
 	private LocalDate latestDonationDate;
+	
+	/**
+	 * Count errors from user form input values.
+	 */
 	private int validateErrorCount;
 
 	/**
-	 * Default constructor
+	 * Default constructor.
 	 */
 	public User() {
 	}
 	
 	/**
-	 * Constructor used in UserRowMapper class
+	 * Constructor used in UserRowMapper class.
 	 * @param userID
 	 * @param email
 	 * @param password
@@ -59,6 +129,11 @@ public class User {
 		this.latestDonationDate = latestDonationDate;
 	}
 	
+	/**
+	 * Validate all user fields to prepare for creating or 
+	 * updating record in user table in database.
+	 * @return
+	 */
 	public String validate() {
 		StringBuilder messages = new StringBuilder();
 		messages.append("Please fulfill all requirements below and re-submit:");
@@ -116,6 +191,7 @@ public class User {
 		return validateErrorCount == 0 ? "success" : messages.toString();
 	}
 
+	//Getters and setters.
 	public int getUserID() {
 		return userID;
 	}

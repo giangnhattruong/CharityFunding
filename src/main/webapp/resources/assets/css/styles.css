@@ -1,14 +1,18 @@
+#main-body {
+	background-color: rgba(0, 0, 0, 0.01);
+}
+
 #navbar, #footer {
 	background-color: #fff;
 	box-shadow: 0 0 15px 0 #000;
 }
 
-#main-body {
-	background-color: rgba(0, 0, 0, 0.01);
-}
-
 #navbar .link-secondary:hover {
 	color: #0f0;
+}
+
+.page-link {
+	cursor: pointer;
 }
 
 .my-modal {
@@ -24,10 +28,6 @@
 
 .notify-modal {
 	display: block;
-}
-
-.page-link {
-	cursor: pointer;
 }
 
 @media (min-width: 768px) {

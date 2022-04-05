@@ -1,3 +1,4 @@
+// Check/uncheck all rows when user check/uncheck select all button
 $("#selectOrDeselectAll").on("change", function() {
 	let totalItems = Number.parseInt($("#totalItems").text());
 	if ($(this).is(":checked")) {
@@ -7,6 +8,7 @@ $("#selectOrDeselectAll").on("change", function() {
 	}
 })
 
+// Only show the delete button when at least one of the row is checked
 $("#selectOrDeselectAll, .table-row").on("change", function() {
 	let isRowChecked = false;
 	

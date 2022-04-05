@@ -1,3 +1,7 @@
+/*
+ * DonationHistoryRowMapper.java    1.00    2022-04-05
+ */
+
 package com.funix.dao;
 
 import java.sql.ResultSet;
@@ -9,8 +13,16 @@ import org.springframework.jdbc.core.RowMapper;
 import com.funix.model.DonationHistory;
 import com.funix.service.NullConvert;
 
+/**
+ * Row mapper for donation history record.
+ * @author Giang_Nhat_Truong
+ *
+ */
 public class DonationHistoryRowMapper implements RowMapper<DonationHistory> {
 
+	/**
+	 * Map to get all donation history fields in a record/row.
+	 */
 	@Override
 	public DonationHistory mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 		int donationHistoryID = resultSet.getInt("donationHistoryID");

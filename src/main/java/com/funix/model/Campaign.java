@@ -1,3 +1,7 @@
+/*
+ * Campaign.java    1.00    2022-04-05
+ */
+
 package com.funix.model;
 
 import java.time.LocalDate;
@@ -6,25 +10,96 @@ import java.util.Objects;
 import org.springframework.lang.NonNull;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Charity campaign model which contains all
+ * information of a charity campaign.
+ * @author Giang_Nhat_Truong
+ *
+ */
 public class Campaign {
+	
+	/**
+	 * Campaign ID from database.
+	 */
 	private int campaignID;
+	
+	/**
+	 * Campaign short title.
+	 */
 	private String title;
+	
+	/**
+	 * Campaign detailed description.
+	 */
 	private String description;
+	
+	/**
+	 * A total donations target for
+	 * a whole campaign period.
+	 */
 	private double targetAmount;
+	
+	/**
+	 * Campaign location/region.
+	 */
 	private String location;
+	
+	/**
+	 * Campaign cover image URL.
+	 */
 	private String imgURL;
+	
+	/**
+	 * Campaign start date.
+	 */
 	private LocalDate startDate;
+	
+	/**
+	 * Campaign end date.
+	 */
 	private LocalDate endDate;
+	
+	/**
+	 * Status of a campaign still open 
+	 * for donations or closed.
+	 */
 	private boolean campaignStatus;
+	
+	/**
+	 * Campaign created date on database.
+	 */
 	private LocalDate dateCreated;
+	
+	/**
+	 * Total donations from all users
+	 * to the campaign at current time.
+	 */
 	private double totalDonations;
+	
+	/**
+	 * Number of users donated to the campaign.
+	 */
 	private int totalSupporters;
+	
+	/**
+	 * The last donations date to campaign from
+	 * any users.
+	 */
 	private LocalDate latestDonationDate;
+	
+	/**
+	 * Image file which will be uploaded to API server
+	 * and get back the image URL to store in database.
+	 */
 	private MultipartFile file;
+	
+	/**
+	 * Count errors from campaign form input values.
+	 */
 	private int validateErrorCount;
 
 	/**
-	 * Default constructor
+	 * Default constructor.
 	 */
 	public Campaign() {
 		startDate = LocalDate.now();
@@ -33,7 +108,7 @@ public class Campaign {
 	}
 	
 	/**
-	 * Constructor used in CampaignRowMapper class
+	 * Constructor used in CampaignRowMapper class.
 	 * @param campaignID
 	 * @param title
 	 * @param description
@@ -68,11 +143,21 @@ public class Campaign {
 		this.latestDonationDate = latestDonationDate;
 	}
 	
+	/**
+	 * Validate all campaign fields except imgURL field,
+	 * to prepare for uploading image multipartFile to API server.
+	 * @return
+	 */
 	public boolean validateTextFieldsOnly() {
 		validate();
 		return validateErrorCount == 1;
 	}
 	
+	/**
+	 * Validate all campaign fields to prepare for creating or 
+	 * updating record in campaign table in database.
+	 * @return
+	 */
 	public String validate() {
 		StringBuilder messages = new StringBuilder();
 		messages.append("Please fulfill all requirements below and re-submit:");
@@ -132,6 +217,7 @@ public class Campaign {
 		return validateErrorCount == 0 ? "success" : messages.toString();
 	}
 
+	//Getters and setters.
 	public int getCampaignID() {
 		return campaignID;
 	}

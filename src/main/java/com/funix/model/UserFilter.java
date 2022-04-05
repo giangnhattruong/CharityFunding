@@ -1,19 +1,77 @@
+/*
+ * UserFilter.java    1.00    2022-04-05
+ */
+
 package com.funix.model;
 
-import com.funix.service.FilterMapping;
+import com.funix.service.SQLConvert;
 
+/**
+ * User filter model contains inputs taken from
+ * user search form, which can be converted
+ * to special strings in SQL query for 
+ * data filter purpose.
+ * @author Giang_Nhat_Truong
+ *
+ */
 public class UserFilter {
+	
+	/**
+	 * User email or fullname keyword.
+	 */
 	private String keyword;
+	
+	/**
+	 * Status of an user active/verified.
+	 */
 	private boolean statusActive;
+	
+	/**
+	 * Status of an user in-active/unverified.
+	 */
 	private boolean statusInactive;
+	
+	/**
+	 * Order of user records sorted by 
+	 * specific fields in user data table.
+	 */
 	private String sortBy;
 
+	/**
+	 * Default constructor used to initialize
+	 * user search form values.
+	 */
 	public UserFilter() {
 		statusActive = true;
 		statusInactive = true;
 		sortBy = "date-desc";
 	}
 
+	/**
+	 * Get user email/fullname filter string for SQL query.
+	 * @return
+	 */
+	public String getKeywordFilter() {
+		return SQLConvert.convertKeyword(keyword);
+	}
+
+	/**
+	 * Get user status filter string for SQL query.
+	 * @return
+	 */
+	public String getStatusFilter() {
+		return SQLConvert.convertStatus(statusActive, statusInactive);
+	}
+
+	/**
+	 * Get SQL "ORDER BY" clause to sort user table records.
+	 * @return
+	 */
+	public String getSortByFilter() {
+		return SQLConvert.convertUserOrder(sortBy);
+	}
+
+	//Getters and setters
 	public String getKeyword() {
 		return keyword;
 	}
@@ -44,18 +102,6 @@ public class UserFilter {
 
 	public void setSortBy(String sortBy) {
 		this.sortBy = sortBy;
-	}
-
-	public String getKeywordFilter() {
-		return FilterMapping.convertKeyword(keyword);
-	}
-
-	public String getStatusFilter() {
-		return FilterMapping.convertStatus(statusActive, statusInactive);
-	}
-
-	public String getSortByFilter() {
-		return FilterMapping.convertUserOrder(sortBy);
 	}
 
 }

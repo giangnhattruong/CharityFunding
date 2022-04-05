@@ -1,12 +1,39 @@
+/*
+ * SQLConvert.java    1.00    2022-04-05
+ */
+
 package com.funix.service;
 
-public class FilterMapping {
+import java.util.Arrays;
+
+/**
+ * Helper class for converting inputs from search form
+ * to special strings which can be add to SQL query for
+ * filter and sorting purposes.
+ * @author Giang_Nhat_Truong
+ *
+ */
+public class SQLConvert {
+	
+	/**
+	 * Convert keyword input to string which
+	 * can be used in SQL "LIKE" operator.
+	 * @param keyword
+	 * @return
+	 */
 	public static String convertKeyword(String keyword) {
 		return keyword == null ? 
 							"%%" :
 							"%" + keyword + "%";
 	}
 	
+	/**
+	 * Convert status inputs to string which
+	 * can be used in SQL "LIKE" operator.
+	 * @param statusOn
+	 * @param statusOff
+	 * @return
+	 */
 	public static String convertStatus(boolean statusOn, boolean statusOff) {
 		String status = "";
 
@@ -21,6 +48,12 @@ public class FilterMapping {
 		return status;
 	}
 	
+	/**
+	 * Convert sortBy inputs from campaign search form
+	 * to string which can be used in SQL "ORDER BY" clause.
+	 * @param sortBy
+	 * @return
+	 */
 	public static String convertCampaignOrder(String sortBy) {
 		String orderBy = "ORDER BY ";
 
@@ -44,7 +77,7 @@ public class FilterMapping {
 			orderBy += "title DESC, campaignID DESC";
 			break;
 		case "date-asc":
-			orderBy += "startDate, endDate, ID";
+			orderBy += "startDate ASC, endDate ASC, campaignID ASC";
 			break;
 		case "target-asc":
 			orderBy += "targetAmount ASC, campaignID DESC";
@@ -59,13 +92,19 @@ public class FilterMapping {
 			orderBy += "latestDonationDate ASC, campaignID DESC";
 			break;
 		case "title-asc":
-			orderBy += "title, campaignID DESC";
+			orderBy += "title ASC, campaignID DESC";
 			break;
 		}
 
 		return orderBy;
 	}
 	
+	/**
+	 * Convert sortBy inputs from user search form
+	 * to string which can be used in SQL "ORDER BY" clause.
+	 * @param sortBy
+	 * @return
+	 */
 	public static String convertUserOrder(String sortBy) {
 		String orderBy = "ORDER BY ";
 
@@ -99,6 +138,12 @@ public class FilterMapping {
 		return orderBy;
 	}
 	
+	/**
+	 * Convert sortBy inputs from donation history search form
+	 * to string which can be used in SQL "ORDER BY" clause.
+	 * @param sortBy
+	 * @return
+	 */
 	public static String convertDonationHistoryOrder(String sortBy) {
 		String orderBy = "ORDER BY ";
 
@@ -136,6 +181,17 @@ public class FilterMapping {
 		}
 
 		return orderBy;
+	}
+	
+	/**
+	 * Convert array of string to list of value string
+	 * which can be used with SQL "IN" operator.
+	 * @param stringArray
+	 * @return
+	 */
+	public static String convertList(String[] stringArray) {
+		return Arrays.toString(stringArray)
+				.replace('[', '(').replace(']', ')');
 	}
 	
 }

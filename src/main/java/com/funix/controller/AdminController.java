@@ -1,3 +1,7 @@
+/*
+ * AdminController.java    1.00    2022-04-05
+ */
+
 package com.funix.controller;
 
 import java.time.LocalDate;
@@ -36,23 +40,51 @@ import com.funix.multipart.CloudinaryImpl;
 import com.funix.multipart.IImageAPI;
 import com.funix.service.Navigation;
 import com.funix.service.NullConvert;
+import com.funix.service.SQLConvert;
 
+/**
+ * Handle all routes for admin manage pages.
+ * @author HP
+ *
+ */
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 	
+	/**
+	 * Inject DataSource instance and then
+	 * inject the instance to initialize
+	 * DAO objects.
+	 */
 	@Autowired
 	private DataSource dataSource;
 	
+	/**
+	 * Inject Cloudinary instance and then
+	 * inject the instance to initialize
+	 * ImageAPI objects.
+	 */
 	@Autowired
 	private Cloudinary cloudinary;
 	
+	/**
+	 * Main route /admin redirect to 
+	 * admin donation history manage page.
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String getAdminDashboard() {
 		// if session does not contain adminID, redirect to explore
 		return "redirect:/admin/donation-history";
 	}
 
+	/**
+	 * Render admin donation history managing page. Get or initialize
+	 * filter object and send to DAO, to get a list of 
+	 * donation history for view.
+	 * @param filter
+	 * @return
+	 */
 	@RequestMapping(value = "donation-history", method = RequestMethod.GET)
 	public ModelAndView getDonationHistory(
 			@ModelAttribute("filter") DonationHistoryFilter filter) {
@@ -69,6 +101,15 @@ public class AdminController {
 		return mv;
 	}
 
+	/**
+	 * Handle donation history search form submit, bind all
+	 * form input to filter object and redirect back to
+	 * admin donation history managing page.
+	 * @param filter
+	 * @param result
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequestMapping(value = "donation-history", method = RequestMethod.POST)
 	public ModelAndView searchDonationHistory(
 			@ModelAttribute("filter") DonationHistoryFilter filter, 
@@ -80,6 +121,14 @@ public class AdminController {
 		return mv;
 	}
 
+	/**
+	 * Render admin campaign managing page. Get or initialize
+	 * filter object and send to DAO, to get a list of 
+	 * campaign for view.
+	 * @param message
+	 * @param filter
+	 * @return
+	 */
 	@RequestMapping(value = "campaigns", method = RequestMethod.GET)
 	public ModelAndView manageCampaigns(
 			@ModelAttribute("message") String message,
@@ -98,6 +147,15 @@ public class AdminController {
 		return mv;
 	}
 
+	/**
+	 * Handle campaign search form submit, bind all
+	 * form input to filter object and redirect back to
+	 * admin campaign managing page.
+	 * @param filter
+	 * @param result
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequestMapping(value = "campaigns", method = RequestMethod.POST)
 	public ModelAndView searchCampaigns(
 			@ModelAttribute("filter") CampaignFilter filter,
@@ -109,6 +167,14 @@ public class AdminController {
 		return mv;
 	}
 
+	/**
+	 * Render campaign creating form. Get or initialize campaign
+	 * instance for form default values. Get error message send
+	 * by the last submit to show on the beginning of the form.
+	 * @param message
+	 * @param campaign
+	 * @return
+	 */
 	@RequestMapping(value = "campaigns/new", method = RequestMethod.GET)
 	public ModelAndView getCampaignCreateForm(
 			@ModelAttribute("message") String message, 
@@ -122,6 +188,16 @@ public class AdminController {
 		return mv;
 	}
 
+	/**
+	 * Handle campaign creating form submit, bind campaign instance
+	 * to get values from form, validate new campaign and create
+	 * new record in database.
+	 * @param campaign
+	 * @param result
+	 * @param request
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequestMapping(value = "campaigns/new", method = RequestMethod.POST)
 	public ModelAndView createCampaign(
 			@ModelAttribute("campaign") Campaign campaign, 
@@ -132,6 +208,11 @@ public class AdminController {
 		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
 		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource, imageAPI);
 		String message = "";
+		
+		/*
+		 * All campaign fields is set by Spring binding result,
+		 * except LocalDate fields have to be set explicitly.
+		 */
 		String startDateString = request.getParameter("startDate");
 		String endDateString = request.getParameter("endDate");
 		LocalDate startDate = NullConvert.toLocalDate(startDateString);
@@ -157,6 +238,18 @@ public class AdminController {
 		return mv;
 	}
 	
+	/**
+	 * Render campaign updating form. Get campaign instance
+	 * pass by the last failed updating submit or get campaign instance 
+	 * from database to set form default values. Also get the
+	 * error message from the last updating submit to show in
+	 * the beginning of the form.
+	 * @param pathID
+	 * @param message
+	 * @param campaign
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "campaigns/update/{pathID}", 
 			method = RequestMethod.GET)
 	public ModelAndView getCampaignUpdateForm(
@@ -170,12 +263,17 @@ public class AdminController {
 				new CampaignDAOImpl(dataSource, imageAPI);
 		int campaignID = pathID;
 			
+		/*
+		 * Check if the campaign instance is not passed from
+		 * the last failed submit, then get a campaign instance from
+		 * database.
+		 */
 		if (campaign.getCampaignID() == 0) {
 			campaign = campaignDAO.getCampaign(campaignID);
 		}
 		
+		// Get image thumbnail and pass to view.
 		String imgURL = campaign.getImgURL();
-		
 		if (imgURL != null) {
 			String imgHTML = imageAPI
 					.transformImage(imgURL, 80, 60);
@@ -192,6 +290,17 @@ public class AdminController {
 		return mv;
 	}
 
+	/**
+	 * Handle campaign updating form. Bind campaign instance
+	 * to set values automatically from Spring form. Validate
+	 * and update campaign record in database.
+	 * @param campaignID
+	 * @param campaign
+	 * @param result
+	 * @param request
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequestMapping(value = "campaigns/update/{campaignID}", 
 			method = RequestMethod.POST)
 	public ModelAndView updateCampaign(
@@ -204,6 +313,11 @@ public class AdminController {
 		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
 		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource, imageAPI);
 		String message = "";
+		
+		/*
+		 * All campaign fields is set by Spring binding result,
+		 * except LocalDate fields have to be set explicitly.
+		 */
 		String startDateString = request.getParameter("startDate");
 		String endDateString = request.getParameter("endDate");
 		LocalDate startDate = NullConvert.toLocalDate(startDateString);
@@ -229,6 +343,12 @@ public class AdminController {
 		return mv;
 	}
 
+	/**
+	 * Handle delete many campaigns.
+	 * @param request
+	 * @param redirectAttrs
+	 * @return
+	 */
 	@RequestMapping(value = "campaigns/delete", method = RequestMethod.POST)
 	public ModelAndView deleteCampaign(HttpServletRequest request,
 			RedirectAttributes redirectAttrs) {
@@ -238,8 +358,7 @@ public class AdminController {
 		String message = "";
 		
 		String[] campaignIDArray = request.getParameterValues("campaignIDs");
-		String campaignIDs = Arrays.toString(campaignIDArray)
-				.replace('[', '(').replace(']', ')');
+		String campaignIDs = SQLConvert.convertList(campaignIDArray);
 		
 		if (campaignIDArray != null) {
 			campaignDAO.delete(campaignIDs);
@@ -254,6 +373,14 @@ public class AdminController {
 		return mv;
 	}
 
+	/**
+	 * Render admin user managing page. Get or initialize
+	 * filter object and send to DAO, to get a list of 
+	 * user for view.
+	 * @param message
+	 * @param filter
+	 * @return
+	 */
 	@RequestMapping(value = "users", method = RequestMethod.GET)
 	public ModelAndView manageUsers(
 			@ModelAttribute("message") String message,
@@ -269,6 +396,15 @@ public class AdminController {
 		return mv;
 	}
 
+	/**
+	 * Handle user search form submit, bind all
+	 * form input to filter object and redirect back to
+	 * admin user managing page.
+	 * @param filter
+	 * @param result
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequestMapping(value = "users", method = RequestMethod.POST)
 	public ModelAndView searchUsers(
 			@ModelAttribute("filter") UserFilter filter,
@@ -280,6 +416,14 @@ public class AdminController {
 		return mv;
 	}
 
+	/**
+	 * Render user creating form. Get or initialize user
+	 * instance for form default values. Get error message send
+	 * by the last submit to show on the beginning of the form.
+	 * @param message
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping(value = "users/new", method = RequestMethod.GET)
 	public ModelAndView getUserCreateForm(
 			@ModelAttribute("message") String message, 
@@ -295,6 +439,16 @@ public class AdminController {
 		return mv;
 	}
 
+	/**
+	 * Handle user creating form submit, bind user instance
+	 * to get values from form, validate new user and create
+	 * new record in database.
+	 * @param user
+	 * @param result
+	 * @param request
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequestMapping(value = "users/new", method = RequestMethod.POST)
 	public ModelAndView createUser(
 			@ModelAttribute("user") User user, 
@@ -322,6 +476,17 @@ public class AdminController {
 		return mv;
 	}
 	
+	/**
+	 * Render user updating form. Get user instance
+	 * pass by the last failed updating submit or get user instance 
+	 * from database to set form default values. Also get the
+	 * error message from the last updating submit to show in
+	 * the beginning of the form.
+	 * @param pathID
+	 * @param message
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping(value = "users/update/{pathID}", 
 			method = RequestMethod.GET)
 	public ModelAndView getUserUpdateForm(
@@ -332,6 +497,11 @@ public class AdminController {
 		IUserDAO userDAO = new UserDAOImpl(dataSource);
 		int userID = pathID;
 			
+		/*
+		 * Check if the user instance is not passed from
+		 * the last failed submit, then get a user instance from
+		 * database.
+		 */
 		if (user.getUserID() == 0) {
 			user = userDAO.getUser(userID);
 		}
@@ -346,6 +516,16 @@ public class AdminController {
 		return mv;
 	}
 
+	/**
+	 * Handle user updating form. Bind user instance
+	 * to set values automatically from Spring form. 
+	 * Validate and update user record in database.
+	 * @param userID
+	 * @param user
+	 * @param result
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequestMapping(value = "users/update/{userID}", 
 			method = RequestMethod.POST)
 	public ModelAndView updateUser(
@@ -375,6 +555,12 @@ public class AdminController {
 		return mv;
 	}
 
+	/**
+	 * Handle delete many users.
+	 * @param request
+	 * @param redirectAttrs
+	 * @return
+	 */
 	@RequestMapping(value = "users/delete", method = RequestMethod.POST)
 	public ModelAndView deleteUser(
 			HttpServletRequest request,
@@ -383,8 +569,7 @@ public class AdminController {
 		IUserDAO userDAO = new UserDAOImpl(dataSource);
 		String message = "";
 		String[] userIDArray = request.getParameterValues("userIDs");
-		String userIDs = Arrays.toString(userIDArray)
-				.replace('[', '(').replace(']', ')');
+		String userIDs = SQLConvert.convertList(userIDArray);
 		
 		if (userIDArray != null) {
 			userDAO.delete(userIDs);
@@ -399,15 +584,15 @@ public class AdminController {
 		return mv;
 	}
 
-	private String getRoute(String url) {
-		/*
-		 * if session not contains adminID redirect to landing page
-		 */
-		if (false) {
-			return "redirect:/explore";
-		}
-
-		return url;
-	}
+//	private String getRoute(String url) {
+//		/*
+//		 * if session not contains adminID redirect to landing page
+//		 */
+//		if (false) {
+//			return "redirect:/explore";
+//		}
+//
+//		return url;
+//	}
 
 }

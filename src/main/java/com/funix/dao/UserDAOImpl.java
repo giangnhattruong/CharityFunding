@@ -1,3 +1,7 @@
+/*
+ * UserDAOImpl.java    1.00    2022-04-05
+ */
+
 package com.funix.dao;
 
 import java.util.List;
@@ -10,13 +14,32 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import com.funix.model.User;
 import com.funix.model.UserFilter;
 
+/**
+ * User DAO to 
+ * create, get, update, delete users
+ * and execute procedures from database.
+ * @author Giang_Nhat_Truong
+ *
+ */
 public class UserDAOImpl implements IUserDAO {
+	
+	/**
+	 * JdbcTemplate contains functions to execute,
+	 * get and update data from database.
+	 */
 	private JdbcTemplate jdbcTemplate;
 	
+	/**
+	 * Inject dataSource from Controller.
+	 * @param dataSource
+	 */
 	public UserDAOImpl(DataSource dataSource) {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
+	/**
+	 * Create new user.
+	 */
 	@Override
 	public void create(User newUser) {
 		String SQL = "INSERT INTO userTbl"
@@ -29,6 +52,9 @@ public class UserDAOImpl implements IUserDAO {
 				newUser.getUserRole(), newUser.getUserStatus());
 	}
 
+	/**
+	 * Get a user to pass values for user updating form.
+	 */
 	@Override
 	public User getUser(int userID) {
 		String SQL = "SELECT * FROM dbo.getUserDonationSummary() "
@@ -38,12 +64,20 @@ public class UserDAOImpl implements IUserDAO {
 		return user;
 	}
 
+	/**
+	 * Update user status to verified after user confirmed by 
+	 * clicking the verifying link in email.
+	 */
 	@Override
 	public void enableUserStatus(int userID) {
 		String SQL = "EXECUTE updateUserStatus 1, ?";
 		jdbcTemplate.update(SQL, userID);
 	}
 
+	/**
+	 * Get users base on filter object taken from
+	 * user search form.
+	 */
 	@Override
 	public List<User> getManyUsers(UserFilter userFilter) {
 		String SQL = "SELECT * FROM dbo.getUserDonationSummary() "
@@ -58,6 +92,9 @@ public class UserDAOImpl implements IUserDAO {
 		return userList;
 	}
 
+	/**
+	 * Update an existing user.
+	 */
 	@Override
 	public void update(int userID, User newUser) {
 		String SQL = "UPDATE userTbl "
@@ -71,6 +108,9 @@ public class UserDAOImpl implements IUserDAO {
 				userID);
 	}
 
+	/**
+	 * Delete an existing user.
+	 */
 	@Override
 	public void delete(String userIDs) {
 		String SQL = "BEGIN TRANSACTION "

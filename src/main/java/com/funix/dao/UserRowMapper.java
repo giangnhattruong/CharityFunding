@@ -1,3 +1,7 @@
+/*
+ * UserRowMapper.java    1.00    2022-04-05
+ */
+
 package com.funix.dao;
 
 import java.sql.ResultSet;
@@ -9,8 +13,16 @@ import org.springframework.jdbc.core.RowMapper;
 import com.funix.model.User;
 import com.funix.service.NullConvert;
 
+/**
+ * Row mapper for user record.
+ * @author Giang_Nhat_Truong
+ *
+ */
 public class UserRowMapper implements RowMapper<User> {
 
+	/**
+	 * Map to get all user fields in a record/row.
+	 */
 	@Override
 	public User mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 		int userID = resultSet.getInt("userID");

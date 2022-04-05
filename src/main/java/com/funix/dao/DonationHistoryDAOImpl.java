@@ -1,3 +1,7 @@
+/*
+ * DonationHistoryDAOImpl.java    1.00    2022-04-05
+ */
+
 package com.funix.dao;
 
 import java.util.List;
@@ -9,13 +13,32 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.funix.model.DonationHistory;
 import com.funix.model.DonationHistoryFilter;
 
+/**
+ * Donation History DAO to 
+ * create, get donation history and execute 
+ * procedures from database.
+ * @author Giang_Nhat_Truong
+ *
+ */
 public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
+	
+	/**
+	 * JdbcTemplate contains functions to execute,
+	 * get and update data from database.
+	 */
 	private JdbcTemplate jdbcTemplate;
 	
+	/**
+	 * Inject dataSource from Controller.
+	 * @param dataSource
+	 */
 	public DonationHistoryDAOImpl(DataSource dataSource) {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
+	/**
+	 * Create new donation/transaction record.
+	 */
 	@Override
 	public void create(DonationHistory history) {
 		String SQL = "INSERT INTO donationHistoryTbl"
@@ -26,6 +49,11 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 				history.getTransactionCode());
 	}
 
+	/**
+	 * Verify donations/transactions if they contain
+	 * the same transaction codes as those in
+	 * transaction code list.
+	 */
 	@Override
 	public void verifyHistoryStatus(List<String> transactionCodeList) {
 		String SQL = "EXECUTE updateHistoryStatus ?";
@@ -35,11 +63,19 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 		}
 	}
 	
+	/**
+	 * Get all transaction code list.
+	 * @return
+	 */
 	public List<String> getTransactionCodeList() {
 		String SQL = "SELECT transactionCode FROM donationHistoryTbl";
 		return jdbcTemplate.queryForList(SQL, String.class);
 	}
 
+	/**
+	 * Get donation history based on filter values taken
+	 * from donation history form.
+	 */
 	@Override
 	public List<DonationHistory> getManyAdminHistories(
 			DonationHistoryFilter filter) {
@@ -60,6 +96,10 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 						filter.getStatusFilter());
 	}
 
+	/**
+	 * Get donation history based on filter values taken
+	 * from donation history form of a specific user.
+	 */
 	@Override
 	public List<DonationHistory> getManyUserHistories(
 			int userID, DonationHistoryFilter filter) {

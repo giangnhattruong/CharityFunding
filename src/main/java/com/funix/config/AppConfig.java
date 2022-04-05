@@ -1,3 +1,7 @@
+/*
+ * AppConfig.java    1.00    2022-04-05
+ */
+
 package com.funix.config;
 
 import javax.annotation.PostConstruct;
@@ -16,18 +20,37 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+/**
+ * Web application configuration for Spring MVC framework
+ * @author Giang_Nhat_Truong
+ *
+ */
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.funix")
 public class AppConfig implements WebMvcConfigurer {
+	
+	/**
+	 * Inject RequestMappingHandlerAdapter instance which
+	 * can help setting ignore default model on redirect.
+	 */
     @Autowired
     private RequestMappingHandlerAdapter requestMappingHandlerAdapter;
 
+    /**
+     * Set ignore default model on redirect so as we can
+     * use the RedirectAttributes object to pass data
+     * on redirecting view.
+     */
     @PostConstruct
     public void init() {
        requestMappingHandlerAdapter.setIgnoreDefaultModelOnRedirect(true);
     }
 
+    /**
+     * Set view resolver for Spring view.
+     * @return
+     */
 	@Bean
 	public InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = 
@@ -38,6 +61,11 @@ public class AppConfig implements WebMvcConfigurer {
 		return viewResolver;
 	}
 	
+	/**
+	 * Set multipart resolver to handle multipart
+	 * from client.
+	 * @return
+	 */
 	@Bean
 	public CommonsMultipartResolver multipartResolver() {
 		CommonsMultipartResolver multipartResolver =
@@ -47,14 +75,10 @@ public class AppConfig implements WebMvcConfigurer {
 		return multipartResolver;
 	}
 	
-	@Bean
-	public MessageSource messageSource() {
-		ResourceBundleMessageSource source = 
-				new ResourceBundleMessageSource();
-	    source.setBasename("messages");
-	    return source;
-	}
-	
+	/**
+	 * Add resource handler so as we can use static resources
+	 * like css, js,... files in view.
+	 */
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**")
