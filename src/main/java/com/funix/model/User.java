@@ -145,13 +145,13 @@ public class User {
 				+ "(?=.*[@#$!%*?&])[A-Za-z\\d@#$!%*?&]{6,12}$";
 		String phoneRegex = "^\\d{10}$";
 		
-		if (email == null || !email.matches(emailRegex)) {
+		if (!email.matches(emailRegex)) {
 			messages.append(++validateErrorCount + ". ");
 			messages.append("There must be a valid email address.");
 			messages.append("</br>");
 		}
 		
-		if (password == null || !password.matches(passwordRegex)) {
+		if (!password.matches(passwordRegex)) {
 			messages.append(++validateErrorCount + ". ");
 			messages.append("Password must be 6-12 characters and contains "
 					+ "a minimum of one uppercase letter (A-Z), "
@@ -167,21 +167,21 @@ public class User {
 			messages.append("</br>");
 		}
 		
-		if (fullname == null || fullname.length() < 3 ||
+		if (fullname.length() < 3 ||
 				fullname.length() > 60) {
 			messages.append(++validateErrorCount + ". ");
 			messages.append("Fullname must be 3-60 characters.");
 			messages.append("</br>");
 		}
 		
-		if ((address != null || !address.equals("")) && 
+		if (!address.equals("") && 
 				(address.length() < 3 || address.length() > 60)) {
 			messages.append(++validateErrorCount + ". ");
 			messages.append("Address must be 3-60 characters.");
 			messages.append("</br>");
 		}
 		
-		if ((phone != null || !phone.equals("")) && 
+		if (!phone.equals("") && 
 				!phone.matches(phoneRegex)) {
 			messages.append(++validateErrorCount + ". ");
 			messages.append("Phone must be a 10 digits number.");

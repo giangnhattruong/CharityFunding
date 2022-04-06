@@ -164,7 +164,7 @@ public class Campaign {
 		messages.append("</br>");
 		validateErrorCount = 0;
 		
-		if (title == null || title.length() < 3 || 
+		if (title.length() < 3 || 
 				title.length() > 60) {
 			messages.append(++validateErrorCount + ". ");
 			messages.append("Title must contains at least 3 characters"
@@ -172,7 +172,7 @@ public class Campaign {
 			messages.append("</br>");
 		}
 		
-		if (description == null || description.length() < 120) {
+		if (description.length() < 120) {
 			messages.append(++validateErrorCount + ". ");
 			messages.append("Description must contains "
 					+ "at least 120 characters.");
@@ -185,7 +185,7 @@ public class Campaign {
 			messages.append("</br>");
 		}
 		
-		if (location == null || location.length() < 3 || 
+		if (location.length() < 3 || 
 				location.length() > 60) {
 			messages.append(++validateErrorCount + ". ");
 			messages.append("Location must contains at least 3 characters"
@@ -193,24 +193,27 @@ public class Campaign {
 			messages.append("</br>");
 		}
 		
-		if (imgURL == null || !imgURL.startsWith("http")) {
+		if (!imgURL.startsWith("http")) {
 			messages.append(++validateErrorCount + ". ");
 			messages.append("There must be 1 cover image.\n");
 			messages.append("</br>");
 		}
 		
-		if (startDate.plusMonths(3).isBefore(LocalDate.now()) ||
+		if (startDate == null || 
+				startDate.plusMonths(3).isBefore(LocalDate.now()) ||
 				startDate.minusMonths(3).isAfter(LocalDate.now())) {
 			messages.append(++validateErrorCount + ". ");
-			messages.append("Campaign start date must be with in 3 months"
-					+ " prior to today or within 3 months after today.\n");
+			messages.append("Campaign start date must be with in 3 months "
+					+ "prior to today or within 3 months after today "
+					+ "and cannot be blank.\n");
 			messages.append("</br>");
 		}
 		
-		if (endDate.minusMonths(1).isBefore(startDate)) {
+		if (endDate == null || 
+				endDate.minusMonths(1).isBefore(startDate)) {
 			messages.append(++validateErrorCount + ". ");
 			messages.append("Campaign end date must be at least 1 months"
-					+ " after start date.\n");
+					+ " after start date and cannot be blank.\n");
 			messages.append("</br>");
 		}
 		
