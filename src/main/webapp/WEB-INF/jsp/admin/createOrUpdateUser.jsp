@@ -15,7 +15,7 @@
 	${fn:toLowerCase(formTitle)} a user.</p>
 </div>
 
-<div class="container">
+<div class="container mb-5">
 <p class="small text-danger offset-lg-1">${message}</p>
 <form:form id="submitForm"
 	cssClass="resetForm" 

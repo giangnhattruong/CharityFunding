@@ -16,7 +16,7 @@
 	${fn:toLowerCase(formTitle)} a campaign.</p>
 </div>
 
-<div class="container">
+<div class="container mb-5">
 <p class="small text-danger offset-lg-1">${message}</p>
 <form:form id="submitForm"
 	cssClass="resetForm" 
@@ -99,7 +99,7 @@ ${imgHTML}
 
 <div class="mb-3">
 <form:label path="file" cssClass="form-label">
-	${formTitle == "Upload" ? "Upload" : "Replace"} cover image (below 5MB)
+	${formTitle == "Create" ? "Upload" : "Replace"} cover image (below 5MB)
 	</form:label>
 <c:if test="${formTitle == 'Upload'}">
 <span class="text-danger">*</span>

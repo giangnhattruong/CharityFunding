@@ -118,7 +118,10 @@ public class SQLConvert {
 		case "total-donations-desc":
 			orderBy += "totalDonations DESC, userID DESC";
 			break;
-		case "donation-date-desc":
+		case "donation-times-desc":
+			orderBy += "donationTimes DESC, userID DESC";
+			break;
+		case "latest-donation-date-desc":
 			orderBy += "latestDonationDate DESC, userID DESC";
 			break;
 		case "date-asc":
@@ -130,7 +133,10 @@ public class SQLConvert {
 		case "total-donations-asc":
 			orderBy += "totalDonations ASC, userID DESC";
 			break;
-		case "donation-date-asc":
+		case "donation-times-asc":
+			orderBy += "donationTimes ASC, userID DESC";
+			break;
+		case "latest-donation-date-asc":
 			orderBy += "latestDonationDate ASC, userID ASC";
 			break;
 		}

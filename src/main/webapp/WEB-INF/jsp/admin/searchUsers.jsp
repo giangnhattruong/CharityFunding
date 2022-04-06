@@ -37,16 +37,20 @@
   	Sort by descending email</form:option>
   <form:option value="total-donations-desc">
   	Sort by descending total donations</form:option>
-  <form:option value="donation-date-desc">
-  	Sort by descending donation date</form:option>
+  <form:option value="donation-times-desc">
+  	Sort by descending donation times</form:option>
+  <form:option value="latest-donation-date-desc">
+  	Sort by descending latest donation date</form:option>
   <form:option value="date-asc">
   	Sort by ascending date joined</form:option>
   <form:option value="email-asc">
   	Sort by ascending email</form:option>
   <form:option value="total-donations-asc">
 	Sort by ascending total donations</form:option>
-  <form:option value="donation-date-asc">
-  	Sort by ascending donation date</form:option>
+  <form:option value="donation-times-asc">
+  	Sort by ascending donation times</form:option>
+  <form:option value="latest-donation-date-asc">
+  	Sort by ascending latest donation date</form:option>
 </form:select>
 </div>
 

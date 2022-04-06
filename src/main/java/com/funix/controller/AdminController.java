@@ -589,14 +589,11 @@ public class AdminController {
 	 */
 	private String getRoute(String url) {
 		/*
-		 * if session not contains user role admin 
+		 * If session not contains user role admin 
 		 * redirect to landing page.
+		 * Implement logic later (on task number 6).
 		 */
-		if (false) {
-			return "redirect:/explore";
-		}
-
-		return url;
+		return true ? url : "redirect:/explore";
 	}
 
 }
