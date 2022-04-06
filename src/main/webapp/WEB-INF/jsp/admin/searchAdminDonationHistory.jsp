@@ -31,13 +31,13 @@
 <form:checkbox cssClass="form-check-input" path="statusOk"
 	id="statusOk"/>
 <form:label cssClass="form-check-label" path="statusOk">
-	Received</form:label>
+	Verified</form:label>
 </div>
 <div class="form-check me-3 mb-3">
 <form:checkbox cssClass="form-check-input" path="statusNotOk"
 	id="statusNotOk"/>
 <form:label cssClass="form-check-label" path="statusNotOk">
-	Not received</form:label>
+	Not verified</form:label>
 </div>
 <form:select cssClass="form-select form-select-sm ms-auto sort-form" 
 	path="sortBy" style="width: 280px">

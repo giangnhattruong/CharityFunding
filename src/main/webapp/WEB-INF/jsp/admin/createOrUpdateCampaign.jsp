@@ -39,22 +39,24 @@
 	placeholder="Enter campaign title (below 60 characters)"/>
 </div>
 
-<div class="mb-3">
+<div class="row g-3 mb-3">
+<div class="col">
 <form:label path="location" cssClass="form-label lead">
 	Location</form:label>
 <span class="text-danger">*</span>
 <form:input type="text" cssClass="form-control" 
 	id="location" path="location"
-	placeholder="Enter campaign region"/>
+	placeholder="Enter region"/>
 </div>
 
-<div class="mb-3">
+<div class="col">
 <form:label path="targetAmount" cssClass="form-label lead">
 	Target amount</form:label>
 <span class="text-danger">*</span>
 <form:input type="number" step="0.01" cssClass="form-control" 
 	id="targetAmount" path="targetAmount"
 	placeholder="Enter campaign target amount"/>
+</div>
 </div>
 
 <div class="mb-3">
@@ -70,7 +72,7 @@
 <hr class="my-4 d-md-none">
 </div>
 
-<div class="col-md col-lg-5">
+<div class="col-md col-lg-5 border-start-md">
 <div class="mb-3">
 <form:label path="startDate" cssClass="form-label lead">
 	Start date</form:label> 

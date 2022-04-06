@@ -5,9 +5,7 @@
 package com.funix.controller;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -584,15 +581,22 @@ public class AdminController {
 		return mv;
 	}
 
-//	private String getRoute(String url) {
-//		/*
-//		 * if session not contains adminID redirect to landing page
-//		 */
-//		if (false) {
-//			return "redirect:/explore";
-//		}
-//
-//		return url;
-//	}
+	/**
+	 * Redirect to landing page if there is no
+	 * admin user logged in.
+	 * @param url
+	 * @return
+	 */
+	private String getRoute(String url) {
+		/*
+		 * if session not contains user role admin 
+		 * redirect to landing page.
+		 */
+		if (false) {
+			return "redirect:/explore";
+		}
+
+		return url;
+	}
 
 }
