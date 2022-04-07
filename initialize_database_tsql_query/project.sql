@@ -35,7 +35,7 @@ CREATE TABLE userTbl (
 	password varchar(255) NOT NULL,
 	fullname nvarchar(255) NOT NULL,
 	address nvarchar(255),
-	phone char(10),
+	phone varchar(20),
 	userRole int DEFAULT 0,
 	userStatus int DEFAULT 0,
 	dateCreated date DEFAULT GETDATE()
