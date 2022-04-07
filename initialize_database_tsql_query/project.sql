@@ -35,10 +35,10 @@ CREATE TABLE userTbl (
 	password varchar(255) NOT NULL,
 	fullname nvarchar(255) NOT NULL,
 	address nvarchar(255),
-	phone char(10),
-	userRole int DEFAULT 0,
-	userStatus int DEFAULT 0,
-	dateCreated date DEFAULT GETDATE()
+	phone varchar(20),
+	userRole int NOT NULL DEFAULT 0,
+	userStatus int NOT NULL DEFAULT 0,
+	dateCreated date NOT NULL DEFAULT GETDATE()
 )
 GO
 
@@ -49,21 +49,21 @@ CREATE TABLE campaignTbl (
 	targetAmount money NOT NULL,
 	location nvarchar(255) NOT NULL,
 	imgURL varchar(255) NOT NULL,
-	startDate date DEFAULT GETDATE(),
-	endDate date DEFAULT DATEADD(MONTH, 3, GETDATE()),
-	campaignStatus int DEFAULT 1,
-	dateCreated date DEFAULT GETDATE()
+	startDate date NOT NULL DEFAULT GETDATE(),
+	endDate date NOT NULL DEFAULT DATEADD(MONTH, 3, GETDATE()),
+	campaignStatus int NOT NULL DEFAULT 1,
+	dateCreated date NOT NULL DEFAULT GETDATE()
 )
 GO
 
 CREATE TABLE donationHistoryTbl (
 	donationHistoryID int IDENTITY(1, 1) PRIMARY KEY,
-	userID int,
-	campaignID int,
+	userID int NOT NULL,
+	campaignID int NOT NULL,
 	donation money NOT NULL,
-	donationDate date DEFAULT GETDATE(),
-	transactionCode varchar(255),
-	donationStatus int DEFAULT 0,
+	donationDate date NOT NULL DEFAULT GETDATE(),
+	transactionCode varchar(255) NOT NULL,
+	donationStatus int NOT NULL DEFAULT 0,
 	CONSTRAINT FK_history_user FOREIGN KEY(userID) REFERENCES userTbl(userID),
 	CONSTRAINT FK_history_campaign FOREIGN KEY(campaignID) REFERENCES campaignTbl(campaignID)
 )
@@ -134,7 +134,7 @@ AS
 		userStatus != @userStatus
 GO
 
-CREATE OR ALTER PROCEDURE dbo.updateUseruserRole
+CREATE OR ALTER PROCEDURE dbo.updateUserRole
 	@userRole int,
 	@userID int
 AS
