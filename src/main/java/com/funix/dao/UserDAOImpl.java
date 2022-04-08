@@ -38,18 +38,40 @@ public class UserDAOImpl implements IUserDAO {
 	}
 
 	/**
+	 * Check if user existed in database.
+	 * @param email
+	 * @return
+	 */
+	public boolean checkForUser(String email) {
+		String SQL = "SELECT COUNT(*) FROM userTbl "
+				+ "WHERE email = ?";
+		int result = jdbcTemplate.queryForObject(SQL, 
+				Integer.class, email);
+		return result != 0;
+	}
+	
+	/**
 	 * Create new user.
 	 */
 	@Override
-	public void create(User newUser) {
+	public void create(User user) {
 		String SQL = "INSERT INTO userTbl"
 				+ "(email, password, fullname, address, "
 				+ "phone, userRole, userStatus) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
-		jdbcTemplate.update(SQL, newUser.getEmail(), 
-				newUser.getPassword(), newUser.getFullname(), 
-				newUser.getAddress(), newUser.getPhone(), 
-				newUser.getUserRole(), newUser.getUserStatus());
+		
+		/*
+		 * If user role is updated to admin,
+		 * then status must be on
+		 */
+		if (user.getUserRole() == 1) {
+			user.setUserStatus(true);
+		}
+		
+		jdbcTemplate.update(SQL, user.getEmail(), 
+				user.getPassword(), user.getFullname(), 
+				user.getAddress(), user.getPhone(), 
+				user.getUserRole(), user.getUserStatus());
 	}
 
 	/**
@@ -82,30 +104,56 @@ public class UserDAOImpl implements IUserDAO {
 	public List<User> getManyUsers(UserFilter userFilter) {
 		String SQL = "SELECT * FROM dbo.getUserDonationSummary() "
 				+ "WHERE (LOWER(email) LIKE ? OR "
-				+ "LOWER(fullname) LIKE ?) AND "
-				+ "userStatus LIKE ? "
+				+ "LOWER(fullname) LIKE ? OR "
+				+ "phone LIKE ?) AND "
+				+ "userStatus LIKE ? AND "
+				+ "userRole LIKE ? "
 				+ userFilter.getSortByFilter();
 		List<User> userList = jdbcTemplate.query(SQL, 
-				new UserRowMapper(), userFilter.getKeywordFilter(),
+				new UserRowMapper(), 
 				userFilter.getKeywordFilter(),
-				userFilter.getStatusFilter());
+				userFilter.getKeywordFilter(),
+				userFilter.getKeywordFilter(),
+				userFilter.getStatusFilter(),
+				userFilter.getRoleFilter());
 		return userList;
 	}
-
+	
 	/**
-	 * Update an existing user.
+	 * Update an user informations
+	 * except email and password
+	 * (only user, not admin).
 	 */
 	@Override
-	public void update(int userID, User newUser) {
+	public void update(int userID, User user) {
 		String SQL = "UPDATE userTbl "
-				+ "SET email = ?, password = ?, fullname = ?, "
-				+ "address = ?, phone = ?, userRole = ?, userStatus = ? "
-				+ "WHERE userID = ?";
-		jdbcTemplate.update(SQL, newUser.getEmail(),
-				newUser.getPassword(), newUser.getFullname(),
-				newUser.getAddress(), newUser.getPhone(),
-				newUser.getUserRole(), newUser.getUserStatus(),
+				+ "SET fullname = ?, address = ?, phone = ?, "
+				+ "userRole = ?, userStatus = ? "
+				+ "WHERE userID = ? AND userRole = 0";
+		
+		/*
+		 * If user role is updated to admin,
+		 * then status must be on
+		 */
+		if (user.getUserRole() == 1) {
+			user.setUserStatus(true);
+		}
+		
+		jdbcTemplate.update(SQL, user.getFullname(),
+				user.getAddress(), user.getPhone(),
+				user.getUserRole(), user.getUserStatus(),
 				userID);
+	}
+	
+	/**
+	 * Update user password.
+	 */
+	@Override
+	public void update(int userID, String password) {
+		String SQL = "UPDATE userTbl "
+				+ "SET password = ? "
+				+ "WHERE userID = ?";
+		jdbcTemplate.update(SQL, password, userID);
 	}
 
 	/**
@@ -116,6 +164,7 @@ public class UserDAOImpl implements IUserDAO {
 		String SQL = "BEGIN TRANSACTION "
 				+ "DELETE userTbl "
 				+ "WHERE userID IN " + userIDs
+				+ " AND userRole = 0"
 				+ " COMMIT TRANSACTION";
 		jdbcTemplate.update(SQL);
 	}

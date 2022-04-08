@@ -45,6 +45,7 @@
 	
 	<c:forEach varStatus="loopStatus" var="user" items="${userList}">
 	  <tr id="row-${loopStatus.index + 1}">
+	    <c:if test="${user.userRole == 0}">
 	    <td class="text-center"><a class="btn btn-outline-primary"
 	    	href="<c:url value="/admin/users/update/${user.userID}" />">
 	    	<i class="bi bi-pencil-square"></i>Edit</a></td>
@@ -52,6 +53,16 @@
 	    <input class="form-check-input table-row" type="checkbox" 
 	    	name="userIDs" value="${user.userID}">
 	    </td>
+	    </c:if>
+	    <c:if test="${user.userRole > 0}">
+	    <td class="text-center">
+	    <span class="btn btn-outline-success disabled">Admin</span>
+	    </td>
+	    <td class="text-center">
+	    <input class="form-check-input" type="checkbox" 
+	    	name="userIDs" value="${user.userID}" disabled>
+	    </td>
+	    </c:if>
 	    <td>${loopStatus.index + 1}</td>
 	    <td>${user.email}</td>
 	    <td>${user.fullname}</td>

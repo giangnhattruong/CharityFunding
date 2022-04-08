@@ -11,8 +11,8 @@
 <div class="row">
 <div class="col-12 col-md mb-3">
 <form:input cssClass="form-control me-3" type="text" path="keyword"
-	placeholder="Search  for user email or fullname..." 
-	aria-label="search for user email or fullname"/>
+	placeholder="Search by email, fullname or phone number..." 
+	aria-label="search for user email or fullname or phone"/>
 </div>
 </div>
 
@@ -29,6 +29,19 @@
 <form:label cssClass="form-check-label" path="statusInactive">
 	In-active</form:label>
 </div>
+<div class="form-check me-3 mb-3">
+<form:checkbox class="form-check-input" path="roleAdmin"
+	id="roleAdmin"/>
+<form:label cssClass="form-check-label" path="roleAdmin">
+	Admin</form:label>
+</div>
+<div class="form-check me-3 mb-3">
+<form:checkbox class="form-check-input" path="roleUser"
+	id="roleUser"/>
+<form:label cssClass="form-check-label" path="roleUser">
+	User</form:label>
+</div>
+
 <form:select class="form-select form-select-sm ms-auto sort-form" 
 	path="sortBy" style="width: 300px">
   <form:option value="date-desc">

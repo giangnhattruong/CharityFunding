@@ -4,13 +4,18 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+import com.funix.service.PasswordService;
 
 public class Test {
 
 	public static void main(String[] args) {
-		testEmail("abc@test.com");
-		testPassword("sdB123#asf");
-		testPhone("0978523650");
+		System.out.println(PasswordService
+				.generateRandomPassword(2, 3, 2, 2));
 	}
 	
 	public static boolean testEmail(String email) {

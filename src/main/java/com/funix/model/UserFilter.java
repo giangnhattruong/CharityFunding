@@ -32,6 +32,16 @@ public class UserFilter {
 	private boolean statusInactive;
 	
 	/**
+	 * Role of an user admin/user.
+	 */
+	private boolean roleAdmin;
+	
+	/**
+	 * Role of an user admin/user.
+	 */
+	private boolean roleUser;
+	
+	/**
 	 * Order of user records sorted by 
 	 * specific fields in user data table.
 	 */
@@ -44,6 +54,8 @@ public class UserFilter {
 	public UserFilter() {
 		statusActive = true;
 		statusInactive = true;
+		roleAdmin = true;
+		roleUser = true;
 		sortBy = "date-desc";
 	}
 
@@ -61,6 +73,14 @@ public class UserFilter {
 	 */
 	public String getStatusFilter() {
 		return SQLConvert.convertStatus(statusActive, statusInactive);
+	}
+	
+	/**
+	 * Get user role filter string for SQL query.
+	 * @return
+	 */
+	public String getRoleFilter() {
+		return SQLConvert.convertRole(roleAdmin, roleUser);
 	}
 
 	/**
@@ -94,6 +114,22 @@ public class UserFilter {
 
 	public void setStatusInactive(boolean statusInactive) {
 		this.statusInactive = statusInactive;
+	}
+	
+	public boolean getRoleAdmin() {
+		return roleAdmin;
+	}
+
+	public void setRoleAdmin(boolean roleAdmin) {
+		this.roleAdmin = roleAdmin;
+	}
+
+	public boolean isRoleUser() {
+		return roleUser;
+	}
+
+	public void setRoleUser(boolean roleUser) {
+		this.roleUser = roleUser;
 	}
 
 	public String getSortBy() {

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -37,6 +39,7 @@ import com.funix.multipart.CloudinaryImpl;
 import com.funix.multipart.IImageAPI;
 import com.funix.service.Navigation;
 import com.funix.service.NullConvert;
+import com.funix.service.PasswordService;
 import com.funix.service.SQLConvert;
 
 /**
@@ -63,6 +66,13 @@ public class AdminController {
 	 */
 	@Autowired
 	private Cloudinary cloudinary;
+	
+	/**
+	 * Inject PasswordEncoder instance to
+	 * encode password when creating new user. 
+	 */
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	/**
 	 * Main route /admin redirect to 
@@ -173,7 +183,7 @@ public class AdminController {
 	 * @return
 	 */
 	@RequestMapping(value = "campaigns/new", method = RequestMethod.GET)
-	public ModelAndView getCampaignCreateForm(
+	public ModelAndView getCampaignCreatingForm(
 			@ModelAttribute("message") String message, 
 			@ModelAttribute("campaign") Campaign campaign) {
 		ModelAndView mv = new ModelAndView();
@@ -204,7 +214,7 @@ public class AdminController {
 		ModelAndView mv = new ModelAndView();
 		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
 		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource, imageAPI);
-		String message = "";
+		String validatingMessage = "";
 		
 		/*
 		 * All campaign fields is set by Spring binding result,
@@ -217,19 +227,19 @@ public class AdminController {
 		campaign.setStartDate(startDate);
 		campaign.setEndDate(endDate);
 		
-		message = campaignDAO.create(campaign);
+		validatingMessage = campaignDAO.create(campaign);
 		
-		if (message.equals("success")) {
+		if (!validatingMessage.equals("success")) {
 			redirectAttributes
-				.addFlashAttribute("message", 
-						"Campaign has been successfully created.");
-			mv.setViewName("redirect:/admin/campaigns");
+			.addFlashAttribute("message", validatingMessage);
+			redirectAttributes
+				.addFlashAttribute("campaign", campaign);
+			mv.setViewName("redirect:/admin/campaigns/new");
 		} else {
 			redirectAttributes
-				.addFlashAttribute("message", message);
-			redirectAttributes
-			.addFlashAttribute("campaign", campaign);
-			mv.setViewName("redirect:/admin/campaigns/new");
+			.addFlashAttribute("message", 
+					"Campaign has been successfully created.");
+			mv.setViewName("redirect:/admin/campaigns");
 		}
 		
 		return mv;
@@ -249,7 +259,7 @@ public class AdminController {
 	 */
 	@RequestMapping(value = "campaigns/update/{pathID}", 
 			method = RequestMethod.GET)
-	public ModelAndView getCampaignUpdateForm(
+	public ModelAndView getCampaignUpdatingForm(
 			@PathVariable int pathID, 
 			@ModelAttribute("message") String message, 
 			@ModelAttribute("campaign") Campaign campaign, 
@@ -309,7 +319,7 @@ public class AdminController {
 		ModelAndView mv = new ModelAndView();
 		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
 		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource, imageAPI);
-		String message = "";
+		String validatingMessage = "";
 		
 		/*
 		 * All campaign fields is set by Spring binding result,
@@ -321,20 +331,20 @@ public class AdminController {
 		LocalDate endDate = NullConvert.toLocalDate(endDateString);
 		campaign.setStartDate(startDate);
 		campaign.setEndDate(endDate);
-		message = campaignDAO.update(campaignID, campaign);
+		validatingMessage = campaignDAO.update(campaignID, campaign);
 		
-		if (message.equals("success")) {
-			redirectAttributes
-				.addFlashAttribute("message", 
-						"Campaign has been successfully updated.");
-			mv.setViewName("redirect:/admin/campaigns");
-		} else {
+		if (!validatingMessage.equals("success")) {
 			campaign.setCampaignID(campaignID);
 			redirectAttributes
-				.addFlashAttribute("message", message);
+				.addFlashAttribute("message", validatingMessage);
 			redirectAttributes
-			.addFlashAttribute("campaign", campaign);
+				.addFlashAttribute("campaign", campaign);
 			mv.setViewName("redirect:/admin/campaigns/update/" + campaignID);
+		} else {
+			redirectAttributes
+				.addFlashAttribute("message", 
+					"Campaign has been successfully updated.");
+			mv.setViewName("redirect:/admin/campaigns");
 		}
 		
 		return mv;
@@ -422,17 +432,16 @@ public class AdminController {
 	 * @return
 	 */
 	@RequestMapping(value = "users/new", method = RequestMethod.GET)
-	public ModelAndView getUserCreateForm(
+	public ModelAndView getUserCreatingForm(
 			@ModelAttribute("message") String message, 
 			@ModelAttribute("user") User user) {
 		ModelAndView mv = new ModelAndView();
-		user.setPassword("");
-		user.setConfirmPassword("");
 		Navigation.addAdminNavItemMap(mv);
 		mv.addObject("formTitle", "Create");
 		mv.addObject("formAction", "/admin/users/new");
 		mv.addObject("user", user);
 		mv.setViewName(getRoute("admin/createOrUpdateUser"));
+		
 		return mv;
 	}
 
@@ -454,20 +463,32 @@ public class AdminController {
 		    RedirectAttributes redirectAttributes)  {
 		ModelAndView mv = new ModelAndView();
 		IUserDAO userDAO = new UserDAOImpl(dataSource);
-		String message = user.validate();
+		String validatingMessage = user.validate();
+		String randomPassword = PasswordService
+				.generateRandomPassword();
+		user.setPassword(passwordEncoder, randomPassword);
 		
-		if (message.equals("success")) {
+		// Send randomPassword to user email...
+		
+		if(userDAO.checkForUser(user.getEmail())) {
+			redirectAttributes
+				.addFlashAttribute("message", "Please sign up with "
+					+ "a different email. This email have already existed.");
+			redirectAttributes
+				.addFlashAttribute("user", user);
+			mv.setViewName("redirect:/admin/users/new");
+		} else if (!validatingMessage.equals("success")) {
+			redirectAttributes
+				.addFlashAttribute("message", validatingMessage);
+			redirectAttributes
+				.addFlashAttribute("user", user);
+			mv.setViewName("redirect:/admin/users/new");
+		} else {
 			userDAO.create(user);
 			redirectAttributes
 				.addFlashAttribute("message", 
 						"User has been successfully created.");
 			mv.setViewName("redirect:/admin/users");
-		} else {
-			redirectAttributes
-				.addFlashAttribute("message", message);
-			redirectAttributes
-			.addFlashAttribute("user", user);
-			mv.setViewName("redirect:/admin/users/new");
 		}
 		
 		return mv;
@@ -486,7 +507,7 @@ public class AdminController {
 	 */
 	@RequestMapping(value = "users/update/{pathID}", 
 			method = RequestMethod.GET)
-	public ModelAndView getUserUpdateForm(
+	public ModelAndView getUserUpdatingForm(
 			@PathVariable int pathID, 
 			@ModelAttribute("message") String message, 
 			@ModelAttribute("user") User user) {
@@ -532,21 +553,21 @@ public class AdminController {
 		    RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView();
 		IUserDAO userDAO = new UserDAOImpl(dataSource);
-		String message = user.validate();
+		String validatingMessage = user.validate();
 
-		if (message.equals("success")) {
+		if (!validatingMessage.equals("success")) {
+			user.setUserID(userID);
+			redirectAttributes
+				.addFlashAttribute("message", validatingMessage);
+			redirectAttributes
+			.addFlashAttribute("user", user);
+			mv.setViewName("redirect:/admin/users/update/" + userID);
+		} else {
 			userDAO.update(userID, user);
 			redirectAttributes
 				.addFlashAttribute("message", 
 						"User has been successfully updated.");
 			mv.setViewName("redirect:/admin/users");
-		} else {
-			user.setUserID(userID);
-			redirectAttributes
-				.addFlashAttribute("message", message);
-			redirectAttributes
-			.addFlashAttribute("user", user);
-			mv.setViewName("redirect:/admin/users/update/" + userID);
 		}
 		
 		return mv;

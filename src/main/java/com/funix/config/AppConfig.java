@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -62,7 +64,7 @@ public class AppConfig implements WebMvcConfigurer {
 	}
 	
 	/**
-	 * Set multipart resolver to handle multipart
+	 * Set CommonsMultipartResolver bean to handle multipart.
 	 * from client.
 	 * @return
 	 */
@@ -73,6 +75,15 @@ public class AppConfig implements WebMvcConfigurer {
 		multipartResolver.setMaxUploadSize(5242880);
 		multipartResolver.setDefaultEncoding("UTF-8");
 		return multipartResolver;
+	}
+	
+	/**
+	 * Set PasswordEncoder bean to encode password.
+	 * @return
+	 */
+	@Bean
+	public PasswordEncoder encoder() {
+		return new BCryptPasswordEncoder();
 	}
 	
 	/**

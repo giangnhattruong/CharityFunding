@@ -49,6 +49,27 @@ public class SQLConvert {
 	}
 	
 	/**
+	 * Convert role inputs to string which
+	 * can be used in SQL "LIKE" operator.
+	 * @param roleAdmin
+	 * @param roleUser
+	 * @return
+	 */
+	public static String convertRole(boolean roleAdmin, boolean roleUser) {
+		String role = "";
+		
+		if (roleAdmin == true && roleUser == true) {
+			role = "%%";
+		} else if (roleAdmin == true && roleUser == false) {
+			role = "%1%";
+		} else if (roleAdmin == false && roleUser == true) {
+			role = "%0%";
+		}
+		
+		return role;
+	}
+	
+	/**
 	 * Convert sortBy inputs from campaign search form
 	 * to string which can be used in SQL "ORDER BY" clause.
 	 * @param sortBy

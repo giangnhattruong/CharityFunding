@@ -19,6 +19,13 @@ import com.funix.model.UserFilter;
 public interface IUserDAO {
 	
 	/**
+	 * Check if user existed in database.
+	 * @param email
+	 * @return
+	 */
+	boolean checkForUser(String email);
+	
+	/**
 	 * Create a new user in database.
 	 * @param newUser
 	 */
@@ -50,6 +57,11 @@ public interface IUserDAO {
 	 * @param newUser
 	 */
 	void update(int userID, User newUser);
+
+	/**
+	 * Update user password.
+	 */
+	void update(int userID, String password);
 	
 	/**
 	 * Delete an existing user in database.

@@ -29,16 +29,43 @@
 
 <div class="row g-md-5 mb-3">
 <div class="col-md col-lg-5 offset-lg-1">
+
 <div class="mb-3">
 <form:label path="email" cssClass="form-label lead">
 	Email</form:label>
+<c:if test="${formTitle == 'Create'}">
 <span class="text-danger">*</span>
-<form:input type="text" cssClass="form-control" 
-	id="email" path="email"
-	placeholder="Enter your email address"/>
+<form:input type="text" id="email" path="email" 
+	placeholder="Enter your email address"
+	cssClass="form-control"/>
+</c:if>
+
+<c:if test="${formTitle == 'Update'}">
+<input type="text" id="email" name="email" 
+	value="${user.email}"
+	class="form-control-plaintext" readonly/>
+</c:if>
 </div>
 
 <div class="mb-3">
+<form:label path="fullname" cssClass="form-label lead">
+	Full-name</form:label>
+<span class="text-danger">*</span>
+<form:input type="text" cssClass="form-control" 
+	id="fullname" path="fullname"
+	placeholder="Enter your fullname"/>
+</div>
+
+<div class="mb-3">
+<form:label path="phone" cssClass="form-label lead">
+	Phone number</form:label>
+<span class="text-danger">*</span>
+<form:input type="text" cssClass="form-control" 
+	id="phone" path="phone"
+	placeholder="Enter your phone number"/>
+</div>
+
+<%-- <div class="mb-3">
 <form:label path="password" cssClass="form-label lead">
 	Password</form:label>
 <span class="text-danger">*</span>
@@ -72,21 +99,20 @@
 	<li><span class="small text-muted">
 		A minimum of 1 digit (0-9).</span></li>
 </ul>
-</div>
+</div> --%>
 
 <hr class="my-4 d-md-none">
 </div>
 
 <div class="col-md col-lg-5 border-start-md">
-
+<%-- <c:if test="${formTitle == 'Create'}">
 <div class="mb-3">
-<form:label path="fullname" cssClass="form-label lead">
-	Full-name</form:label>
-<span class="text-danger">*</span>
-<form:input type="text" cssClass="form-control" 
-	id="fullname" path="fullname"
-	placeholder="Enter your fullname"/>
+<label class="form-label lead">
+	Password</label>
+<input type="password" class="form-control" 
+	name="showOnly" value="${user.password}" readonly>
 </div>
+</c:if> --%>
 
 <div class="mb-3">
 <form:label path="address" cssClass="form-label lead">
@@ -94,14 +120,6 @@
 <form:input type="text" cssClass="form-control" 
 	id="address" path="address"
 	placeholder="Enter your address"/>
-</div>
-
-<div class="mb-3">
-<form:label path="phone" cssClass="form-label lead">
-	Phone number</form:label>
-<form:input type="text" cssClass="form-control" 
-	id="phone" path="phone"
-	placeholder="Enter your phone number"/>
 </div>
 
 <hr class="my-4">
@@ -131,7 +149,6 @@ href="<c:url value="/admin/users" />">Return</a>
 <input id="submitButton" class="btn btn-primary btn-lg px-5 me-3" 
 	type="submit" value="Submit">
 </div>
-
 </form:form>
 </div>
 

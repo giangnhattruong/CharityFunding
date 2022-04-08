@@ -32,10 +32,10 @@ END
 CREATE TABLE userTbl (
 	userID int IDENTITY(1, 1) PRIMARY KEY,
 	email varchar(255) UNIQUE NOT NULL,
-	password varchar(255) NOT NULL,
+	password char(60) NOT NULL,
 	fullname nvarchar(255) NOT NULL,
 	address nvarchar(255),
-	phone varchar(20),
+	phone char(10) NOT NULL,
 	userRole int DEFAULT 0,
 	userStatus int DEFAULT 0,
 	dateCreated date DEFAULT GETDATE()
