@@ -2,14 +2,16 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<div class="container-fluid rounded box-inset-shadow">
 <c:choose>
 <c:when test="${historyList.size() == 0}">
 <h3>No record found.</h3>
 </c:when>
 <c:otherwise>
 <div class="table-responsive">
-<table style="width: 1500px" class="table table-fixed table-hover table-sm">
-    <thead>
+<table style="width: 1500px" 
+		class="table table-borderless table-fixed table-hover table-sm">
+    <thead class="bottom-shadow">
       <tr>
         <th scope="col">No</th>
         <th scope="col">User email</th>
@@ -23,7 +25,6 @@
       </tr>
     </thead>
 	<tbody>
-	
 	<c:forEach varStatus="loopStatus" var="history" items="${historyList}">
 	  <tr id="row-${loopStatus.index + 1}">
 	    <td>${loopStatus.index + 1}</td>
@@ -50,3 +51,4 @@
 
 <script defer src="<c:url value="/resources/assets/js/pagination.js"/>">
 </script>
+</div>

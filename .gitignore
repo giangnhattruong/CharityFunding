@@ -1,3 +1,4 @@
 /build/
 /target/
 /src/main/java/com/funix/config/CloudinaryConfig.java
+/src/main/java/com/funix/config/JavaMailConfig.java

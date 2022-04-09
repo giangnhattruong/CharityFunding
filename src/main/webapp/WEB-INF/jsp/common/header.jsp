@@ -45,4 +45,4 @@
 	<c:param name="navItemMap">${navItemMap}</c:param>
 </c:import>
 
-<main id="main-body" class="p-5">
+<main id="main-body">

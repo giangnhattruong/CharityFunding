@@ -2,12 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<div class="container-fluid rounded box-inset-shadow">
 <div class="d-flex justify-content-start pt-3">
-<a class="btn btn-success me-3 mb-3"
+<a class="btn btn-light me-3 mb-3 button-shadow"
 	href="<c:url value="/admin/campaigns/new" />">
 	<i class="bi bi-plus-circle"></i>
 	Add new campaign</a>
-<button id="deleteBtn" class="btn btn-danger mb-3 d-none">
+<button id="deleteBtn" class="btn btn-outline-danger mb-3 d-none button-shadow">
 	<i class="bi bi-trash"></i>
 	Remove selected campaign(s)</button>
 </div>
@@ -21,8 +22,8 @@
 <form method="post" id="deleteForm"
 	action="<c:url value="/admin/campaigns/delete" />">
 <table style="width: 1500px" 
-		class="table table-fixed table-hover table-sm">
-    <thead>
+		class="table table-borderless table-fixed table-hover table-sm">
+    <thead class="bottom-shadow">
       <tr>
         <th scope="col"></th>
         <th scope="col">
@@ -42,16 +43,16 @@
       </tr>
     </thead>
 	<tbody>
-	
 	<c:forEach varStatus="loopStatus" 
 		var="campaign" items="${campaignList}">
 	  <tr id="row-${loopStatus.index + 1}">
-	    <td class="text-center"><a class="btn btn-outline-primary"
+	    <td class="text-center"><a class="btn btn-outline-secondary"
 	    	href="<c:url value="/admin/campaigns/update/${campaign.campaignID}" />">
 	    	<i class="bi bi-pencil-square"></i>Edit</a></td>
 	    <td class="text-center">
 	    <input class="form-check-input table-row" type="checkbox" 
-	    	name="campaignIDs" value="${campaign.campaignID}">
+	    	name="campaignIDs" data-info="${campaign.title}"
+	    	value="${campaign.campaignID}">
 	    </td>
 	    <td>${loopStatus.index + 1}</td>
 	    <td>${campaign.title}</td>
@@ -81,3 +82,4 @@
 </script>
 <script defer src="<c:url value="/resources/assets/js/pagination.js"/>">
 </script>
+</div>

@@ -15,6 +15,26 @@
 	cursor: pointer;
 }
 
+.page-item .page-link {
+	color: #41464b;
+}
+
+.page-item.active .page-link {
+	background-color: rgb(0 0 0 / 20%);
+	border-color: rgb(0 0 0 / 20%);
+}
+
+.btn-light:hover {
+    color: #f9fafb;
+    background-color: #41464b;
+    border-color: #41464b;
+}
+
+.form-check-input:checked {
+    background-color: rgb(0 0 0 / 30%);
+    border-color: rgb(0 0 0 / 30%);
+}
+
 .my-modal {
 	display: none;
 	position: fixed;
@@ -28,6 +48,59 @@
 
 .notify-modal {
 	display: block;
+}
+
+.dashboard {
+	background: rgb(0,0,0);
+	background: linear-gradient(0deg, rgba(0,0,0,0.12) 0%, 
+		rgba(205,205,205,0.03) 50%, rgba(0,0,0,0.18) 100%);
+}
+
+.shadow {
+  box-shadow: 3px 3px 5px 6px #ccc;
+}
+
+.box-inset-shadow {
+	box-shadow: inset 0 0 10px #000000;
+	padding: 12px;
+}
+
+.bottom-shadow {
+    box-shadow: 0 8px 6px -6px #000000;
+}
+
+.button-shadow {
+	box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, 
+	rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, 
+	rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.otto {
+  color: white;
+  text-shadow: 0 1px 0 #ccc,
+               0 2px 0 #c9c9c9,
+               0 3px 0 #bbb,
+               0 4px 0 #b9b9b9,
+               0 5px 0 #aaa,
+               0 6px 1px rgba(0,0,0,.1),
+               0 0 5px rgba(0,0,0,.1),
+               0 1px 3px rgba(0,0,0,.3),
+               0 3px 5px rgba(0,0,0,.2),
+               0 5px 10px rgba(0,0,0,.25),
+               0 10px 10px rgba(0,0,0,.2),
+               0 20px 20px rgba(0,0,0,.15);
+}
+
+.glow {
+  color: #444;
+  text-shadow: 
+    1px 0px 1px #ccc, 0px 1px 1px #eee, 
+    2px 1px 1px #ccc, 1px 2px 1px #eee,
+    3px 2px 1px #ccc, 2px 3px 1px #eee,
+    4px 3px 1px #ccc, 3px 4px 1px #eee,
+    5px 4px 1px #ccc, 4px 5px 1px #eee,
+    6px 5px 1px #ccc, 5px 6px 1px #eee,
+    7px 6px 1px #ccc;
 }
 
 @media (min-width: 768px) {

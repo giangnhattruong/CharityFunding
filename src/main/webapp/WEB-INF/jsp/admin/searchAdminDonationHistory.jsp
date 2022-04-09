@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<div id="search" class="container p-5 mb-5 border-bottom border-success">
+<div id="search" class="container p-5 mb-5 button-shadow">
 <form:form id="search-campaigns" method="POST" 
 	cssClass="search-form"
 	modelAttribute="filter"
@@ -65,7 +65,7 @@
 </div>
 
 <div class="d-flex justify-content-center mt-3">
-<input type="submit" class="btn btn-success me-3 px-5" 
+<input type="submit" class="btn btn-outline-secondary me-3 px-5" 
 	value="Search">
 <span id="resetSearchButton" class="btn btn-secondary me-3 px-5">Reset</span>
 </div>

@@ -11,7 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -44,7 +45,7 @@ import com.funix.service.SQLConvert;
 
 /**
  * Handle all routes for admin manage pages.
- * @author HP
+ * @author Giang_Nhat_Truong
  *
  */
 @Controller
@@ -52,27 +53,33 @@ import com.funix.service.SQLConvert;
 public class AdminController {
 	
 	/**
-	 * Inject DataSource instance and then
-	 * inject the instance to initialize
-	 * DAO objects.
+	 * DataSource for initializing
+	 * DAO objects and manipulating
+	 * data in the database.
 	 */
 	@Autowired
 	private DataSource dataSource;
 	
 	/**
-	 * Inject Cloudinary instance and then
-	 * inject the instance to initialize
-	 * ImageAPI objects.
+	 * Cloudinary for initializing
+	 * ImageAPI objects and manipulating
+	 * images on Cloudinary server.
 	 */
 	@Autowired
 	private Cloudinary cloudinary;
 	
 	/**
-	 * Inject PasswordEncoder instance to
-	 * encode password when creating new user. 
+	 * PasswordEncoder for encoding
+	 * password when creating new user. 
 	 */
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	/**
+	 * JavaMailSender for sending email.
+	 */
+	@Autowired
+	private JavaMailSender emailSender;
 	
 	/**
 	 * Main route /admin redirect to 

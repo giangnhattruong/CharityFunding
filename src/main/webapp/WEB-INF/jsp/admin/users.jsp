@@ -4,13 +4,16 @@
 
 <c:import url="/WEB-INF/jsp/common/header.jsp"></c:import>
 
-<h1 class="display-5 text-center">Users</h1>
-
+<div class="box-inset-shadow dashboard py-5 mx-3">
+<h1 class="display-5 text-center glow mb-5">Users</h1>
 <c:import url="/WEB-INF/jsp/admin/searchUsers.jsp"></c:import>
-
 <c:import url="/WEB-INF/jsp/admin/userTable.jsp"></c:import>
+</div>
 
-<c:import url="/WEB-INF/jsp/common/confirmDeleteModal.jsp"></c:import>
+<c:import url="/WEB-INF/jsp/common/confirmActionModal.jsp">
+	<c:param name="action">delete</c:param>
+	<c:param name="itemLabel">user</c:param>
+</c:import>
 
 <c:if test="${message != null && message != ''}">
 <c:import url="/WEB-INF/jsp/common/notifyModal.jsp"></c:import>

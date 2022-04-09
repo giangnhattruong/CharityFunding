@@ -2,12 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<div class="container-fluid rounded box-inset-shadow">
 <div class="d-flex justify-content-start pt-3">
-<a class="btn btn-success me-3 mb-3"
+<a class="btn btn-light me-3 mb-3 button-shadow"
 	href="<c:url value="/admin/users/new" />">
 	<i class="bi bi-plus-circle"></i>
 	Add new user</a>
-<button id="deleteBtn" class="btn btn-danger mb-3 d-none">
+<button id="deleteBtn" class="btn btn-outline-danger mb-3 d-none button-shadow">
 	<i class="bi bi-trash"></i>
 	Remove selected user(s)</button>
 </div>
@@ -20,8 +21,9 @@
 <div class="table-responsive">
 <form method="post" id="deleteForm"
 	action="<c:url value="/admin/users/delete" />">
-<table style="width: 1500px" class="table table-fixed table-hover table-sm">
-    <thead>
+<table style="width: 1500px" 
+		class="table table-borderless table-fixed table-hover table-sm">
+    <thead class="bottom-shadow">
       <tr>
         <th scope="col"></th>
         <th scope="col">
@@ -46,17 +48,18 @@
 	<c:forEach varStatus="loopStatus" var="user" items="${userList}">
 	  <tr id="row-${loopStatus.index + 1}">
 	    <c:if test="${user.userRole == 0}">
-	    <td class="text-center"><a class="btn btn-outline-primary"
+	    <td class="text-center"><a class="btn btn-outline-secondary"
 	    	href="<c:url value="/admin/users/update/${user.userID}" />">
 	    	<i class="bi bi-pencil-square"></i>Edit</a></td>
 	    <td class="text-center">
 	    <input class="form-check-input table-row" type="checkbox" 
-	    	name="userIDs" value="${user.userID}">
+	    	name="userIDs" data-info="${user.email}"
+	    	value="${user.userID}">
 	    </td>
 	    </c:if>
 	    <c:if test="${user.userRole > 0}">
 	    <td class="text-center">
-	    <span class="btn btn-outline-success disabled">Admin</span>
+	    <span class="btn btn-outline-info disabled">Admin</span>
 	    </td>
 	    <td class="text-center">
 	    <input class="form-check-input" type="checkbox" 
@@ -92,3 +95,4 @@
 </script>
 <script defer src="<c:url value="/resources/assets/js/pagination.js"/>">
 </script>
+</div>
