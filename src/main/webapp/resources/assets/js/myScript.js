@@ -20,7 +20,6 @@ const appendDataInfoToModal = function() {
 	
 	$(".table-row").each(function() {
 		if ($(this).is(":checked")) {
-			console.log($(this).attr("data-info"))
 			const td1 = $("<td>").text(++count);
 			const td2 = $("<td>").text($(this).attr("data-info"));
 			const tableRow = $("<tr>").append(td1).append(td2);
@@ -34,17 +33,33 @@ const removeDataFromModal = function() {
 	$(".modal-body table").empty();
 }
 
-// Show confirm delete model when user click on delete button
+// Show confirm action model when user click on delete button.
 $("#deleteBtn").on("click", function(e) {
 	e.preventDefault();
 	appendDataInfoToModal();
-	$(".confirm-delete-modal").show();
+	$("#modalAction, #modalActionBtn").text("Delete");
+	$(".confirm-action-modal").show();
 })
 
-// Proceed submit form to delete when user click on confirm delete button
+// Show confirm action model when user click on reset passwords button.
+$("#resetPasswordsBtn").on("click", function(e) {
+	e.preventDefault();
+	appendDataInfoToModal();
+	$("#modalAction, #modalActionBtn").text("Reset passwords");
+	$(".confirm-action-modal").show();
+})
+
+// Proceed submit form to delete when user click on confirm delete button.
 $("#modal-action-btn").on("click", function() {
-	$("#deleteForm").submit();
-	$(".confirm-delete-modal").hide();
+	if ($("#modalAction").text() === "Reset passwords") {
+		let action = $("#actionForm").attr("action");
+		let newAction = action.replace("delete", "reset-passwords");
+		$("#actionForm").attr("action", newAction);
+	}
+	
+	$("#actionForm").submit();
+	$(".confirm-action-modal").hide();
+	removeDataFromModal();
 })
 
 // Hide model when user click on close/return button

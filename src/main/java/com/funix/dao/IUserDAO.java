@@ -52,14 +52,37 @@ public interface IUserDAO {
 	List<User> getManyUsers(UserFilter userFilter);
 
 	/**
+	 * Check if a user is admin.
+	 * @param userID
+	 * @return
+	 */
+	boolean isAdmin(int userID);
+
+	/**
+	 * Get user email.
+	 * @param userID
+	 * @return
+	 */
+	String getUserEmail(int userID);
+	
+	/**
 	 * Update an existing user in database.
 	 * @param userID
 	 * @param newUser
 	 */
 	void update(int userID, User newUser);
+	
+	/**
+	 * Get user password.
+	 * @param userID
+	 * @return
+	 */
+	String getUserPassword(int userID);
 
 	/**
 	 * Update user password.
+	 * @param userID
+	 * @param password
 	 */
 	void update(int userID, String password);
 	
@@ -68,4 +91,5 @@ public interface IUserDAO {
 	 * @param userIDs
 	 */
 	void delete(String userIDs);
+	
 }

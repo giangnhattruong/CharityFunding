@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.funix.service.Navigation;
+
 /**
  * Handle DataAccessException Controller.
  * @author Giang_Nhat_Truong
@@ -36,6 +38,7 @@ public class DataAccessExceptionAdvice {
     		HttpServletResponse response) {
  
         ModelAndView modelAndView = new ModelAndView("main/error");
+        Navigation.addMainNavItemMap(modelAndView);
         modelAndView.getModel().put("message", "There is something wrong with "
         		+ "our server, please try again.");
         exc.printStackTrace();

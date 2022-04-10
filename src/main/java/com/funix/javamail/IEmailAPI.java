@@ -17,7 +17,16 @@ public interface IEmailAPI {
 	 * and an new account verifying URL.
 	 * @param password
 	 * @param URL
+	 * @param email
 	 */
-	void sendAccountVerifingMessage(String password, String URL, String email);
+	void sendVerifingMessage(String password, String URL, String email);
 	
+	/**
+	 * Send to user an message with 
+	 * user new auto-generated password.
+	 * @param password
+	 * @param email
+	 */
+	void sendNewPassword(String password, String email);
+		
 }

@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -30,6 +29,8 @@ import com.funix.dao.ICampaignDAO;
 import com.funix.dao.IDonationHistoryDAO;
 import com.funix.dao.IUserDAO;
 import com.funix.dao.UserDAOImpl;
+import com.funix.javamail.EmailAPIImpl;
+import com.funix.javamail.IEmailAPI;
 import com.funix.model.Campaign;
 import com.funix.model.CampaignFilter;
 import com.funix.model.DonationHistory;
@@ -44,7 +45,7 @@ import com.funix.service.PasswordService;
 import com.funix.service.SQLConvert;
 
 /**
- * Handle all routes for admin manage pages.
+ * Handle all routes for admin managing pages.
  * @author Giang_Nhat_Truong
  *
  */
@@ -517,7 +518,8 @@ public class AdminController {
 	public ModelAndView getUserUpdatingForm(
 			@PathVariable int pathID, 
 			@ModelAttribute("message") String message, 
-			@ModelAttribute("user") User user) {
+			@ModelAttribute("user") User user,
+			RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView();
 		IUserDAO userDAO = new UserDAOImpl(dataSource);
 		int userID = pathID;
@@ -531,12 +533,22 @@ public class AdminController {
 			user = userDAO.getUser(userID);
 		}
 		
-		Navigation.addAdminNavItemMap(mv);
-		mv.addObject("formTitle", "Update");
-		mv.addObject("formAction", 
-				"/admin/users/update/" + userID);
-		mv.addObject("user", user);
-		mv.setViewName(getRoute("admin/createOrUpdateUser"));
+		/*
+		 * Check if user is admin, then notify error,
+		 * otherwise, proceed to render form.
+		 */
+		if (user.getUserRole() > 0) {
+			redirectAttributes.addFlashAttribute("message", 
+					"Editing other admin's informations is not allowed.");
+			mv.setViewName("redirect:/admin/users");
+		} else {
+			Navigation.addAdminNavItemMap(mv);
+			mv.addObject("formTitle", "Update");
+			mv.addObject("formAction", 
+					"/admin/users/update/" + userID);
+			mv.addObject("user", user);
+			mv.setViewName(getRoute("admin/createOrUpdateUser"));
+		}
 		
 		return mv;
 	}
@@ -562,7 +574,11 @@ public class AdminController {
 		IUserDAO userDAO = new UserDAOImpl(dataSource);
 		String validatingMessage = user.validate();
 
-		if (!validatingMessage.equals("success")) {
+		if (userDAO.isAdmin(userID)) {
+			redirectAttributes
+				.addFlashAttribute("message", "This action is forbidden!");
+			mv.setViewName("redirect:/admin/users");
+		} else if (!validatingMessage.equals("success")) {
 			user.setUserID(userID);
 			redirectAttributes
 				.addFlashAttribute("message", validatingMessage);
@@ -606,6 +622,54 @@ public class AdminController {
 		redirectAttrs.addFlashAttribute("message", message);
 		mv.setViewName("redirect:/admin/users");
 
+		return mv;
+	}
+	
+	/**
+	 * Handle reset password for many users.
+	 * @param request
+	 * @param redirectAttrs
+	 * @return
+	 */
+	@RequestMapping(value = "users/reset-passwords", method = RequestMethod.POST)
+	public ModelAndView resetUserPasswords(
+			HttpServletRequest request,
+			RedirectAttributes redirectAttrs) {
+		ModelAndView mv = new ModelAndView();
+		IUserDAO userDAO = new UserDAOImpl(dataSource);
+		IEmailAPI emailAPI = new EmailAPIImpl(emailSender);
+		String message = "";
+		String[] userIDArray = request.getParameterValues("userIDs");
+		
+		/**
+		 * Check if there are users selected, then check if user
+		 * is not an admin, generate a random password, encode this
+		 * password, update user new encoded password and send 
+		 * the new password to user email.
+		 */
+		if (userIDArray != null) {
+			for (String userIDString: userIDArray) {
+				int userID = NullConvert.toInt(userIDString);
+				
+				if (!userDAO.isAdmin(userID)) {
+					String email = userDAO.getUserEmail(userID);
+					String randomPassword = PasswordService
+							.generateRandomPassword();
+					String encodedPassword = passwordEncoder
+							.encode(randomPassword);
+					userDAO.update(userID, encodedPassword);
+					emailAPI.sendNewPassword(randomPassword, email);
+				}
+			}
+			
+			message = "All passwords were changed.";
+		} else {
+			message = "Change password failed. No items selected.";
+		}
+		
+		redirectAttrs.addFlashAttribute("message", message);
+		mv.setViewName("redirect:/admin/users");
+		
 		return mv;
 	}
 

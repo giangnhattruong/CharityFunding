@@ -19,7 +19,7 @@
 </c:when>
 <c:otherwise>
 <div class="table-responsive">
-<form method="post" id="deleteForm"
+<form method="post" id="actionForm"
 	action="<c:url value="/admin/campaigns/delete" />">
 <table style="width: 1500px" 
 		class="table table-borderless table-fixed table-hover table-sm">

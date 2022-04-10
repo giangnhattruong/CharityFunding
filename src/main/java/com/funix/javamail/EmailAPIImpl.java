@@ -4,13 +4,15 @@
 
 package com.funix.javamail;
 
+import javax.mail.Message;
+
 /**
  * EmailAPI for sending email to user.
  */
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
-public class EmailAPI implements IEmailAPI {
+public class EmailAPIImpl implements IEmailAPI {
 
 	/**
 	 * JavaMailSender which is configured
@@ -23,7 +25,7 @@ public class EmailAPI implements IEmailAPI {
 	 * Default constructor
 	 * @param emailSender
 	 */
-	public EmailAPI(JavaMailSender emailSender) {
+	public EmailAPIImpl(JavaMailSender emailSender) {
 		this.emailSender = emailSender;
 	}
 	
@@ -32,12 +34,21 @@ public class EmailAPI implements IEmailAPI {
 	 * new auto-generated password and a account verifying URL. 
 	 */
 	@Override
-	public void sendAccountVerifingMessage(String password, String URL, String email) {
+	public void sendVerifingMessage(String password, String URL, String email) {
+
+	}
+
+	/**
+	 * Send to user email a new auto-generated password.. 
+	 */
+	@Override
+	public void sendNewPassword(String password, String email) {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setFrom("noreply@charityfunding.com");
-		mailMessage.setTo("truonggnfx13372@funix.edu.vn");
+		mailMessage.setTo(email);
 		mailMessage.setSubject("Test from Spring Mail");
-		mailMessage.setText("Nothing, just a test.");
+		mailMessage.setText("Your password has been reset. "
+				+ "Please login with your new password: " + password);
 		emailSender.send(mailMessage);
 	}
 

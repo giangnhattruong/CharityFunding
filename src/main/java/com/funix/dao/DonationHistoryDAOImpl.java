@@ -108,7 +108,7 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 				+ "(LOWER(title) LIKE ? OR LOWER(location) LIKE ?) AND "
 				+ "transactionCode LIKE ? AND "
 				+ "donationStatus LIKE ? AND "
-				+ "userID = ?"
+				+ "userID = ? "
 				+ filter.getSortByFilter();
 		return jdbcTemplate
 				.query(SQL, new DonationHistoryRowMapper(), 

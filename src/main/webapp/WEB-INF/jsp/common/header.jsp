@@ -41,8 +41,6 @@
 </head>
 <body class="vh-100 d-flex flex-column justify-content-between">
 
-<c:import url="/WEB-INF/jsp/common/navbar.jsp">
-	<c:param name="navItemMap">${navItemMap}</c:param>
-</c:import>
+<c:import url="/WEB-INF/jsp/common/navbar.jsp"></c:import>
 
 <main id="main-body">

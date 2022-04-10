@@ -8,9 +8,12 @@
 	href="<c:url value="/admin/users/new" />">
 	<i class="bi bi-plus-circle"></i>
 	Add new user</a>
-<button id="deleteBtn" class="btn btn-outline-danger mb-3 d-none button-shadow">
+<button id="deleteBtn" class="btn btn-outline-danger me-3 mb-3 d-none button-shadow">
 	<i class="bi bi-trash"></i>
 	Remove selected user(s)</button>
+<button id="resetPasswordsBtn" class="btn btn-outline-info mb-3 d-none button-shadow">
+	<i class="bi bi-arrow-clockwise"></i>
+	Reset passwords</button>
 </div>
 
 <c:choose>
@@ -19,7 +22,7 @@
 </c:when>
 <c:otherwise>
 <div class="table-responsive">
-<form method="post" id="deleteForm"
+<form method="post" id="actionForm"
 	action="<c:url value="/admin/users/delete" />">
 <table style="width: 1500px" 
 		class="table table-borderless table-fixed table-hover table-sm">

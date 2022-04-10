@@ -4,7 +4,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <div id="search" class="container p-5 mb-5 button-shadow">
-<form:form id="search-campaigns" method="POST" 
+<form:form id="search-history" method="POST" 
 	cssClass="search-form"
 	modelAttribute="filter"
 	action="donation-history" >

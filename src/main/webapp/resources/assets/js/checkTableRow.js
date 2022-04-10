@@ -8,7 +8,7 @@ $("#selectOrDeselectAll").on("change", function() {
 	}
 })
 
-// Only show the delete button when at least one of the row is checked
+// Only show the delete and reset passwords button when at least one of the row is checked
 $("#selectOrDeselectAll, .table-row").on("change", function() {
 	let isRowChecked = false;
 	
@@ -19,8 +19,8 @@ $("#selectOrDeselectAll, .table-row").on("change", function() {
 	})
 	
 	if (isRowChecked) {
-		$("#deleteBtn").removeClass("d-none");
+		$("#deleteBtn, #resetPasswordsBtn").removeClass("d-none");
 	} else {
-		$("#deleteBtn").addClass("d-none");
+		$("#deleteBtn, #resetPasswordsBtn").addClass("d-none");
 	}
 })

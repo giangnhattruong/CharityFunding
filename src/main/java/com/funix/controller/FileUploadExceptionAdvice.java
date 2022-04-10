@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.funix.service.Navigation;
+
 /**
  * Handle Max Upload Size Exceeded Exception Controller.
  * @author Giang_Nhat_Truong
@@ -36,6 +38,7 @@ public class FileUploadExceptionAdvice {
       HttpServletResponse response) {
  
         ModelAndView modelAndView = new ModelAndView("main/error");
+        Navigation.addMainNavItemMap(modelAndView);
         modelAndView.getModel().put("message", "File exceeds the limit!");
         return modelAndView;
     }

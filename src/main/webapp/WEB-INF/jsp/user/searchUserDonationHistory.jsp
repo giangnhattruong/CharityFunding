@@ -3,8 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<div id="search" class="container p-5 mb-5 border-bottom border-success">
-<form:form id="search-campaigns" method="post" 
+<div id="search" class="container p-5 mb-5 button-shadow">
+<form:form id="search-history" method="POST" 
 	cssClass="search-form"
 	modelAttribute="filter"
 	action="donation-history" >
@@ -26,35 +26,39 @@
 <form:checkbox cssClass="form-check-input" path="statusOk"
 	id="statusOk"/>
 <form:label cssClass="form-check-label" path="statusOk">
-	Delivered</form:label>
+	Verified</form:label>
 </div>
 <div class="form-check me-3 mb-3">
 <form:checkbox cssClass="form-check-input" path="statusNotOk"
 	id="statusNotOk"/>
 <form:label cssClass="form-check-label" path="statusNotOk">
-	Not delivered</form:label>
+	Not verified</form:label>
 </div>
-<form:select class="form-select form-select-sm ms-auto sort-form" 
+<form:select cssClass="form-select form-select-sm ms-auto sort-form" 
 	path="sortBy" style="width: 280px">
   <form:option value="date-desc">
-	Sort by descending date(default)</form:option>
+  	Sort by descending date(default)</form:option>
   <form:option value="donation-desc">
-	Sort by descending donation</form:option>
-  <form:option value="transaction-code-desc">
-	Sort by descending transaction code</form:option>
+  	Sort by descending donation</form:option>
+  <form:option value="title-desc">
+  	Sort by descending title</form:option>
+  <form:option value="transaction-code-desc">	
+  	Sort by descending transaction code</form:option>
   <form:option value="date-asc">
-	Sort by ascending date</form:option>
+  	Sort by ascending date</form:option>
   <form:option value="donation-asc">
-	Sort by ascending donation</form:option>
+  	Sort by ascending donation</form:option>
+  <form:option value="title-asc">
+  	Sort by ascending title</form:option>
   <form:option value="transaction-code-asc">
-	Sort by ascending transaction code</form:option>
+  	Sort by ascending transaction code</form:option>
 </form:select>
 </div>
 
 <div class="d-flex justify-content-center mt-3">
-<input type="submit" class="btn btn-success me-3 px-5" 
+<input type="submit" class="btn btn-secondary me-3 px-5" 
 	value="Search">
-<span id="resetSearchButton" class="btn btn-secondary me-3 px-5">Reset</span>
+<span id="resetSearchButton" class="btn btn-outline-secondary me-3 px-5">Reset</span>
 </div>
 </form:form>
 </div>

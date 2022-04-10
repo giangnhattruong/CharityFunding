@@ -59,7 +59,7 @@ public class Navigation {
 				new HashMap<>();
 		
 		navItemMap.put("Donation history", "/user/donation-history");
-		navItemMap.put("Update profile", "/user/update-profile");
+		navItemMap.put("Profile", "/user/update-profile");
 
 		mv.addObject("navItemMap", navItemMap);
 	}

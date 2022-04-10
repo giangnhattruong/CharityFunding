@@ -120,6 +120,18 @@ public class UserDAOImpl implements IUserDAO {
 	}
 	
 	/**
+	 * Check if a user is admin.
+	 * @param userID
+	 * @return
+	 */
+	@Override
+	public boolean isAdmin(int userID) {
+		String SQL = "SELECT userRole from userTbl WHERE userID = ?";
+		int userRole = jdbcTemplate.queryForObject(SQL, Integer.class, userID);
+		return userRole > 0;
+	}
+	
+	/**
 	 * Update an user informations
 	 * except email and password
 	 * (only user, not admin).
@@ -129,7 +141,7 @@ public class UserDAOImpl implements IUserDAO {
 		String SQL = "UPDATE userTbl "
 				+ "SET fullname = ?, address = ?, phone = ?, "
 				+ "userRole = ?, userStatus = ? "
-				+ "WHERE userID = ? AND userRole = 0";
+				+ "WHERE userID = ?";
 		
 		/*
 		 * If user role is updated to admin,
@@ -146,6 +158,30 @@ public class UserDAOImpl implements IUserDAO {
 	}
 	
 	/**
+	 * Get user email.
+	 * @param userID
+	 * @return
+	 */
+	@Override
+	public String getUserEmail(int userID) {
+		String SQL = "SELECT email FROM userTbl WHERE userID = ?";
+		String email = jdbcTemplate
+				.queryForObject(SQL, String.class, userID);
+		return email;
+	}
+
+	/**
+	 * Get user password.
+	 */
+	@Override
+	public String getUserPassword(int userID) {
+		String SQL = "SELECT password FROM userTbl WHERE userID = ?";
+		String password = jdbcTemplate
+				.queryForObject(SQL, String.class, userID);
+		return password;
+	}
+	
+	/**
 	 * Update user password.
 	 */
 	@Override
@@ -155,7 +191,7 @@ public class UserDAOImpl implements IUserDAO {
 				+ "WHERE userID = ?";
 		jdbcTemplate.update(SQL, password, userID);
 	}
-
+	
 	/**
 	 * Delete an existing user.
 	 */

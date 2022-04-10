@@ -17,10 +17,9 @@
 
 <div class="container mb-5">
 <p class="small text-danger offset-lg-1">${message}</p>
-<form:form id="submitForm"
-	cssClass="resetForm" 
+<form:form id="submitForm" cssClass="resetForm" 
 	method="POST" modelAttribute="user"
-	action="${action}" enctype="multipart/form-data">
+	action="${action}">
 
 <c:if test="${formTitle == 'Create'}">
 <input type="reset" value="&#8634; CLEAR"
@@ -65,55 +64,10 @@
 	placeholder="Enter your phone number"/>
 </div>
 
-<%-- <div class="mb-3">
-<form:label path="password" cssClass="form-label lead">
-	Password</form:label>
-<span class="text-danger">*</span>
-<form:password cssClass="form-control" 
-	showPassword="${formTitle == 'Update' ? 'true' : 'false'}"
-	id="password" path="password" 
-	placeholder="Enter your password"/>
-</div>
-
-<div class="mb-3">
-<form:label path="confirmPassword" cssClass="form-label lead">
-	Confirm password</form:label>
-<span class="text-danger">*</span>
-<form:password cssClass="form-control" 
-	showPassword="${formTitle == 'Update' ? 'true' : 'false'}"
-	id="confirmPassword" path="confirmPassword"
-	placeholder="Enter your password"/>
-</div>
-
-<div class="mb-3">
-<p class="small text-muted">Password must contain all below requirements:</p>
-<ul>
-	<li><span class="small text-muted">
-		From 6-12 characters.</span></li>
-	<li><span class="small text-muted">
-		A minimum of 1 upper-case letter (A-Z).</span></li>
-	<li><span class="small text-muted">
-		A minimum of 1 lower-case letter (a-z).</span></li>
-	<li><span class="small text-muted">
-		A minimum of 1 special characters (@#$!%*?&).</span></li>
-	<li><span class="small text-muted">
-		A minimum of 1 digit (0-9).</span></li>
-</ul>
-</div> --%>
-
 <hr class="my-4 d-md-none">
 </div>
 
 <div class="col-md col-lg-5 border-start-md">
-<%-- <c:if test="${formTitle == 'Create'}">
-<div class="mb-3">
-<label class="form-label lead">
-	Password</label>
-<input type="password" class="form-control" 
-	name="showOnly" value="${user.password}" readonly>
-</div>
-</c:if> --%>
-
 <div class="mb-3">
 <form:label path="address" cssClass="form-label lead">
 	Address</form:label>

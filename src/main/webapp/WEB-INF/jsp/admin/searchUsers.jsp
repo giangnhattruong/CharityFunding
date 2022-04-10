@@ -4,7 +4,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <div id="search" class="container p-5 mb-5 button-shadow">
-<form:form id="search-campaigns" method="POST" 
+<form:form id="search-users" method="POST" 
 	cssClass="search-form"
 	modelAttribute="filter"
 	action="users" >
@@ -68,9 +68,9 @@
 </div>
 
 <div class="d-flex justify-content-center mt-3">
-<input type="submit" class="btn btn-outline-secondary me-3 px-5" 
+<input type="submit" class="btn btn-secondary me-3 px-5" 
 	value="Search">
-<span id="resetSearchButton" class="btn btn-secondary me-3 px-5">Reset</span>
+<span id="resetSearchButton" class="btn btn-outline-secondary me-3 px-5">Reset</span>
 </div>
 </form:form>
 </div>

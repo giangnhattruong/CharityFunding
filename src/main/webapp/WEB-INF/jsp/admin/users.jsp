@@ -11,7 +11,6 @@
 </div>
 
 <c:import url="/WEB-INF/jsp/common/confirmActionModal.jsp">
-	<c:param name="action">delete</c:param>
 	<c:param name="itemLabel">user</c:param>
 </c:import>
 

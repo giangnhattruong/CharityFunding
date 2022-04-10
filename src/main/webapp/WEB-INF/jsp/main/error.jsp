@@ -6,6 +6,6 @@
 	<c:param name="navItemMap">${navItemMap}</c:param>
 </c:import>
 
-<h1 class="text-center">${message}</h1>
+<h1 class="text-center m-5">${message}</h1>
 
 <c:import url="/WEB-INF/jsp/common/footer.jsp"></c:import>

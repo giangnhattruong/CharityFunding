@@ -193,6 +193,13 @@ public class User {
 			messages.append("</br>");
 		}
 		
+		if (passwordEncoder.matches(newPassword, password)) {
+			messages.append(++errorCount + ". ");
+			messages.append("New password must not match "
+					+ "your current password.");
+			messages.append("</br>");
+		}
+		
 		if (!newPassword.matches(passwordRegex)) {
 			messages.append(++errorCount + ". ");
 			messages.append("Password must be 6-12 characters and contains "
@@ -234,8 +241,11 @@ public class User {
 		return password;
 	}
 
-	public void setPassword(
-			PasswordEncoder passwordEncoder, 
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public void setPassword(PasswordEncoder passwordEncoder, 
 			String password) {
 		this.password = passwordEncoder.encode(password);
 	}
