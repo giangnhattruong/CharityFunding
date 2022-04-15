@@ -30,8 +30,8 @@ public class DatabaseConfig {
 		
 		dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		dataSource.setUrl("jdbc:sqlserver://localhost:1433;databaseName=CharityFundingDB;trustServerCertificate=true");
-		dataSource.setUsername("truonggn");
-		dataSource.setPassword("fx13372");
+		dataSource.setUsername(MyKey.DATABASE_USERNAME);
+		dataSource.setPassword(MyKey.DATABASE_PASSWORD);
 		
 		return dataSource;
 	}

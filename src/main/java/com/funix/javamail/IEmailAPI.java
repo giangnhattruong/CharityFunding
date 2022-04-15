@@ -19,7 +19,8 @@ public interface IEmailAPI {
 	 * @param URL
 	 * @param email
 	 */
-	void sendVerifingMessage(String password, String URL, String email);
+	boolean sendVerificationMessage(String password, 
+			String URL, String email);
 	
 	/**
 	 * Send to user an message with 
@@ -27,6 +28,7 @@ public interface IEmailAPI {
 	 * @param password
 	 * @param email
 	 */
-	void sendNewPassword(String password, String email);
+	boolean sendNewPassword(String password, 
+			String URL, String email);
 		
 }

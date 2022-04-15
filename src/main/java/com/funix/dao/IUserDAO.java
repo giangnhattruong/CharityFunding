@@ -26,10 +26,18 @@ public interface IUserDAO {
 	boolean checkForUser(String email);
 	
 	/**
-	 * Create a new user in database.
+	 * Create a new user in database, return user ID.
 	 * @param newUser
+	 * @return 
 	 */
 	void create(User newUser);
+	
+	/**
+	 * Get user ID from user email.
+	 * @param email
+	 * @return
+	 */
+	int getUserID(String email);
 	
 	/**
 	 * Get a user from database for updating.
@@ -59,11 +67,11 @@ public interface IUserDAO {
 	boolean isAdmin(int userID);
 
 	/**
-	 * Get user email.
+	 * Get user credential for authentication.
 	 * @param userID
 	 * @return
 	 */
-	String getUserEmail(int userID);
+	User getUserCredential(int userID);
 	
 	/**
 	 * Update an existing user in database.
@@ -72,13 +80,6 @@ public interface IUserDAO {
 	 */
 	void update(int userID, User newUser);
 	
-	/**
-	 * Get user password.
-	 * @param userID
-	 * @return
-	 */
-	String getUserPassword(int userID);
-
 	/**
 	 * Update user password.
 	 * @param userID

@@ -183,13 +183,11 @@ public class UserController {
 //		HttpSession session = request.getSession();
 //		int userID = NullConvert.toInt((String) session.getAttribute("userID"));
 		int userID = 21;
-		String password = userDAO.getUserPassword(userID);
-		User user = new User();
-		user.setPassword(password);
+		User user = userDAO.getUserCredential(userID);
 		String oldPassword = request.getParameter("oldPassword");
 		String newPassword = request.getParameter("newPassword");
 		String confirmPassword = request.getParameter("confirmPassword");
-		String validatingMessage = user.validateNewPassword(passwordEncoder, 
+		String validatingMessage = user.validatePassword(passwordEncoder, 
 				oldPassword, newPassword, confirmPassword);
 
 		if (!validatingMessage.equals("success")) {

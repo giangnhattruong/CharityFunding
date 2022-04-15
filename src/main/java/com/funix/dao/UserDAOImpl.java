@@ -9,10 +9,10 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
 import com.funix.model.User;
 import com.funix.model.UserFilter;
+import com.funix.service.NullConvert;
 
 /**
  * User DAO to 
@@ -60,6 +60,7 @@ public class UserDAOImpl implements IUserDAO {
 				+ "phone, userRole, userStatus) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 		
+		
 		/*
 		 * If user role is updated to admin,
 		 * then status must be on
@@ -72,6 +73,17 @@ public class UserDAOImpl implements IUserDAO {
 				user.getPassword(), user.getFullname(), 
 				user.getAddress(), user.getPhone(), 
 				user.getUserRole(), user.getUserStatus());
+	}
+	
+	/**
+	 * Get user ID from user email.
+	 * @param email
+	 * @return
+	 */
+	public int getUserID(String email) {
+		String SQL = "SELECT userID FROM userTbl WHERE email = ?";
+		String userID = jdbcTemplate.queryForObject(SQL, String.class, email);
+		return NullConvert.toInt(userID);
 	}
 
 	/**
@@ -158,29 +170,18 @@ public class UserDAOImpl implements IUserDAO {
 	}
 	
 	/**
-	 * Get user email.
+	 * Get user credential for authentication.
 	 * @param userID
 	 * @return
 	 */
 	@Override
-	public String getUserEmail(int userID) {
-		String SQL = "SELECT email FROM userTbl WHERE userID = ?";
-		String email = jdbcTemplate
-				.queryForObject(SQL, String.class, userID);
-		return email;
+	public User getUserCredential(int userID) {
+		String SQL = "SELECT email, password FROM userTbl WHERE userID = ?";
+		User user = jdbcTemplate
+				.queryForObject(SQL, new UserCredentialMapper(), userID);
+		return user;
 	}
 
-	/**
-	 * Get user password.
-	 */
-	@Override
-	public String getUserPassword(int userID) {
-		String SQL = "SELECT password FROM userTbl WHERE userID = ?";
-		String password = jdbcTemplate
-				.queryForObject(SQL, String.class, userID);
-		return password;
-	}
-	
 	/**
 	 * Update user password.
 	 */

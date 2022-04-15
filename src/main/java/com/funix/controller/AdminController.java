@@ -5,13 +5,13 @@
 package com.funix.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -23,6 +23,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cloudinary.Cloudinary;
+import com.funix.auth.IAuthTokenizer;
+import com.funix.auth.JWTImpl;
 import com.funix.dao.CampaignDAOImpl;
 import com.funix.dao.DonationHistoryDAOImpl;
 import com.funix.dao.ICampaignDAO;
@@ -54,6 +56,16 @@ import com.funix.service.SQLConvert;
 public class AdminController {
 	
 	/**
+	 * Domain name for building verification link.
+	 */
+	private static final String DOMAIN = "http://localhost:8080";
+	
+	/**
+	 * Life span of an verification's token (3 days).
+	 */
+	private static final double VERIFY_TOKEN_LIVE_TIME_MINS = 4320;
+	
+	/**
 	 * DataSource for initializing
 	 * DAO objects and manipulating
 	 * data in the database.
@@ -75,12 +87,6 @@ public class AdminController {
 	 */
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
-	/**
-	 * JavaMailSender for sending email.
-	 */
-	@Autowired
-	private JavaMailSender emailSender;
 	
 	/**
 	 * Main route /admin redirect to 
@@ -471,28 +477,44 @@ public class AdminController {
 		    RedirectAttributes redirectAttributes)  {
 		ModelAndView mv = new ModelAndView();
 		IUserDAO userDAO = new UserDAOImpl(dataSource);
+		IEmailAPI emailAPI = new EmailAPIImpl();
 		String validatingMessage = user.validate();
 		String randomPassword = PasswordService
 				.generateRandomPassword();
 		user.setPassword(passwordEncoder, randomPassword);
 		
-		// Send randomPassword to user email...
-		
 		if(userDAO.checkForUser(user.getEmail())) {
+			// Return error if user existed.
 			redirectAttributes
-				.addFlashAttribute("message", "Please sign up with "
-					+ "a different email. This email have already existed.");
+				.addFlashAttribute("message", "Please try a different email. "
+						+ "This email have already existed.");
 			redirectAttributes
 				.addFlashAttribute("user", user);
 			mv.setViewName("redirect:/admin/users/new");
 		} else if (!validatingMessage.equals("success")) {
+			// Return error if validation failed.
 			redirectAttributes
 				.addFlashAttribute("message", validatingMessage);
 			redirectAttributes
 				.addFlashAttribute("user", user);
 			mv.setViewName("redirect:/admin/users/new");
 		} else {
+			// Add new user to database.
 			userDAO.create(user);
+			
+			// Send account activation email.
+			int userID = userDAO.getUserID(user.getEmail());
+			IAuthTokenizer authTokenizer = 
+					new JWTImpl(userID, user.getUserRole(), 
+							VERIFY_TOKEN_LIVE_TIME_MINS);
+			String verifyURL = DOMAIN
+					+ request.getContextPath() 
+					+ "/register/verify?token="
+					+ authTokenizer.encodeUser();
+			
+			emailAPI.sendVerificationMessage(randomPassword, 
+					verifyURL, user.getEmail());
+			
 			redirectAttributes
 				.addFlashAttribute("message", 
 						"User has been successfully created.");
@@ -637,7 +659,7 @@ public class AdminController {
 			RedirectAttributes redirectAttrs) {
 		ModelAndView mv = new ModelAndView();
 		IUserDAO userDAO = new UserDAOImpl(dataSource);
-		IEmailAPI emailAPI = new EmailAPIImpl(emailSender);
+		IEmailAPI emailAPI = new EmailAPIImpl();
 		String message = "";
 		String[] userIDArray = request.getParameterValues("userIDs");
 		
@@ -648,21 +670,49 @@ public class AdminController {
 		 * the new password to user email.
 		 */
 		if (userIDArray != null) {
+			// Prepare an email list that can't receive message.
+			boolean emailResult = false;
+			List<String> emailFailedList = new ArrayList<>();
+			
 			for (String userIDString: userIDArray) {
 				int userID = NullConvert.toInt(userIDString);
+				User user = userDAO.getUser(userID);
 				
-				if (!userDAO.isAdmin(userID)) {
-					String email = userDAO.getUserEmail(userID);
+				// Update user only.
+				if (user.getUserRole() == 0) {
+					// Update user new random password.
 					String randomPassword = PasswordService
 							.generateRandomPassword();
 					String encodedPassword = passwordEncoder
 							.encode(randomPassword);
+					
+					// Update user new password.
 					userDAO.update(userID, encodedPassword);
-					emailAPI.sendNewPassword(randomPassword, email);
+					
+					// Send email with new password to user.
+					String email = user.getEmail();
+					String loginURL = DOMAIN
+							+ request.getContextPath() 
+							+ "/login";
+					emailResult = emailAPI
+							.sendNewPassword(randomPassword, 
+									loginURL, email);
+					
+					// In case errors happen when sending email, add email to list.
+					if (emailResult == false) {
+						emailFailedList.add(email);
+					}
 				}
 			}
 			
-			message = "All passwords were changed.";
+			message = emailResult == true ?
+							"All passwords were changed." :
+							"All passwords were changed, "
+							+ "but failed to send emails "
+							+ "to users "
+							+ emailFailedList.toString()
+								.replace('[', '(')
+								.replace(']', ')') + ".";
 		} else {
 			message = "Change password failed. No items selected.";
 		}

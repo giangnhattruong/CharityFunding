@@ -90,6 +90,16 @@ public class User {
 	}
 	
 	/**
+	 * Constructor for user credential only.
+	 * @param email
+	 * @param password
+	 */
+	public User(String email, String password) {
+		this.email = email;
+		this.password = password;
+	}
+	
+	/**
 	 * Constructor used in UserRowMapper class.
 	 * @param userID
 	 * @param email
@@ -149,6 +159,12 @@ public class User {
 			messages.append("</br>");
 		}
 		
+		if (!phone.matches(phoneRegex)) {
+			messages.append(++errorCount + ". ");
+			messages.append("Phone must be a 10 digits number.");
+			messages.append("</br>");
+		}
+		
 		if (!address.equals("") && 
 				(address.length() < 3 || address.length() > 60)) {
 			messages.append(++errorCount + ". ");
@@ -156,26 +172,71 @@ public class User {
 			messages.append("</br>");
 		}
 		
-		if (!phone.matches(phoneRegex)) {
-			messages.append(++errorCount + ". ");
-			messages.append("Phone must be a 10 digits number.");
-			messages.append("</br>");
-		}
-		
 		return errorCount == 0 ? "success" : messages.toString();
 	}
 	
 	/**
-	 * Validate new password for changing password.
+	 * Validate both old and new password.
 	 * @param passwordEncoder
 	 * @param oldPassword
 	 * @param newPassword
 	 * @param confirmPassword
 	 * @return
 	 */
-	public String validateNewPassword(
+	public String validatePassword(
 			PasswordEncoder passwordEncoder,
 			String oldPassword,
+			String newPassword,
+			String confirmPassword) {
+		String finalMessage = "";
+		String validateOldPasswordMessage = validateOldPassword(passwordEncoder, 
+				oldPassword, newPassword);
+		String validateNewPasswordMessage = validateNewPassword(newPassword, 
+				confirmPassword);
+		
+		if (validateOldPasswordMessage.equals("success") && 
+				validateNewPasswordMessage.equals("success")) {
+			finalMessage = "success";
+		} else if (validateOldPasswordMessage.equals("success")) {
+			finalMessage = validateNewPasswordMessage;
+		} else {
+			finalMessage = validateOldPasswordMessage;
+		}
+		
+		return finalMessage;
+	}
+	
+	/**
+	 * Validate old password.
+	 * @param passwordEncoder
+	 * @param oldPassword
+	 * @param newPassword
+	 * @return
+	 */
+	private String validateOldPassword(
+			PasswordEncoder passwordEncoder,
+			String oldPassword,
+			String newPassword) {
+		String message = "";
+		
+		if (!passwordEncoder.matches(oldPassword, password)) {
+			message += "Old password must match "
+					+ "your current password.";
+		} else if (passwordEncoder.matches(newPassword, password)) {
+			message += "New password must not match "
+					+ "your current password.";
+		}
+		
+		return message.equals("") ? "success" : message;
+	}
+	
+	/**
+	 * Validate new password.
+	 * @param newPassword
+	 * @param confirmPassword
+	 * @return
+	 */
+	public String validateNewPassword(
 			String newPassword,
 			String confirmPassword) {
 		StringBuilder messages = new StringBuilder();
@@ -184,21 +245,7 @@ public class User {
 		int errorCount = 0;
 		String passwordRegex = 
 				"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)"
-				+ "(?=.*[@#$!%*?&])[A-Za-z\\d@#$!%*?&]{6,12}$";
-		
-		if (!passwordEncoder.matches(oldPassword, password)) {
-			messages.append(++errorCount + ". ");
-			messages.append("Old password must match "
-					+ "your current password.");
-			messages.append("</br>");
-		}
-		
-		if (passwordEncoder.matches(newPassword, password)) {
-			messages.append(++errorCount + ". ");
-			messages.append("New password must not match "
-					+ "your current password.");
-			messages.append("</br>");
-		}
+						+ "(?=.*[@#$!%*?&])[A-Za-z\\d@#$!%*?&]{6,12}$";
 		
 		if (!newPassword.matches(passwordRegex)) {
 			messages.append(++errorCount + ". ");
@@ -218,6 +265,38 @@ public class User {
 		}
 		
 		return errorCount == 0 ? "success" : messages.toString();
+	}
+	
+	/**
+	 * Check if user is authenticated.
+	 * @param passwordEncoder
+	 * @param emailInput
+	 * @param passwordInput
+	 * @return
+	 */
+	public boolean isAuthenticated(PasswordEncoder passwordEncoder,
+			String emailInput,
+			String passwordInput) {
+		return emailInput.equals(email) &&
+				passwordEncoder.matches(passwordInput, password);
+	}
+
+	/**
+	 * Set password without encoding.
+	 * @param password
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	/**
+	 * Set password after encoding.
+	 * @param passwordEncoder
+	 * @param password
+	 */
+	public void setPassword(PasswordEncoder passwordEncoder, 
+			String password) {
+		this.password = passwordEncoder.encode(password);
 	}
 
 	//Getters and setters.
@@ -239,15 +318,6 @@ public class User {
 
 	public String getPassword() {
 		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public void setPassword(PasswordEncoder passwordEncoder, 
-			String password) {
-		this.password = passwordEncoder.encode(password);
 	}
 
 	public String getFullname() {

@@ -9,7 +9,7 @@
 
 <div class="container p-5 button-shadow">
 <h2 class="text-center mb-5">Update password</h2>
-<p class="small text-danger col-lg-6 offset-lg-3">${error}</p>
+<p class="small text-danger col-lg-5 offset-lg-4">${error}</p>
 <form id="submitForm" class="resetForm" 
 	method="POST" action="update-password">
 
