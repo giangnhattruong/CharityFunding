@@ -3,8 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<c:url var="action" value="/register" />
-
 <c:import url="/WEB-INF/jsp/common/header.jsp"></c:import>
 
 <div class="row g-0">
@@ -15,11 +13,12 @@
 <h4 class="mt-1 mb-5 pb-1">TBS Charity Team</h4>
 </div>
 
-<form:form method="POST" modelAttribute="user"
-	action="${action}">
+<form:form id="submitForm"
+	method="POST" modelAttribute="user"
+	action="register">
 <p class="h5 mb-5 text-center">Register your new account</p>
 
-<p class="small text-danger offset-lg-1">${message}</p>
+<p class="small text-danger">${message}</p>
 <div class="mb-4" 
 	style="width: 24em">
 <form:label cssClass="form-label" path="email">Email</form:label>
@@ -52,13 +51,14 @@
 </div>
 
 <div class="text-center d-flex justify-content-center align-items-center mb-3">
-<button class="btn bg-sm-green-gradient me-3">Log in</button>
-<a class="text-muted" href="#!">Forgot password?</a>
+<button id="submitButton"
+	class="btn bg-sm-green-gradient me-3">Sign up</button>
 </div>
 
 <div class="d-flex align-items-center justify-content-center pb-4">
-<p class="mb-0 me-2">Don't have an account?</p>
-<button type="button" class="btn btn-outline-success">Create new</button>
+<p class="mb-0 me-2">You've already had an account?</p>
+<a class="btn btn-outline-success"
+	href="<c:url value="/login" />">Login</a>
 </div>
 </form:form>
 </div>

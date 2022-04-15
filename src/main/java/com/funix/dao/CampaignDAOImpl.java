@@ -37,6 +37,14 @@ public class CampaignDAOImpl implements ICampaignDAO {
 	private IImageAPI imageAPI;
 	
 	/**
+	 * Inject dataSource from Controller.
+	 * @param dataSource
+	 */
+	public CampaignDAOImpl(DataSource dataSource) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+	
+	/**
 	 * Inject dataSource and imageAPI from Controller.
 	 * @param dataSource
 	 */

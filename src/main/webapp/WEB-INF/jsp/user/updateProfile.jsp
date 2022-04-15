@@ -72,8 +72,7 @@
 <div class="d-flex justify-content-center">
 <input id="submitButton" class="btn btn-primary px-5 me-3" 
 	type="submit" value="Update">
-<input type="reset" value="&#8634; CLEAR"
-	class="btn btn-outline-secondary resetFormButton px-5">
+<span id="resetSearchButton" class="btn btn-outline-secondary me-3 px-5">Reset</span>
 </div>
 </form:form>
 </div>

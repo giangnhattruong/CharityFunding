@@ -90,17 +90,27 @@ public class User {
 	}
 	
 	/**
-	 * Constructor for user credential only.
+	 * Constructor contains simple user's informations
+	 * @param userID
 	 * @param email
 	 * @param password
+	 * @param fullname
+	 * @param address
+	 * @param phone
+	 * @param userRole
+	 * @param userStatus
+	 * @param dateCreated
 	 */
-	public User(String email, String password) {
-		this.email = email;
-		this.password = password;
+	public User(int userID, String email, String password, 
+			String fullname, String address, String phone, 
+			int userRole, boolean userStatus, LocalDate dateCreated) {
+		this(userID, email, password, fullname, address, 
+				phone, userRole, userStatus, dateCreated,
+				0, 0, null);
 	}
 	
 	/**
-	 * Constructor used in UserRowMapper class.
+	 * Constructor contains full user's summary.
 	 * @param userID
 	 * @param email
 	 * @param password
@@ -190,9 +200,9 @@ public class User {
 			String confirmPassword) {
 		String finalMessage = "";
 		String validateOldPasswordMessage = validateOldPassword(passwordEncoder, 
-				oldPassword, newPassword);
-		String validateNewPasswordMessage = validateNewPassword(newPassword, 
-				confirmPassword);
+				oldPassword);
+		String validateNewPasswordMessage = validateNewPassword(passwordEncoder,
+				newPassword, confirmPassword);
 		
 		if (validateOldPasswordMessage.equals("success") && 
 				validateNewPasswordMessage.equals("success")) {
@@ -210,33 +220,30 @@ public class User {
 	 * Validate old password.
 	 * @param passwordEncoder
 	 * @param oldPassword
-	 * @param newPassword
 	 * @return
 	 */
 	private String validateOldPassword(
 			PasswordEncoder passwordEncoder,
-			String oldPassword,
-			String newPassword) {
+			String oldPassword) {
 		String message = "";
 		
 		if (!passwordEncoder.matches(oldPassword, password)) {
 			message += "Old password must match "
 					+ "your current password.";
-		} else if (passwordEncoder.matches(newPassword, password)) {
-			message += "New password must not match "
-					+ "your current password.";
-		}
+		} 
 		
 		return message.equals("") ? "success" : message;
 	}
 	
 	/**
 	 * Validate new password.
+	 * @param passwordEncoder
 	 * @param newPassword
 	 * @param confirmPassword
 	 * @return
 	 */
 	public String validateNewPassword(
+			PasswordEncoder passwordEncoder,
 			String newPassword,
 			String confirmPassword) {
 		StringBuilder messages = new StringBuilder();
@@ -247,13 +254,16 @@ public class User {
 				"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)"
 						+ "(?=.*[@#$!%*?&])[A-Za-z\\d@#$!%*?&]{6,12}$";
 		
+		if (passwordEncoder.matches(newPassword, password)) {
+			messages.append(++errorCount + ". ");
+			messages.append("New password must not match "
+					+ "your current password.");
+			messages.append("</br>");
+		}
+		
 		if (!newPassword.matches(passwordRegex)) {
 			messages.append(++errorCount + ". ");
-			messages.append("Password must be 6-12 characters and contains "
-					+ "a minimum of one uppercase letter (A-Z), "
-					+ "a minimum of one lowercase letter (a-z), "
-					+ "a minimum of one special character (@#$!%*?&) and "
-					+ "a minimum of one digit (0-9).");
+			messages.append("Password must meet the minimum requirement.");
 			messages.append("</br>");
 		}
 		

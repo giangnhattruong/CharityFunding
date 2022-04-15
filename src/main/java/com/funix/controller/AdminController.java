@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class AdminController {
 	/**
 	 * Life span of an verification's token (3 days).
 	 */
-	private static final double VERIFY_TOKEN_LIVE_TIME_MINS = 4320;
+	private static final int VERIFY_TOKEN_LIVE_TIME_MINS = 4320;
 	
 	/**
 	 * DataSource for initializing
@@ -90,7 +91,7 @@ public class AdminController {
 	
 	/**
 	 * Main route /admin redirect to 
-	 * admin donation history manage page.
+	 * all donation history page.
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET)
@@ -100,84 +101,97 @@ public class AdminController {
 	}
 
 	/**
-	 * Render admin donation history managing page. Get or initialize
-	 * filter object and send to DAO, to get a list of 
-	 * donation history for view.
+	 * Render all donation history.
 	 * @param filter
 	 * @return
 	 */
 	@RequestMapping(value = "donation-history", method = RequestMethod.GET)
 	public ModelAndView getDonationHistory(
-			@ModelAttribute("filter") DonationHistoryFilter filter) {
+			@ModelAttribute("filter") DonationHistoryFilter filter,
+			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		IDonationHistoryDAO historyDAO = 
-				new DonationHistoryDAOImpl(dataSource);
-		List<DonationHistory> historyList = historyDAO
-				.getManyAdminHistories(filter);
 		
-		Navigation.addAdminNavItemMap(mv);
-		mv.addObject("filter", filter);
-		mv.addObject("historyList", historyList);
-		mv.setViewName(getRoute("admin/donationHistory"));
+		// If user is not admin, redirect to home page.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
+		} else {
+			// Get and show all donation history.
+			IDonationHistoryDAO historyDAO = 
+					new DonationHistoryDAOImpl(dataSource);
+			List<DonationHistory> historyList = historyDAO
+					.getAllHistory(filter);
+			
+			Navigation.addAdminNavItemMap(mv);
+			mv.addObject("filter", filter);
+			mv.addObject("historyList", historyList);
+			mv.setViewName("admin/donationHistory");
+		}
+		
 		return mv;
 	}
 
 	/**
-	 * Handle donation history search form submit, bind all
-	 * form input to filter object and redirect back to
-	 * admin donation history managing page.
+	 * Handle donation history search form submit.
 	 * @param filter
 	 * @param result
 	 * @param redirectAttributes
 	 * @return
 	 */
-	@RequestMapping(value = "donation-history", method = RequestMethod.POST)
+	@RequestMapping(value = "donation-history", 
+			method = RequestMethod.POST)
 	public ModelAndView searchDonationHistory(
 			@ModelAttribute("filter") DonationHistoryFilter filter, 
 		    BindingResult result,
 		    RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView();
 		redirectAttributes.addFlashAttribute("filter", filter);
-		mv.setViewName(getRoute("redirect:/admin/donation-history"));
+		mv.setViewName("redirect:/admin/donation-history");
 		return mv;
 	}
 
 	/**
-	 * Render admin campaign managing page. Get or initialize
-	 * filter object and send to DAO, to get a list of 
-	 * campaign for view.
+	 * Render admin campaign managing page.
 	 * @param message
 	 * @param filter
 	 * @return
 	 */
-	@RequestMapping(value = "campaigns", method = RequestMethod.GET)
+	@RequestMapping(value = "campaigns", 
+			method = RequestMethod.GET)
 	public ModelAndView manageCampaigns(
 			@ModelAttribute("message") String message,
-			@ModelAttribute("filter") CampaignFilter filter) {
+			@ModelAttribute("filter") CampaignFilter filter,
+			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
-		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource, imageAPI);
-		List<Campaign> campaignList = campaignDAO
-				.getManyCampaigns(filter);
 		
-		Navigation.addAdminNavItemMap(mv);
-		mv.addObject("message", message);
-		mv.addObject("filter", filter);
-		mv.addObject("campaignList", campaignList);
-		mv.setViewName(getRoute("admin/campaigns"));
+		// If user is not admin, redirect to home page.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
+		} else {
+			// Get and show all charity campaigns.
+			ICampaignDAO campaignDAO = 
+					new CampaignDAOImpl(dataSource);
+			List<Campaign> campaignList = campaignDAO
+					.getManyCampaigns(filter);
+			
+			Navigation.addAdminNavItemMap(mv);
+			mv.addObject("message", message);
+			mv.addObject("filter", filter);
+			mv.addObject("campaignList", campaignList);
+			mv.setViewName("admin/campaigns");
+		}
+		
 		return mv;
 	}
 
 	/**
-	 * Handle campaign search form submit, bind all
-	 * form input to filter object and redirect back to
-	 * admin campaign managing page.
+	 * Handle campaign search form submit.
 	 * @param filter
 	 * @param result
 	 * @param redirectAttributes
 	 * @return
 	 */
-	@RequestMapping(value = "campaigns", method = RequestMethod.POST)
+	@RequestMapping(value = "campaigns", 
+			method = RequestMethod.POST)
 	public ModelAndView searchCampaigns(
 			@ModelAttribute("filter") CampaignFilter filter,
 			BindingResult result,
@@ -189,82 +203,93 @@ public class AdminController {
 	}
 
 	/**
-	 * Render campaign creating form. Get or initialize campaign
-	 * instance for form default values. Get error message send
-	 * by the last submit to show on the beginning of the form.
+	 * Render campaign creating form.
 	 * @param message
 	 * @param campaign
 	 * @return
 	 */
-	@RequestMapping(value = "campaigns/new", method = RequestMethod.GET)
+	@RequestMapping(value = "campaigns/new",
+			method = RequestMethod.GET)
 	public ModelAndView getCampaignCreatingForm(
 			@ModelAttribute("message") String message, 
-			@ModelAttribute("campaign") Campaign campaign) {
+			@ModelAttribute("campaign") Campaign campaign,
+			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		Navigation.addAdminNavItemMap(mv);
-		mv.addObject("formTitle", "Create");
-		mv.addObject("formAction", "/admin/campaigns/new");
-		mv.addObject("campaign", campaign);
-		mv.setViewName(getRoute("admin/createOrUpdateCampaign"));
+		
+		// If user is not admin, redirect to home page.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
+		} else {
+			Navigation.addAdminNavItemMap(mv);
+			mv.addObject("formTitle", "Create");
+			mv.addObject("formAction", "/admin/campaigns/new");
+			mv.addObject("campaign", campaign);
+			mv.setViewName("admin/createOrUpdateCampaign");
+		}
+		
 		return mv;
 	}
 
 	/**
-	 * Handle campaign creating form submit, bind campaign instance
-	 * to get values from form, validate new campaign and create
-	 * new record in database.
+	 * Handle campaign creating.
 	 * @param campaign
 	 * @param result
 	 * @param request
 	 * @param redirectAttributes
 	 * @return
 	 */
-	@RequestMapping(value = "campaigns/new", method = RequestMethod.POST)
+	@RequestMapping(value = "campaigns/new", 
+			method = RequestMethod.POST)
 	public ModelAndView createCampaign(
 			@ModelAttribute("campaign") Campaign campaign, 
 		    BindingResult result,
 		    HttpServletRequest request,
 		    RedirectAttributes redirectAttributes)  {
 		ModelAndView mv = new ModelAndView();
-		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
-		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource, imageAPI);
-		String validatingMessage = "";
 		
-		/*
-		 * All campaign fields is set by Spring binding result,
-		 * except LocalDate fields have to be set explicitly.
-		 */
-		String startDateString = request.getParameter("startDate");
-		String endDateString = request.getParameter("endDate");
-		LocalDate startDate = NullConvert.toLocalDate(startDateString);
-		LocalDate endDate = NullConvert.toLocalDate(endDateString);
-		campaign.setStartDate(startDate);
-		campaign.setEndDate(endDate);
-		
-		validatingMessage = campaignDAO.create(campaign);
-		
-		if (!validatingMessage.equals("success")) {
-			redirectAttributes
-			.addFlashAttribute("message", validatingMessage);
-			redirectAttributes
-				.addFlashAttribute("campaign", campaign);
-			mv.setViewName("redirect:/admin/campaigns/new");
+		// If user is not admin, redirect to home page.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
 		} else {
-			redirectAttributes
-			.addFlashAttribute("message", 
-					"Campaign has been successfully created.");
-			mv.setViewName("redirect:/admin/campaigns");
+			IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
+			ICampaignDAO campaignDAO = 
+					new CampaignDAOImpl(dataSource, imageAPI);
+			String validatingMessage = "";
+			
+			/*
+			 * All campaign fields is set by Spring binding result,
+			 * except LocalDate fields have to be set explicitly.
+			 */
+			String startDateString = request.getParameter("startDate");
+			String endDateString = request.getParameter("endDate");
+			LocalDate startDate = NullConvert.toLocalDate(startDateString);
+			LocalDate endDate = NullConvert.toLocalDate(endDateString);
+			campaign.setStartDate(startDate);
+			campaign.setEndDate(endDate);
+			
+			validatingMessage = campaignDAO.create(campaign);
+			
+			if (!validatingMessage.equals("success")) {
+				// Return error if validate failed.
+				redirectAttributes
+				.addFlashAttribute("message", validatingMessage);
+				redirectAttributes
+				.addFlashAttribute("campaign", campaign);
+				mv.setViewName("redirect:/admin/campaigns/new");
+			} else {
+				// Redirect to all campaigns page with success message.
+				redirectAttributes
+				.addFlashAttribute("message", 
+						"Campaign has been successfully created.");
+				mv.setViewName("redirect:/admin/campaigns");
+			}
 		}
 		
 		return mv;
 	}
 	
 	/**
-	 * Render campaign updating form. Get campaign instance
-	 * pass by the last failed updating submit or get campaign instance 
-	 * from database to set form default values. Also get the
-	 * error message from the last updating submit to show in
-	 * the beginning of the form.
+	 * Render campaign updating form.
 	 * @param pathID
 	 * @param message
 	 * @param campaign
@@ -279,42 +304,46 @@ public class AdminController {
 			@ModelAttribute("campaign") Campaign campaign, 
 			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
-		ICampaignDAO campaignDAO = 
-				new CampaignDAOImpl(dataSource, imageAPI);
-		int campaignID = pathID;
+		
+		// If user is not admin, redirect to home page.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
+		} else {
+			IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
+			ICampaignDAO campaignDAO = 
+					new CampaignDAOImpl(dataSource, imageAPI);
+			int campaignID = pathID;
 			
-		/*
-		 * Check if the campaign instance is not passed from
-		 * the last failed submit, then get a campaign instance from
-		 * database.
-		 */
-		if (campaign.getCampaignID() == 0) {
-			campaign = campaignDAO.getCampaign(campaignID);
+			/*
+			 * Check if the campaign instance is not passed from
+			 * the last failed submit, then get a campaign instance from
+			 * database.
+			 */
+			if (campaign.getCampaignID() == 0) {
+				campaign = campaignDAO.getCampaign(campaignID);
+			}
+			
+			// Get image thumbnail and pass to view.
+			String imgURL = campaign.getImgURL();
+			if (imgURL != null) {
+				String imgHTML = imageAPI
+						.transformImage(imgURL, 80, 60);
+				mv.addObject("imgHTML", imgHTML);
+			}
+			
+			Navigation.addAdminNavItemMap(mv);
+			mv.addObject("formTitle", "Update");
+			mv.addObject("formAction", 
+					"/admin/campaigns/update/" + campaignID);
+			mv.addObject("campaign", campaign);
+			mv.setViewName("admin/createOrUpdateCampaign");
 		}
-		
-		// Get image thumbnail and pass to view.
-		String imgURL = campaign.getImgURL();
-		if (imgURL != null) {
-			String imgHTML = imageAPI
-					.transformImage(imgURL, 80, 60);
-			mv.addObject("imgHTML", imgHTML);
-		}
-		
-		Navigation.addAdminNavItemMap(mv);
-		mv.addObject("formTitle", "Update");
-		mv.addObject("formAction", 
-				"/admin/campaigns/update/" + campaignID);
-		mv.addObject("campaign", campaign);
-		mv.setViewName(getRoute("admin/createOrUpdateCampaign"));
 		
 		return mv;
 	}
 
 	/**
-	 * Handle campaign updating form. Bind campaign instance
-	 * to set values automatically from Spring form. Validate
-	 * and update campaign record in database.
+	 * Handle campaign updating.
 	 * @param campaignID
 	 * @param campaign
 	 * @param result
@@ -331,34 +360,43 @@ public class AdminController {
 		    HttpServletRequest request,
 		    RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView();
-		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
-		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource, imageAPI);
-		String validatingMessage = "";
 		
-		/*
-		 * All campaign fields is set by Spring binding result,
-		 * except LocalDate fields have to be set explicitly.
-		 */
-		String startDateString = request.getParameter("startDate");
-		String endDateString = request.getParameter("endDate");
-		LocalDate startDate = NullConvert.toLocalDate(startDateString);
-		LocalDate endDate = NullConvert.toLocalDate(endDateString);
-		campaign.setStartDate(startDate);
-		campaign.setEndDate(endDate);
-		validatingMessage = campaignDAO.update(campaignID, campaign);
-		
-		if (!validatingMessage.equals("success")) {
-			campaign.setCampaignID(campaignID);
-			redirectAttributes
-				.addFlashAttribute("message", validatingMessage);
-			redirectAttributes
-				.addFlashAttribute("campaign", campaign);
-			mv.setViewName("redirect:/admin/campaigns/update/" + campaignID);
+		// If user is not admin, redirect to home page.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
 		} else {
-			redirectAttributes
+			IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
+			ICampaignDAO campaignDAO = 
+					new CampaignDAOImpl(dataSource, imageAPI);
+			String validatingMessage = "";
+			
+			/*
+			 * All campaign fields is set by Spring binding result,
+			 * except LocalDate fields have to be set explicitly.
+			 */
+			String startDateString = request.getParameter("startDate");
+			String endDateString = request.getParameter("endDate");
+			LocalDate startDate = NullConvert.toLocalDate(startDateString);
+			LocalDate endDate = NullConvert.toLocalDate(endDateString);
+			campaign.setStartDate(startDate);
+			campaign.setEndDate(endDate);
+			validatingMessage = campaignDAO.update(campaignID, campaign);
+			
+			if (!validatingMessage.equals("success")) {
+				// Return error if validate failed.
+				campaign.setCampaignID(campaignID);
+				redirectAttributes
+				.addFlashAttribute("message", validatingMessage);
+				redirectAttributes
+				.addFlashAttribute("campaign", campaign);
+				mv.setViewName("redirect:/admin/campaigns/update/" + campaignID);
+			} else {
+				// Redirect to all campaigns page with success message.
+				redirectAttributes
 				.addFlashAttribute("message", 
-					"Campaign has been successfully updated.");
-			mv.setViewName("redirect:/admin/campaigns");
+						"Campaign has been successfully updated.");
+				mv.setViewName("redirect:/admin/campaigns");
+			}
 		}
 		
 		return mv;
@@ -370,34 +408,47 @@ public class AdminController {
 	 * @param redirectAttrs
 	 * @return
 	 */
-	@RequestMapping(value = "campaigns/delete", method = RequestMethod.POST)
+	@RequestMapping(value = "campaigns/delete", 
+			method = RequestMethod.POST)
 	public ModelAndView deleteCampaign(HttpServletRequest request,
 			RedirectAttributes redirectAttrs) {
 		ModelAndView mv = new ModelAndView();
-		IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
-		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource, imageAPI);
-		String message = "";
 		
-		String[] campaignIDArray = request.getParameterValues("campaignIDs");
-		String campaignIDs = SQLConvert.convertList(campaignIDArray);
-		
-		if (campaignIDArray != null) {
-			campaignDAO.delete(campaignIDs);
-			message = "Delete campaign(s) successful.";
+		// If user is not admin, redirect to home page.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
 		} else {
-			message = "Delete failed. No items selected.";
+			IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
+			ICampaignDAO campaignDAO = 
+					new CampaignDAOImpl(dataSource, imageAPI);
+			String message = "";
+			
+			/*
+			 * Get array of campaign IDs from checkbox inputs,
+			 * convert to string for using with SQL query
+			 * "IN" operator.
+			 */
+			String[] campaignIDArray = request
+					.getParameterValues("campaignIDs");
+			String campaignIDs = SQLConvert
+					.convertList(campaignIDArray);
+			
+			if (campaignIDArray != null) {
+				campaignDAO.delete(campaignIDs);
+				message = "Delete campaign(s) successful.";
+			} else {
+				message = "Delete failed. No items selected.";
+			}
+			
+			redirectAttrs.addFlashAttribute("message", message);
+			mv.setViewName("redirect:/admin/campaigns");
 		}
-		
-		redirectAttrs.addFlashAttribute("message", message);
-		mv.setViewName("redirect:/admin/campaigns");
 
 		return mv;
 	}
 
 	/**
-	 * Render admin user managing page. Get or initialize
-	 * filter object and send to DAO, to get a list of 
-	 * user for view.
+	 * Render admin user managing page.
 	 * @param message
 	 * @param filter
 	 * @return
@@ -405,22 +456,29 @@ public class AdminController {
 	@RequestMapping(value = "users", method = RequestMethod.GET)
 	public ModelAndView manageUsers(
 			@ModelAttribute("message") String message,
-			@ModelAttribute("filter") UserFilter filter) {
+			@ModelAttribute("filter") UserFilter filter,
+			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		IUserDAO userDao = new UserDAOImpl(dataSource);
-		List<User> userList = userDao.getManyUsers(filter);
-		Navigation.addAdminNavItemMap(mv);
-		mv.addObject("message", message);
-		mv.addObject("filter", filter);
-		mv.addObject("userList", userList);
-		mv.setViewName(getRoute("admin/users"));
+		
+		// If user is not admin, redirect to home page.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
+		} else {
+			// Get and show all users.
+			IUserDAO userDao = new UserDAOImpl(dataSource);
+			List<User> userList = userDao.getManyUsers(filter);
+			
+			Navigation.addAdminNavItemMap(mv);
+			mv.addObject("message", message);
+			mv.addObject("filter", filter);
+			mv.addObject("userList", userList);
+			mv.setViewName("admin/users");
+		}
 		return mv;
 	}
 
 	/**
-	 * Handle user search form submit, bind all
-	 * form input to filter object and redirect back to
-	 * admin user managing page.
+	 * Handle user search form submit.
 	 * @param filter
 	 * @param result
 	 * @param redirectAttributes
@@ -430,17 +488,23 @@ public class AdminController {
 	public ModelAndView searchUsers(
 			@ModelAttribute("filter") UserFilter filter,
 			BindingResult result, 
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes,
+			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		redirectAttributes.addFlashAttribute("filter", filter);
-		mv.setViewName("redirect:/admin/users");
+		
+		// If user is not admin, redirect to home page.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
+		} else {
+			redirectAttributes.addFlashAttribute("filter", filter);
+			mv.setViewName("redirect:/admin/users");
+		}
+		
 		return mv;
 	}
 
 	/**
-	 * Render user creating form. Get or initialize user
-	 * instance for form default values. Get error message send
-	 * by the last submit to show on the beginning of the form.
+	 * Render user creating form.
 	 * @param message
 	 * @param user
 	 * @return
@@ -448,21 +512,26 @@ public class AdminController {
 	@RequestMapping(value = "users/new", method = RequestMethod.GET)
 	public ModelAndView getUserCreatingForm(
 			@ModelAttribute("message") String message, 
-			@ModelAttribute("user") User user) {
+			@ModelAttribute("user") User user,
+			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		Navigation.addAdminNavItemMap(mv);
-		mv.addObject("formTitle", "Create");
-		mv.addObject("formAction", "/admin/users/new");
-		mv.addObject("user", user);
-		mv.setViewName(getRoute("admin/createOrUpdateUser"));
+		
+		// If user is not admin, redirect to home page.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
+		} else {
+			Navigation.addAdminNavItemMap(mv);
+			mv.addObject("formTitle", "Create");
+			mv.addObject("formAction", "/admin/users/new");
+			mv.addObject("user", user);
+			mv.setViewName("admin/createOrUpdateUser");
+		}
 		
 		return mv;
 	}
 
 	/**
-	 * Handle user creating form submit, bind user instance
-	 * to get values from form, validate new user and create
-	 * new record in database.
+	 * Handle user creating.
 	 * @param user
 	 * @param result
 	 * @param request
@@ -476,60 +545,78 @@ public class AdminController {
 		    HttpServletRequest request,
 		    RedirectAttributes redirectAttributes)  {
 		ModelAndView mv = new ModelAndView();
-		IUserDAO userDAO = new UserDAOImpl(dataSource);
-		IEmailAPI emailAPI = new EmailAPIImpl();
-		String validatingMessage = user.validate();
-		String randomPassword = PasswordService
-				.generateRandomPassword();
-		user.setPassword(passwordEncoder, randomPassword);
 		
-		if(userDAO.checkForUser(user.getEmail())) {
-			// Return error if user existed.
-			redirectAttributes
+		// If user is not admin, redirect to home page.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
+		} else {
+			IUserDAO userDAO = new UserDAOImpl(dataSource);
+			IEmailAPI emailAPI = new EmailAPIImpl();
+			String validatingMessage = user.validate();
+			
+			// Set random password for user.
+			String randomPassword = PasswordService
+					.generateRandomPassword();
+			user.setPassword(passwordEncoder, randomPassword);
+			
+			if(userDAO.checkForUser(user.getEmail())) {
+				// Return error if user existed.
+				redirectAttributes
 				.addFlashAttribute("message", "Please try a different email. "
 						+ "This email have already existed.");
-			redirectAttributes
+				redirectAttributes
 				.addFlashAttribute("user", user);
-			mv.setViewName("redirect:/admin/users/new");
-		} else if (!validatingMessage.equals("success")) {
-			// Return error if validation failed.
-			redirectAttributes
+				mv.setViewName("redirect:/admin/users/new");
+			} else if (!validatingMessage.equals("success")) {
+				// Return error if validation failed.
+				redirectAttributes
 				.addFlashAttribute("message", validatingMessage);
-			redirectAttributes
+				redirectAttributes
 				.addFlashAttribute("user", user);
-			mv.setViewName("redirect:/admin/users/new");
-		} else {
-			// Add new user to database.
-			userDAO.create(user);
-			
-			// Send account activation email.
-			int userID = userDAO.getUserID(user.getEmail());
-			IAuthTokenizer authTokenizer = 
-					new JWTImpl(userID, user.getUserRole(), 
-							VERIFY_TOKEN_LIVE_TIME_MINS);
-			String verifyURL = DOMAIN
-					+ request.getContextPath() 
-					+ "/register/verify?token="
-					+ authTokenizer.encodeUser();
-			
-			emailAPI.sendVerificationMessage(randomPassword, 
-					verifyURL, user.getEmail());
-			
-			redirectAttributes
+				mv.setViewName("redirect:/admin/users/new");
+			} else {
+				// Add new user to database.
+				userDAO.create(user);
+				
+				// Send account activation email.
+				String token = generateToken(user.getEmail(), 
+						user.getUserRole(), 
+						user.getUserStatus(), 
+						VERIFY_TOKEN_LIVE_TIME_MINS);
+				String verifyURL = DOMAIN
+						+ request.getContextPath() 
+						+ "/register/verify?token="
+						+ token;
+				emailAPI.sendVerificationMessage(randomPassword, 
+						verifyURL, user.getEmail());
+				
+				// Redirect to all users page with success message.
+				redirectAttributes
 				.addFlashAttribute("message", 
 						"User has been successfully created.");
-			mv.setViewName("redirect:/admin/users");
+				mv.setViewName("redirect:/admin/users");
+			}
 		}
 		
 		return mv;
 	}
+
+	/**
+	 * Generate token from user ID and user role.
+	 * @param user
+	 * @param userID
+	 * @param userStatus
+	 * @return
+	 */
+	private String generateToken(String email, int userRole,
+			boolean userStatus, double tokenLiveMins) {
+		IAuthTokenizer authTokenizer = 
+				new JWTImpl(email, VERIFY_TOKEN_LIVE_TIME_MINS);
+		return authTokenizer.encodeUser();
+	}
 	
 	/**
-	 * Render user updating form. Get user instance
-	 * pass by the last failed updating submit or get user instance 
-	 * from database to set form default values. Also get the
-	 * error message from the last updating submit to show in
-	 * the beginning of the form.
+	 * Render user updating form.
 	 * @param pathID
 	 * @param message
 	 * @param user
@@ -541,44 +628,49 @@ public class AdminController {
 			@PathVariable int pathID, 
 			@ModelAttribute("message") String message, 
 			@ModelAttribute("user") User user,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes,
+			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		IUserDAO userDAO = new UserDAOImpl(dataSource);
-		int userID = pathID;
-			
-		/*
-		 * Check if the user instance is not passed from
-		 * the last failed submit, then get a user instance from
-		 * database.
-		 */
-		if (user.getUserID() == 0) {
-			user = userDAO.getUser(userID);
-		}
 		
-		/*
-		 * Check if user is admin, then notify error,
-		 * otherwise, proceed to render form.
-		 */
-		if (user.getUserRole() > 0) {
-			redirectAttributes.addFlashAttribute("message", 
-					"Editing other admin's informations is not allowed.");
-			mv.setViewName("redirect:/admin/users");
+		// If user is not admin, redirect to home page.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
 		} else {
-			Navigation.addAdminNavItemMap(mv);
-			mv.addObject("formTitle", "Update");
-			mv.addObject("formAction", 
-					"/admin/users/update/" + userID);
-			mv.addObject("user", user);
-			mv.setViewName(getRoute("admin/createOrUpdateUser"));
+			IUserDAO userDAO = new UserDAOImpl(dataSource);
+			int userID = pathID;
+			
+			/*
+			 * Check if the user instance is not passed from
+			 * the last failed submit, then get a user instance from
+			 * database.
+			 */
+			if (message.equals("")) {
+				user = userDAO.getUserSummaryInfo(userID);
+			}
+			
+			/*
+			 * Check if user is admin, then notify error,
+			 * otherwise, proceed to render form.
+			 */
+			if (user.getUserRole() > 0) {
+				redirectAttributes.addFlashAttribute("message", 
+						"Editing other admin's informations is not allowed.");
+				mv.setViewName("redirect:/admin/users");
+			} else {
+				Navigation.addAdminNavItemMap(mv);
+				mv.addObject("formTitle", "Update");
+				mv.addObject("formAction", 
+						"/admin/users/update/" + userID);
+				mv.addObject("user", user);
+				mv.setViewName("admin/createOrUpdateUser");
+			}
 		}
 		
 		return mv;
 	}
 
 	/**
-	 * Handle user updating form. Bind user instance
-	 * to set values automatically from Spring form. 
-	 * Validate and update user record in database.
+	 * Handle user updating.
 	 * @param userID
 	 * @param user
 	 * @param result
@@ -591,28 +683,37 @@ public class AdminController {
 			@PathVariable int userID, 
 			@ModelAttribute("user") User user, 
 		    BindingResult result,
-		    RedirectAttributes redirectAttributes) {
+		    RedirectAttributes redirectAttributes,
+		    HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		IUserDAO userDAO = new UserDAOImpl(dataSource);
-		String validatingMessage = user.validate();
-
-		if (userDAO.isAdmin(userID)) {
-			redirectAttributes
-				.addFlashAttribute("message", "This action is forbidden!");
-			mv.setViewName("redirect:/admin/users");
-		} else if (!validatingMessage.equals("success")) {
-			user.setUserID(userID);
-			redirectAttributes
-				.addFlashAttribute("message", validatingMessage);
-			redirectAttributes
-			.addFlashAttribute("user", user);
-			mv.setViewName("redirect:/admin/users/update/" + userID);
+		
+		// If user is not admin, redirect to home page.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
 		} else {
-			userDAO.update(userID, user);
-			redirectAttributes
+			IUserDAO userDAO = new UserDAOImpl(dataSource);
+			String validatingMessage = user.validate();
+			
+			if (userDAO.isAdmin(userID)) {
+				// Return error if admin user try to update another admin.
+				redirectAttributes
+					.addFlashAttribute("message", "This action is forbidden!");
+				mv.setViewName("redirect:/admin/users");
+			} else if (!validatingMessage.equals("success")) {
+				// Return error if validate failed.
+				redirectAttributes
+					.addFlashAttribute("message", validatingMessage);
+				redirectAttributes
+					.addFlashAttribute("user", user);
+				mv.setViewName("redirect:/admin/users/update/" + userID);
+			} else {
+				// Update user.
+				userDAO.update(userID, user);
+				redirectAttributes
 				.addFlashAttribute("message", 
 						"User has been successfully updated.");
-			mv.setViewName("redirect:/admin/users");
+				mv.setViewName("redirect:/admin/users");
+			}
 		}
 		
 		return mv;
@@ -629,20 +730,32 @@ public class AdminController {
 			HttpServletRequest request,
 			RedirectAttributes redirectAttrs) {
 		ModelAndView mv = new ModelAndView();
-		IUserDAO userDAO = new UserDAOImpl(dataSource);
-		String message = "";
-		String[] userIDArray = request.getParameterValues("userIDs");
-		String userIDs = SQLConvert.convertList(userIDArray);
 		
-		if (userIDArray != null) {
-			userDAO.delete(userIDs);
-			message = "Delete user(s) successful.";
+		// If user is not admin, redirect to home page.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
 		} else {
-			message = "Delete failed. No items selected.";
+			IUserDAO userDAO = new UserDAOImpl(dataSource);
+			String message = "";
+			
+			/* 
+			 * Get array of user ID from checkbox inputs and convert
+			 * to string for using with SQL query "IN" operator. 
+			 */
+			String[] userIDArray = request.getParameterValues("userIDs");
+			String userIDs = SQLConvert.convertList(userIDArray);
+			
+			// Delete user in list.
+			if (userIDArray != null) {
+				userDAO.delete(userIDs);
+				message = "Delete user(s) successful.";
+			} else {
+				message = "Delete failed. No items selected.";
+			}
+			
+			redirectAttrs.addFlashAttribute("message", message);
+			mv.setViewName("redirect:/admin/users");
 		}
-		
-		redirectAttrs.addFlashAttribute("message", message);
-		mv.setViewName("redirect:/admin/users");
 
 		return mv;
 	}
@@ -658,84 +771,99 @@ public class AdminController {
 			HttpServletRequest request,
 			RedirectAttributes redirectAttrs) {
 		ModelAndView mv = new ModelAndView();
-		IUserDAO userDAO = new UserDAOImpl(dataSource);
-		IEmailAPI emailAPI = new EmailAPIImpl();
-		String message = "";
-		String[] userIDArray = request.getParameterValues("userIDs");
 		
-		/**
-		 * Check if there are users selected, then check if user
-		 * is not an admin, generate a random password, encode this
-		 * password, update user new encoded password and send 
-		 * the new password to user email.
-		 */
-		if (userIDArray != null) {
-			// Prepare an email list that can't receive message.
-			boolean emailResult = false;
-			List<String> emailFailedList = new ArrayList<>();
+		// If user is not admin, redirect to home page.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
+		} else {
+			IUserDAO userDAO = new UserDAOImpl(dataSource);
+			IEmailAPI emailAPI = new EmailAPIImpl();
+			String message = "";
+			String[] userIDArray = request.getParameterValues("userIDs");
 			
-			for (String userIDString: userIDArray) {
-				int userID = NullConvert.toInt(userIDString);
-				User user = userDAO.getUser(userID);
+			/**
+			 * Check if there are users selected, then check if user
+			 * is not an admin, generate a random password, encode this
+			 * password, update user new encoded password and send 
+			 * the new password to user email.
+			 */
+			if (userIDArray != null) {
+				// Prepare an email list that can't receive message.
+				boolean emailResult = false;
+				List<String> emailFailedList = new ArrayList<>();
 				
-				// Update user only.
-				if (user.getUserRole() == 0) {
-					// Update user new random password.
-					String randomPassword = PasswordService
-							.generateRandomPassword();
-					String encodedPassword = passwordEncoder
-							.encode(randomPassword);
+				for (String userIDString: userIDArray) {
+					// Get user info.
+					int userID = NullConvert.toInt(userIDString);
+					User user = userDAO.getUserSummaryInfo(userID);
 					
-					// Update user new password.
-					userDAO.update(userID, encodedPassword);
-					
-					// Send email with new password to user.
-					String email = user.getEmail();
-					String loginURL = DOMAIN
-							+ request.getContextPath() 
-							+ "/login";
-					emailResult = emailAPI
-							.sendNewPassword(randomPassword, 
-									loginURL, email);
-					
-					// In case errors happen when sending email, add email to list.
-					if (emailResult == false) {
-						emailFailedList.add(email);
+					// Update user only (not admin).
+					if (user.getUserRole() == 0) {
+						// Update user new random password.
+						String randomPassword = PasswordService
+								.generateRandomPassword();
+						String encodedPassword = passwordEncoder
+								.encode(randomPassword);
+						userDAO.update(userID, encodedPassword);
+						
+						// Send email with new password to user.
+						String email = user.getEmail();
+						String loginURL = DOMAIN
+								+ request.getContextPath() 
+								+ "/login";
+						emailResult = emailAPI
+								.sendNewPassword(randomPassword, 
+										loginURL, email);
+						
+						/*
+						 * In case errors happen when sending email, 
+						 * add these email which failed to receive
+						 * message to list, to be show on notify message.
+						 */
+						if (emailResult == false) {
+							emailFailedList.add(email);
+						}
 					}
 				}
-			}
-			
-			message = emailResult == true ?
-							"All passwords were changed." :
+				
+				message = emailResult == true ?
+						"All passwords were changed." :
 							"All passwords were changed, "
 							+ "but failed to send emails "
 							+ "to users "
 							+ emailFailedList.toString()
-								.replace('[', '(')
-								.replace(']', ')') + ".";
-		} else {
-			message = "Change password failed. No items selected.";
+							.replace('[', '(')
+							.replace(']', ')') + ".";
+			} else {
+				message = "Change password failed. No items selected.";
+			}
+			
+			redirectAttrs.addFlashAttribute("message", message);
+			mv.setViewName("redirect:/admin/users");
 		}
-		
-		redirectAttrs.addFlashAttribute("message", message);
-		mv.setViewName("redirect:/admin/users");
 		
 		return mv;
 	}
-
+	
 	/**
-	 * Redirect to landing page if there is no
-	 * admin user logged in.
-	 * @param url
+	 * Get user from session.
+	 * @param request
 	 * @return
 	 */
-	private String getRoute(String url) {
-		/*
-		 * If session not contains user role admin 
-		 * redirect to landing page.
-		 * Implement logic later (on task number 6).
-		 */
-		return true ? url : "redirect:/explore";
+	private User getUserFromSession(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		String email = (String) session.getAttribute("email");
+		IUserDAO userDAO = new UserDAOImpl(dataSource);
+		return userDAO.getUserSimpleInfo(email);
+	}
+	
+	/**
+	 * Check if there is a admin.
+	 * @param user
+	 * @return
+	 */
+	private boolean isLegalUser(HttpServletRequest request, User user) {
+		return user.getUserStatus() && user.getUserRole() > 0;
 	}
 
 }

@@ -47,6 +47,7 @@ public class Navigation {
 		navItemMap.put("Donation history", "/admin/donation-history");
 
 		mv.addObject("navItemMap", navItemMap);
+		mv.addObject("role", "admin");
 	}
 	
 	/**
@@ -62,6 +63,7 @@ public class Navigation {
 		navItemMap.put("Profile", "/user/update-profile");
 
 		mv.addObject("navItemMap", navItemMap);
+		mv.addObject("role", "user");
 	}
 
 }

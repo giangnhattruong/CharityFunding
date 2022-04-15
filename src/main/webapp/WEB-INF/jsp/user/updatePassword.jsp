@@ -9,18 +9,22 @@
 
 <div class="container p-5 button-shadow">
 <h2 class="text-center mb-5">Update password</h2>
-<p class="small text-danger col-lg-5 offset-lg-4">${error}</p>
+<p class="small text-danger col-lg-5 offset-lg-4">${message}</p>
 <form id="submitForm" class="resetForm" 
 	method="POST" action="update-password">
 
 <div class="row mb-3">
 <div class="col-md col-lg-4 offset-lg-4">
+<c:if test="${isOldPasswordRequired == true}">
 <div class="mb-3">
 <label for="oldPassword" class="form-label lead">Old Password</label>
 <input type="password" id="oldPassword" name="oldPassword" class="form-control">
 </div>
 
+<a class="text-muted" href="<c:url value="/login/forgot-password" />">Forgot password?</a>
 <hr class="my-4">
+</c:if>
+
 <div class="mb-3">
 <p class="small text-muted">Password must contain all below requirements:</p>
 <ul>
@@ -57,9 +61,5 @@
 </div>
 </form>
 </div>
-
-<c:if test="${message != null && message != ''}">
-<c:import url="/WEB-INF/jsp/common/notifyModal.jsp"></c:import>
-</c:if>
 
 <c:import url="/WEB-INF/jsp/common/footer.jsp"></c:import>

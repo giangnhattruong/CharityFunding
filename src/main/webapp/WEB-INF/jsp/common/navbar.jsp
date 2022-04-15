@@ -22,8 +22,27 @@
 </ul>
 
 <div class="col-md-3 text-end">
-<a href="<c:url value="/login" />" class="btn btn-outline-success me-2 mb-3 mb-lg-0">Login</a>
-<a href="<c:url value="/register" />" class="btn btn-success mb-3 mb-lg-0">Sign-up</a>
+<c:if test="${email != null}">
+<a href="<c:url value="/logout" />" 
+	class="btn btn-outline-danger me-2 mb-3 mb-lg-0">Logout</a>
+</c:if>
+
+<c:if test="${email == null}">
+<a href="<c:url value="/login" />" 
+	class="btn btn-outline-success me-2 mb-3 mb-lg-0">Login</a>
+<a href="<c:url value="/register" />" 
+	class="btn btn-success mb-3 mb-lg-0">Sign-up</a>
+</c:if>
+
+<c:if test="${email != null && userRole > 0}">
+<a href="<c:url value="/admin" />" 
+	class="btn btn-secondary mb-3 mb-lg-0">Manage</a>
+</c:if>
+
+<c:if test="${email != null}">
+<a href="<c:url value="/user" />" 
+	class="btn btn-outline-secondary mb-3 mb-lg-0">Profile</a>
+</c:if>
 </div>
 </header>
 </nav>

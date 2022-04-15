@@ -25,9 +25,10 @@ public class EmailAPIImpl implements IEmailAPI {
 	
 	/**
 	 * Send to user email an account verifying message contains 
-	 * new auto-generated password and a account verifying URL. 
-	 * @throws MessagingException 
-	 * @throws AddressException 
+	 * new auto-generated password and a account verifying URL.
+	 * @param password
+	 * @param URL
+	 * @param email
 	 */
 	@Override
 	public boolean sendVerificationMessage(String password, 
@@ -56,9 +57,10 @@ public class EmailAPIImpl implements IEmailAPI {
 	}
 
 	/**
-	 * Send to user email a new auto-generated password.. 
-	 * @throws MessagingException 
-	 * @throws AddressException 
+	 * Send to user email a new auto-generated password.
+	 * @param password
+	 * @param URL
+	 * @param email
 	 */
 	@Override
 	public boolean sendNewPassword(String password, 
@@ -81,6 +83,39 @@ public class EmailAPIImpl implements IEmailAPI {
 		}
 	}
 
+	/**
+	 * Send to user an message with 
+	 * reset password URL.
+	 * @param URL
+	 * @param email
+	 * @param liveMins
+	 */
+	@Override
+	public boolean sendResetPasswordURL(String URL, String email, int liveMins) {
+		String subject = "Reset password at Charity Funding";
+		String content = "<p>Please click on the link to update your password:</p>" 
+				+ "<p><u><a href='" + URL + "'>"
+				+ "Click here to update your password<a></u></p>"
+				+ "<p>This link will be expired after "
+				+ liveMins
+				+ " minutes.</p>";
+		Session session = getMailSession();
+		
+		try {
+			Message message = getMessage(email, 
+					session, subject, content);
+		    Transport.send(message);
+		    return true;
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * Prepare mail session.
+	 * @return
+	 */
 	private Session getMailSession() {
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com");
@@ -101,6 +136,16 @@ public class EmailAPIImpl implements IEmailAPI {
 		return session;
 	}
 
+	/**
+	 * Prepare mail message with multipart.
+	 * @param email
+	 * @param session
+	 * @param subject
+	 * @param content
+	 * @return
+	 * @throws MessagingException
+	 * @throws AddressException
+	 */
 	private Message getMessage(String email, Session session, 
 			String subject, String content)
 			throws MessagingException, AddressException {

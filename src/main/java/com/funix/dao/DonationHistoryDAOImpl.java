@@ -77,7 +77,7 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 	 * from donation history form.
 	 */
 	@Override
-	public List<DonationHistory> getManyAdminHistories(
+	public List<DonationHistory> getAllHistory(
 			DonationHistoryFilter filter) {
 		String SQL = "SELECT * FROM dbo.getDonationHistory() "
 				+ "WHERE "
@@ -101,7 +101,7 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 	 * from donation history form of a specific user.
 	 */
 	@Override
-	public List<DonationHistory> getManyUserHistories(
+	public List<DonationHistory> getUserHistory(
 			int userID, DonationHistoryFilter filter) {
 		String SQL = "SELECT * FROM dbo.getDonationHistory() "
 				+ "WHERE "
@@ -116,6 +116,28 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 						filter.getCampaignKeywordFilter(),
 						filter.getTransactionKeywordFilter(),
 						filter.getStatusFilter(), userID);
+	}
+
+	/**
+	 * Get donation history based on filter values taken
+	 * from donation history form of a specific user.
+	 */
+	@Override
+	public List<DonationHistory> getUserHistory(
+			String email, DonationHistoryFilter filter) {
+		String SQL = "SELECT * FROM dbo.getDonationHistory() "
+				+ "WHERE "
+				+ "(LOWER(title) LIKE ? OR LOWER(location) LIKE ?) AND "
+				+ "transactionCode LIKE ? AND "
+				+ "donationStatus LIKE ? AND "
+				+ "email = ? "
+				+ filter.getSortByFilter();
+		return jdbcTemplate
+				.query(SQL, new DonationHistoryRowMapper(), 
+						filter.getCampaignKeywordFilter(),
+						filter.getCampaignKeywordFilter(),
+						filter.getTransactionKeywordFilter(),
+						filter.getStatusFilter(), email);
 	}
 
 }

@@ -38,19 +38,39 @@ public interface IUserDAO {
 	 * @return
 	 */
 	int getUserID(String email);
+
+	/**
+	 * Get user credential for authentication.
+	 * @param userID
+	 * @return
+	 */
+	User getUserSimpleInfo(int userID);
+	
+	/**
+	 * Get user credential for authentication.
+	 * @param userID
+	 * @return
+	 */
+	User getUserSimpleInfo(String email);
 	
 	/**
 	 * Get a user from database for updating.
 	 * @param userID
 	 * @return
 	 */
-	User getUser(int userID);
+	User getUserSummaryInfo(int userID);
 	
 	/**
-	 * Update an user's status to verified
+	 * Enable user status.
 	 * @param userID
 	 */
 	void enableUserStatus(int userID);
+
+	/**
+	 * Enable user status.
+	 * @param email
+	 */
+	void enableUserStatus(String email);
 	
 	/**
 	 * Get many users base on search and sort filter.
@@ -65,13 +85,13 @@ public interface IUserDAO {
 	 * @return
 	 */
 	boolean isAdmin(int userID);
-
+	
 	/**
-	 * Get user credential for authentication.
-	 * @param userID
+	 * Check if a user is admin.
+	 * @param email
 	 * @return
 	 */
-	User getUserCredential(int userID);
+	boolean isAdmin(String email);
 	
 	/**
 	 * Update an existing user in database.
@@ -81,11 +101,25 @@ public interface IUserDAO {
 	void update(int userID, User newUser);
 	
 	/**
+	 * Update an existing user in database.
+	 * @param email
+	 * @param newUser
+	 */
+	void update(String email, User newUser);
+	
+	/**
 	 * Update user password.
 	 * @param userID
 	 * @param password
 	 */
 	void update(int userID, String password);
+	
+	/**
+	 * Update user password.
+	 * @param email
+	 * @param password
+	 */
+	void update(String email, String password);
 	
 	/**
 	 * Delete an existing user in database.

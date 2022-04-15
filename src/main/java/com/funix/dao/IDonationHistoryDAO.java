@@ -33,21 +33,31 @@ public interface IDonationHistoryDAO {
 	void verifyHistoryStatus(List<String> transactionCodeList);
 	
 	/**
-	 * Get many donations/transactions history 
+	 * Get all donations history 
 	 * base on search and sort filter.
 	 * @param filter
 	 * @return
 	 */
-	List<DonationHistory> getManyAdminHistories(
+	List<DonationHistory> getAllHistory(
 			DonationHistoryFilter filter);
 	
 	/**
-	 * Get many donation history of one specific user 
+	 * Get donation history of one specific user 
 	 * base on search and sort filter.
 	 * @param userID
 	 * @param filter
 	 * @return
 	 */
-	List<DonationHistory> getManyUserHistories(
+	List<DonationHistory> getUserHistory(
 			int userID, DonationHistoryFilter filter);
+	
+	/**
+	 * Get donation history of one specific user 
+	 * base on search and sort filter.
+	 * @param email
+	 * @param filter
+	 * @return
+	 */
+	List<DonationHistory> getUserHistory(
+			String email, DonationHistoryFilter filter);
 }

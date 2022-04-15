@@ -4,8 +4,6 @@
 
 package com.funix.auth;
 
-import com.funix.model.User;
-
 /**
  * Encode and decode user credential for authentication.
  * @author Giang_Nhat_Truong
@@ -21,10 +19,10 @@ public interface IAuthTokenizer {
 	String encodeUser();
 	
 	/**
-	 * Get user info from a token.
+	 * Get user email from a token.
 	 * @param token
 	 * @return
 	 */
-	User decodeUser(String token);
+	String decodeUser(String token);
 	
 }

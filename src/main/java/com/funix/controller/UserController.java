@@ -11,17 +11,17 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.funix.auth.IAuthTokenizer;
+import com.funix.auth.JWTImpl;
 import com.funix.dao.DonationHistoryDAOImpl;
 import com.funix.dao.IDonationHistoryDAO;
 import com.funix.dao.IUserDAO;
@@ -30,7 +30,6 @@ import com.funix.model.DonationHistory;
 import com.funix.model.DonationHistoryFilter;
 import com.funix.model.User;
 import com.funix.service.Navigation;
-import com.funix.service.NullConvert;
 
 /**
  * Handle all routes for user managing pages.
@@ -55,38 +54,57 @@ public class UserController {
 	 */
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
-	/**
-	 * JavaMailSender for sending email.
-	 */
-	@Autowired
-	private JavaMailSender emailSender;
 
+	/**
+	 * Main route /user redirect to 
+	 * user donation history page.
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String getUserDashboard() {
 		return "redirect:/user/donation-history";
 	}
 
+	/**
+	 * Render user donation history.
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "donation-history", method = RequestMethod.GET)
 	public ModelAndView getHistory(
 			@ModelAttribute("filter") DonationHistoryFilter filter,
 			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		IDonationHistoryDAO historyDAO = 
-				new DonationHistoryDAOImpl(dataSource);
-//		HttpSession session = request.getSession();
-//		int userID = NullConvert.toInt((String) session.getAttribute("userID"));
-		int userID = 21;
-		List<DonationHistory> historyList = historyDAO
-				.getManyUserHistories(userID, filter);
+
+		// Get user object contains email and user role from token.
+		User authUser = getUserFromSession(request);
 		
-		Navigation.addUserNavItemMap(mv);		
-		mv.addObject("filter", filter);
-		mv.addObject("historyList", historyList);
-		mv.setViewName(getRoute("user/donationHistory"));
+		// Redirect to home page if user is not legal.
+		if (!isLegalUser(request, authUser)) {
+			mv.setViewName("redirect:/explore");
+		} else {
+			IDonationHistoryDAO historyDAO = 
+					new DonationHistoryDAOImpl(dataSource);
+			List<DonationHistory> historyList = historyDAO
+					.getUserHistory(authUser.getEmail(), filter);
+			
+			Navigation.addUserNavItemMap(mv);		
+			mv.addObject("filter", filter);
+			mv.addObject("historyList", historyList);
+			mv.setViewName("user/donationHistory");
+		}
+		
 		return mv;
 	}
 
+	/**
+	 * Handle donation history search form submit.
+	 * @param filter
+	 * @param result
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequestMapping(value = "donation-history", method = RequestMethod.POST)
 	public ModelAndView searchHistory(
 			@ModelAttribute("filter") DonationHistoryFilter filter, 
@@ -94,10 +112,19 @@ public class UserController {
 		    RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView();
 		redirectAttributes.addFlashAttribute("filter", filter);
-		mv.setViewName(getRoute("redirect:/user/donation-history"));
+		mv.setViewName("redirect:/user/donation-history");
 		return mv;
 	}
 	
+	/**
+	 * Render user update profile form.
+	 * @param request
+	 * @param message
+	 * @param error
+	 * @param user
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequestMapping(value = "update-profile", method = RequestMethod.GET)
 	public ModelAndView getProfileForm(
 			HttpServletRequest request,
@@ -106,117 +133,188 @@ public class UserController {
 			@ModelAttribute("user") User user,
 			RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView();
-		IUserDAO userDAO = new UserDAOImpl(dataSource);
-//		HttpSession session = request.getSession();
-//		int userID = NullConvert.toInt((String) session.getAttribute("userID"));
-		int userID = 21;
+
+		// Get user object contains email and user role from token.
+		User authUser = getUserFromSession(request);
 		
-		/*
-		 * Check if the user instance is not passed from
-		 * the last failed submit, then get a user instance from
-		 * database.
-		 */
-		if (user.getUserID() == 0) {
-			user = userDAO.getUser(userID);
+		// Redirect to home page if user is not legal.
+		if (!isLegalUser(request, authUser)) {
+			mv.setViewName("redirect:/explore");
+		} else {
+			
+			/*
+			 * Check if the user instance is not passed from
+			 * the last failed submit, then get a user instance from
+			 * database.
+			 */
+			if (error.equals("")) {
+				IUserDAO userDAO = new UserDAOImpl(dataSource);
+				user = userDAO.getUserSimpleInfo(authUser.getEmail());
+			}
+			
+			Navigation.addUserNavItemMap(mv);
+			mv.addObject("user", user);
+			mv.addObject("message", message);
+			mv.addObject("error", error);
+			mv.setViewName("user/updateProfile");
 		}
-		
-		Navigation.addUserNavItemMap(mv);
-		mv.addObject("user", user);
-		mv.addObject("message", message);
-		mv.addObject("error", error);
-		mv.setViewName(getRoute("user/updateProfile"));
 		
 		return mv;
 	}
 
+	/**
+	 * Handle update user profile.
+	 * @param user
+	 * @param result
+	 * @param redirectAttributes
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "update-profile", method = RequestMethod.POST)
 	public ModelAndView updateProfile(
 			@ModelAttribute("user") User user, 
 		    BindingResult result,
-		    RedirectAttributes redirectAttributes) {
+		    RedirectAttributes redirectAttributes,
+		    HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		IUserDAO userDAO = new UserDAOImpl(dataSource);
-		String validatingMessage = user.validate();
-//		HttpSession session = request.getSession();
-//		int userID = NullConvert.toInt((String) session.getAttribute("userID"));
-//		int userRole = NullConvert.toInt((String) session.getAttribute("userRole"));
-		int userID = 21;
-		int userRole = 0;
 
-		if (!validatingMessage.equals("success")) {
-			user.setUserID(userID);
-			redirectAttributes
-				.addFlashAttribute("error", validatingMessage);
-			redirectAttributes
-			.addFlashAttribute("user", user);
-		} else {
-			user.setUserRole(userRole);
-			user.setUserStatus(true);
-			userDAO.update(userID, user);
-			redirectAttributes
-				.addFlashAttribute("message", 
-						"Your profile has been successfully updated.");
-		}
+		// Get user object contains email and user role from token.
+		User authUser = getUserFromSession(request);
 		
-		mv.setViewName("redirect:/user/update-profile");
-		return mv;
-	}
-
-	@RequestMapping(value = "update-password", method = RequestMethod.GET)
-	public ModelAndView getPasswordForm(
-			@ModelAttribute("error") String error, 
-			RedirectAttributes redirectAttributes) {
-		ModelAndView mv = new ModelAndView();
-		Navigation.addUserNavItemMap(mv);
-		mv.addObject("error", error);
-		mv.setViewName(getRoute("user/updatePassword"));
-		
-		return mv;
-	}
-
-	@RequestMapping(value = "update-password", method = RequestMethod.POST)
-	public ModelAndView updatePassword(
-			HttpServletRequest request,
-		    RedirectAttributes redirectAttributes) {
-		ModelAndView mv = new ModelAndView();
-		IUserDAO userDAO = new UserDAOImpl(dataSource);
-//		HttpSession session = request.getSession();
-//		int userID = NullConvert.toInt((String) session.getAttribute("userID"));
-		int userID = 21;
-		User user = userDAO.getUserCredential(userID);
-		String oldPassword = request.getParameter("oldPassword");
-		String newPassword = request.getParameter("newPassword");
-		String confirmPassword = request.getParameter("confirmPassword");
-		String validatingMessage = user.validatePassword(passwordEncoder, 
-				oldPassword, newPassword, confirmPassword);
-
-		if (!validatingMessage.equals("success")) {
-			user.setUserID(userID);
-			redirectAttributes
-				.addFlashAttribute("error", validatingMessage);
-			mv.setViewName("redirect:/user/update-password");
+		// Redirect to home page if user is not legal.
+		if (!isLegalUser(request, authUser)) {
+			mv.setViewName("redirect:/explore");
 		} else {
-			String newEncodedPassword = passwordEncoder
-					.encode(newPassword);
-			userDAO.update(userID, newEncodedPassword);
-			redirectAttributes
-				.addFlashAttribute("message", 
-						"Your password has been successfully updated.");
+			String validatingMessage = user.validate();
+			
+			if (!validatingMessage.equals("success")) {
+				// Return error to profile page.
+				redirectAttributes
+					.addFlashAttribute("error", validatingMessage);
+				redirectAttributes
+					.addFlashAttribute("user", user);
+			} else {
+				// Update user in database.
+				IUserDAO userDAO = new UserDAOImpl(dataSource);
+				user.setUserRole(authUser.getUserRole());
+				user.setUserStatus(true);
+				userDAO.update(authUser.getEmail(), user);
+				
+				// Redirect to profile page with success message.
+				redirectAttributes
+					.addFlashAttribute("message", 
+							"Your profile has been successfully updated.");
+			}
+			
 			mv.setViewName("redirect:/user/update-profile");
 		}
 		
 		return mv;
 	}
 
-	private String getRoute(String url) {
-		/*
-		 * if session not contains userID redirect to landing page
-		 */
-		if (false) {
-			return "redirect:/explore";
+	/**
+	 * Render update user password form.
+	 * @param message
+	 * @param redirectAttributes
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "update-password", method = RequestMethod.GET)
+	public ModelAndView getPasswordForm(
+			@ModelAttribute("message") String message,
+			RedirectAttributes redirectAttributes,
+			HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView();
+		
+		// Redirect to home page if user is not legal.
+		if (!isLegalUser(request, getUserFromSession(request))) {
+			mv.setViewName("redirect:/explore");
+		} else {
+			Navigation.addUserNavItemMap(mv);
+			mv.addObject("message", message);
+			mv.addObject("isOldPasswordRequired", true);
+			mv.setViewName("user/updatePassword");
 		}
+		
+		return mv;
+	}
 
-		return url;
+	/**
+	 * Handle update user password.
+	 * @param redirectAttributes
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "update-password", method = RequestMethod.POST)
+	public ModelAndView updatePassword(
+		    RedirectAttributes redirectAttributes,
+			HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView();
+
+		// Get user object contains email and user role from token.
+		User authUser = getUserFromSession(request);
+		
+		// Redirect to home page if user is not legal.
+		if (!isLegalUser(request, authUser)) {
+			mv.setViewName("redirect:/explore");
+		} else {
+			// Validate old and new password.
+			IUserDAO userDAO = new UserDAOImpl(dataSource);
+			User user = userDAO.getUserSimpleInfo(authUser.getEmail());
+			String oldPassword = request.getParameter("oldPassword");
+			String newPassword = request.getParameter("newPassword");
+			String confirmPassword = request.getParameter("confirmPassword");
+			String validatingMessage = user.validatePassword(passwordEncoder, 
+					oldPassword, newPassword, confirmPassword);
+			
+			if (!validatingMessage.equals("success")) {
+				// Return error if validate failed.
+				redirectAttributes
+					.addFlashAttribute("message", validatingMessage);
+				mv.setViewName("redirect:/user/update-password");
+			} else {
+				// Update user new encoded password to database.
+				userDAO.update(authUser.getEmail(), 
+						passwordEncoder.encode(newPassword));
+				
+				// Redirect to profile page with success message.
+				redirectAttributes
+					.addFlashAttribute("message", 
+						"Your password has been successfully updated.");
+				mv.setViewName("redirect:/user/update-profile");
+			}
+		}
+		
+		return mv;
+	}
+	
+	/**
+	 * Get user from session.
+	 * @param request
+	 * @return
+	 */
+	private User getUserFromSession(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		String email = (String) session.getAttribute("email");
+		IUserDAO userDAO = new UserDAOImpl(dataSource);
+		return userDAO.getUserSimpleInfo(email);
+	}
+	
+	/**
+	 * Check if there is a user with active status.
+	 * @param user
+	 * @return
+	 */
+	private boolean isLegalUser(HttpServletRequest request, User user) {
+		boolean result = user.getUserStatus();
+		
+		// Log user out if their status is in-active.
+		if (result == false) {
+			HttpSession session = request.getSession();
+			session.invalidate();
+		}
+		
+		return result;
 	}
 
 }

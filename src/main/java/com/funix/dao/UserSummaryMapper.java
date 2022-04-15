@@ -18,7 +18,7 @@ import com.funix.service.NullConvert;
  * @author Giang_Nhat_Truong
  *
  */
-public class UserRowMapper implements RowMapper<User> {
+public class UserSummaryMapper implements RowMapper<User> {
 
 	/**
 	 * Map to get all user fields in a record/row.

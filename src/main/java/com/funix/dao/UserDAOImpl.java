@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.funix.model.User;
@@ -82,30 +83,98 @@ public class UserDAOImpl implements IUserDAO {
 	 */
 	public int getUserID(String email) {
 		String SQL = "SELECT userID FROM userTbl WHERE email = ?";
-		String userID = jdbcTemplate.queryForObject(SQL, String.class, email);
-		return NullConvert.toInt(userID);
+		int userID = 0;
+		
+		try {
+			String userIDString = jdbcTemplate
+					.queryForObject(SQL, String.class, email);
+			userID = NullConvert.toInt(userIDString);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		
+		return userID;
+	}
+	
+	/**
+	 * Get user credential for authentication.
+	 * @param userID
+	 * @return
+	 */
+	@Override
+	public User getUserSimpleInfo(int userID) {
+		String SQL = "SELECT * FROM userTbl WHERE userID = ?";
+		User user = new User();
+		
+		try {
+			user = jdbcTemplate
+			.queryForObject(SQL, new UserSimpleMapper(), userID);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		
+		return user;
+	}
+	
+	/**
+	 * Get user credential for authentication.
+	 * @param userID
+	 * @return
+	 */
+	@Override
+	public User getUserSimpleInfo(String email) {
+		String SQL = "SELECT * FROM userTbl WHERE email = ?";
+		User user = new User();
+		
+		try {
+			user = jdbcTemplate
+					.queryForObject(SQL, new UserSimpleMapper(), email);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		
+		return user;
 	}
 
 	/**
 	 * Get a user to pass values for user updating form.
 	 */
 	@Override
-	public User getUser(int userID) {
+	public User getUserSummaryInfo(int userID) {
 		String SQL = "SELECT * FROM dbo.getUserDonationSummary() "
 				+ "WHERE userID = ?";
-		User user = jdbcTemplate.queryForObject(SQL, 
-				new UserRowMapper(), userID);
+		User user = new User();
+		
+		try {
+			user = jdbcTemplate.queryForObject(SQL,
+					new UserSummaryMapper(), userID);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+				
 		return user;
 	}
 
 	/**
-	 * Update user status to verified after user confirmed by 
-	 * clicking the verifying link in email.
+	 * Enable user status.
 	 */
 	@Override
 	public void enableUserStatus(int userID) {
-		String SQL = "EXECUTE updateUserStatus 1, ?";
+		String SQL = "UPDATE userTbl "
+				+ "SET userStatus = 1 "
+				+ "WHERE userID = ?";
 		jdbcTemplate.update(SQL, userID);
+	}
+
+	/**
+	 * Enable user status.
+	 */
+	@Override
+	public void enableUserStatus(String email) {
+		String SQL = "UPDATE userTbl "
+				+ "SET userStatus = 1 "
+				+ "WHERE email = ?";
+		jdbcTemplate.update(SQL, email);
 	}
 
 	/**
@@ -122,7 +191,7 @@ public class UserDAOImpl implements IUserDAO {
 				+ "userRole LIKE ? "
 				+ userFilter.getSortByFilter();
 		List<User> userList = jdbcTemplate.query(SQL, 
-				new UserRowMapper(), 
+				new UserSummaryMapper(), 
 				userFilter.getKeywordFilter(),
 				userFilter.getKeywordFilter(),
 				userFilter.getKeywordFilter(),
@@ -144,9 +213,23 @@ public class UserDAOImpl implements IUserDAO {
 	}
 	
 	/**
+	 * Check if a user is admin.
+	 * @param email
+	 * @return
+	 */
+	@Override
+	public boolean isAdmin(String email) {
+		String SQL = "SELECT userRole from userTbl WHERE email = ?";
+		int userRole = jdbcTemplate.queryForObject(SQL, Integer.class, email);
+		return userRole > 0;
+	}
+	
+	/**
 	 * Update an user informations
 	 * except email and password
-	 * (only user, not admin).
+	 * (only update user, not admin).
+	 * @param userID
+	 * @param newUser
 	 */
 	@Override
 	public void update(int userID, User user) {
@@ -157,7 +240,7 @@ public class UserDAOImpl implements IUserDAO {
 		
 		/*
 		 * If user role is updated to admin,
-		 * then status must be on
+		 * then status must be turned on.
 		 */
 		if (user.getUserRole() == 1) {
 			user.setUserStatus(true);
@@ -170,20 +253,37 @@ public class UserDAOImpl implements IUserDAO {
 	}
 	
 	/**
-	 * Get user credential for authentication.
-	 * @param userID
-	 * @return
+	 * Update an user informations
+	 * except email and password
+	 * (only update user, not admin).
+	 * @param email
+	 * @param newUser
 	 */
 	@Override
-	public User getUserCredential(int userID) {
-		String SQL = "SELECT email, password FROM userTbl WHERE userID = ?";
-		User user = jdbcTemplate
-				.queryForObject(SQL, new UserCredentialMapper(), userID);
-		return user;
+	public void update(String email, User user) {
+		String SQL = "UPDATE userTbl "
+				+ "SET fullname = ?, address = ?, phone = ?, "
+				+ "userRole = ?, userStatus = ? "
+				+ "WHERE email = ?";
+		
+		/*
+		 * If user role is updated to admin,
+		 * then status must be turned on.
+		 */
+		if (user.getUserRole() == 1) {
+			user.setUserStatus(true);
+		}
+		
+		jdbcTemplate.update(SQL, user.getFullname(),
+				user.getAddress(), user.getPhone(),
+				user.getUserRole(), user.getUserStatus(),
+				email);
 	}
 
 	/**
 	 * Update user password.
+	 * @param userID
+	 * @param password
 	 */
 	@Override
 	public void update(int userID, String password) {
@@ -192,9 +292,23 @@ public class UserDAOImpl implements IUserDAO {
 				+ "WHERE userID = ?";
 		jdbcTemplate.update(SQL, password, userID);
 	}
+
+	/**
+	 * Update user password.
+	 * @param email
+	 * @param password
+	 */
+	@Override
+	public void update(String email, String password) {
+		String SQL = "UPDATE userTbl "
+				+ "SET password = ? "
+				+ "WHERE email = ?";
+		jdbcTemplate.update(SQL, password, email);
+	}
 	
 	/**
 	 * Delete an existing user.
+	 * @param userIDs
 	 */
 	@Override
 	public void delete(String userIDs) {

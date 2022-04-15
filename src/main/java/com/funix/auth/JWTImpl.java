@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 
 import com.funix.config.MyKey;
-import com.funix.model.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -17,19 +16,14 @@ import io.jsonwebtoken.security.Keys;
 public class JWTImpl implements IAuthTokenizer {
 	
 	/**
-	 * User ID.
+	 * User email.
 	 */
-	private int userID;
-	
-	/**
-	 * User role.
-	 */
-	private int userRole;
+	private String email;
 	
 	/**
 	 * Token life span in minutes.
 	 */
-	private double liveMins;
+	private int liveMins;
 	
 	/**
 	 * Secret string for encoding to jws token.
@@ -44,18 +38,17 @@ public class JWTImpl implements IAuthTokenizer {
 	
 	/**
 	 * Constructor with info for encoding token.
-	 * @param userID
+	 * @param email
 	 * @param userRole
 	 * @param liveMins
 	 */
-	public JWTImpl(int userID, int userRole, double liveMins) {
-		this.userID = userID;
-		this.userRole = userRole;
+	public JWTImpl(String email, int liveMins) {
+		this.email = email;
 		this.liveMins = liveMins;
 	}
 
 	/**
-	 * Encode user ID and user role to jws token.
+	 * Encode user email and user role to jws token.
 	 * @param liveMins
 	 * @return
 	 */
@@ -72,8 +65,7 @@ public class JWTImpl implements IAuthTokenizer {
 		String jws = Jwts.builder()
 				.setIssuer("Charity Funding Authentication")
 				.setSubject("verifyemail")
-				.claim("userID", userID)
-				.claim("userRole", userRole)
+				.claim("email", email)
 				.setIssuedAt(now)
 				.setExpiration(expire)
 				.signWith(key)
@@ -88,8 +80,8 @@ public class JWTImpl implements IAuthTokenizer {
 	 * @return
 	 */
 	@Override
-	public User decodeUser(String token) {
-		User user = new User();
+	public String decodeUser(String token) {
+		String email = "";
 		SecretKey key = Keys
 				.hmacShaKeyFor(Decoders.BASE64.decode(SECRET));
 		
@@ -98,19 +90,14 @@ public class JWTImpl implements IAuthTokenizer {
 					.setSigningKey(key)
 					.build()
 					.parseClaimsJws(token);
-			int userID = (Integer) result.getBody()
-					.get("userID");		
-			int userRole = (Integer) result.getBody()
-					.get("userRole");
-			user.setUserID(userID);
-			user.setUserRole(userRole);
-		} catch (JwtException e) {
-			user = null;
+			email = (String) result.getBody()
+					.get("email");		
+		} catch (JwtException | IllegalArgumentException e) {
 			System.out.println("Authentication failed.");
 			e.printStackTrace();
 		}
 		
-		return user;
+		return email;
 	}
 	
 }
