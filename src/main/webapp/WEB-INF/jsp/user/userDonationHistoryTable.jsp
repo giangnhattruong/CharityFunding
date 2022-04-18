@@ -24,7 +24,7 @@
     </thead>
 	<tbody>
 	<c:forEach varStatus="loopStatus" var="history" items="${historyList}">
-	  <tr id="row-${loopStatus.index + 1}">
+	  <tr id="item${loopStatus.index + 1}">
 	    <td>${loopStatus.index + 1}</td>
 	    <td>${history.title}</td>
 	    <td>${history.location}</td>

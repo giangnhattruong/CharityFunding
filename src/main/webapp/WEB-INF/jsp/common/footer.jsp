@@ -1,6 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 </main>
+
+<a href="#navbar" id="toTop"><i class="bi bi-arrow-up"></i></a>
+
 <div id="footer" class="container-fluid mt-auto px-5">
   <footer class="py-5">
     <div class="row g-0">

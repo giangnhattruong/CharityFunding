@@ -2,47 +2,74 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<nav id="navbar" class="container-fluid">
-<header
-	class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-between py-3 px-5 mb-4 border-bottom">
-<a href="<c:url value="/" />"
-	class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-	<img src="<c:url value="/resources/assets/media/logo.png" />"
+<nav id="navbar" class="navbar navbar-expand-lg navbar-light">
+<div class="container-fluid d-lg-flex justify-content-lg-between">
+<a id="logo" class="navbar-brand d-flex align-items-center" 
+	href="<c:url value="/" />">
+	<img src="<c:url value="/resources/assets/media/logo.png" />" 
 		alt="Logo" height="45px">
-	<h3 class="display-5 text-success">TBS</h3>
-</a>
+	<h3 class="ms-1 mb-0">TBS</h3></a>
+	
+<button class="navbar-toggler" type="button" 
+	data-bs-toggle="collapse" data-bs-target="#navbarToggler" 
+	aria-controls="navbarToggler" aria-expanded="false" 
+	aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
 
-<ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-	<li><a href="<c:url value="/explore" />" 
-			class="nav-link px-2 link-secondary h5">Explore</a></li>
-	<c:forEach var="navItem" items="${navItemMap.keySet()}">
-		<li><a href="<c:url value="${navItemMap.get(navItem)}" />" 
-			class="nav-link px-2 link-secondary h5">${navItem}</a></li>
-	</c:forEach>
+<div class="collapse navbar-collapse d-lg-flex justify-content-lg-between" 
+	id="navbarToggler">
+<div id="header-primary-items">
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  <li class="nav-item">
+    <a class="nav-link header-primary-link" 
+    	href="<c:url value="/explore" />">Explore</a>
+  </li>
+  
+  <c:forEach var="navItem" items="${navItemMap.keySet()}">
+  <li class="nav-item">
+    <a class="nav-link header-primary-link" 
+    	href="<c:url value="${navItemMap.get(navItem)}" />">${navItem}</a>
+  </li>
+  </c:forEach>
 </ul>
-
-<div class="col-md-3 text-end">
-<c:if test="${email != null}">
-<a href="<c:url value="/logout" />" 
-	class="btn btn-outline-danger me-2 mb-3 mb-lg-0">Logout</a>
-</c:if>
-
-<c:if test="${email == null}">
-<a href="<c:url value="/login" />" 
-	class="btn btn-outline-success me-2 mb-3 mb-lg-0">Login</a>
-<a href="<c:url value="/register" />" 
-	class="btn btn-success mb-3 mb-lg-0">Sign-up</a>
-</c:if>
-
-<c:if test="${email != null && userRole > 0}">
-<a href="<c:url value="/admin" />" 
-	class="btn btn-secondary mb-3 mb-lg-0">Manage</a>
-</c:if>
-
-<c:if test="${email != null}">
-<a href="<c:url value="/user" />" 
-	class="btn btn-outline-secondary mb-3 mb-lg-0">Profile</a>
-</c:if>
 </div>
-</header>
+
+<div id="header-secondary-items">
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  <c:if test="${email != null && userRole > 0 && currentPosition != 'admin pages'}">
+  <li class="nav-item">
+    <a class="nav-link" 
+    	href="<c:url value="/admin" />">Admin dashboard</a>
+  </li>
+  </c:if>
+  
+  <c:if test="${email != null && currentPosition != 'user pages'}">
+  <li class="nav-item">
+    <a class="nav-link" 
+    	href="<c:url value="/user" />">Profile</a>
+  </li>
+  </c:if>
+  
+  <c:if test="${email == null}">
+  <li class="nav-item">
+    <a class="nav-link" 
+    	href="<c:url value="/register" />">Sign up</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" 
+    	href="<c:url value="/login" />">Login</a>
+  </li>
+  </c:if>
+  
+  <c:if test="${email != null}">
+  <li class="nav-item">
+    <a class="nav-link" 
+    	href="<c:url value="/logout" />">Logout</a>
+  </li>
+  </c:if>
+</ul>
+</div>
+</div>
+</div>
 </nav>

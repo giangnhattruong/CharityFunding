@@ -1,4 +1,3 @@
-/* Global style */
 :root {
 	--smoke-white: rgba(0, 0, 0, 0.01);
 	--spring-green: #40f99b;
@@ -6,6 +5,10 @@
 	--pearly-purple: #9d69a3;
 	--ivory-white: #f5fbef;
 	--brink-red: #e85d75;
+}
+
+html {
+	scroll-behavior: smooth;
 }
 
 #main-body {
@@ -40,15 +43,33 @@
     border-color: #41464b;
 }
 
-.header-btn {
-	margin-right: 0.6rem;
+.rounded-btn {
 	border-radius: 30px;
-	padding: 0.3em 1.2em;
-	text-align: center;
-	vertical-align: middle;
-	font-family: 'Kanit', sans-serif;
-	font-size:1.2em;
-	font-weight: 300;
+}
+
+.btn-spring-green {
+	background-color: #46f99b;
+	color: #61707d;
+}
+
+.btn-spring-green:hover {
+	background-color: #9d69a3;
+	color: #f5fbef;
+}
+
+.btn-purple {
+	background-color: #9d69a3;
+	color: #f5fbef;
+}
+
+.btn-purple:hover {
+	background-color: #f5fbef;
+	color: #61707d;
+}
+
+.btn-spring-green:hover {
+	background-color: #9d69a3;
+	color: #f5fbef;
 }
 
 .bg-green-gradient {
@@ -142,6 +163,11 @@
 	background: linear-gradient(0deg, rgba(0,0,0,0.12) 0%, 
 		rgba(205,205,205,0.03) 50%, rgba(0,0,0,0.18) 100%);
 }
+
+@media (min-width: 768px) {
+}
+
+
 
 /* To top button styles */
 #toTop {
@@ -267,7 +293,6 @@
 #aboutUs p, #allCampaigns p, #ourMissions p, #cta p {
 	color: var(--dark-blue);
 	font-family: 'Kanit', sans-serif;
-	font-weight: 200;
 	font-size: 1.2rem;
 	text-align: justify;
 }
@@ -295,114 +320,12 @@
 	text-align: left;
 }
 
-/* Search campaigns styles */
-.search-btn {
-	font-family: 'Kanit', sans-serif;
-	font-size: 1.2rem;
-	font-weight: 300;
-	background-color: var(--ivory-white);
-	color: var(--dark-blue);
-	width: 21rem;
-	height: 3rem;
-	border: 0;
-	border-radius: 30rem;
-	transition: all 100ms ease;
-}
-
-.search-btn:hover {
-	background-color: var(--dark-blue);
-	color: var(--ivory-white);
-	opacity: 0.6;
-}
-
-.search-btn:active {
-	box-shadow: inset 0px 0px 3px 3px #000;
-}
-
-.reload-btn {
-	border: 0;
-	background-color: rgba(0, 0, 0, 0);
-	color: #fff;
-	font-size: 1.8rem;
-	font-weight: 500;
-	transition: all 100ms ease;
-}
-
-.reload-btn:hover {
-	transform: rotate(180deg);
-}
-
-.search-modal h5 {
-	color: var(--brink-red);
-	font-family: 'Kanit', sans-serif;
-	font-size: 1.5rem;
-	margin: 0;
-}
-
-.btn-brink-red-bold {
-	font-family: 'Kanit', sans-serif;
-	font-weight: 500;
-	color: var(--brink-red);
-	border-radius: 30rem;
-	border: 2px solid var(--brink-red);
-	background-color: #fff;
-}
-
-.btn-brink-red-bold:hover {
-	color: #fff;
-	background-color: var(--brink-red);
-}
-
-.keyword-search {
-	width: 100%;
-	border: 1px solid var(--brink-red);
-	color: var(--brink-red);
-	border-radius: 30rem;
-	padding: 0.3rem 1rem;
-}
-
-.keyword-search:focus-visible {
-	outline: 2px solid var(--brink-red);
-}
-
-.keyword-search::placeholder {
-	color: var(--brink-red);
-}
-
-.checkbox-brink-red {
-	margin-right: 0.3rem;
-	border: 1px solid var(--brink-red);
-}
-
-.checkbox-brink-red:checked {
-	background-color: var(--brink-red);
-}
-
-.label-brink-red {
-	font-family: 'Kanit', sans-serif;
-	color: var(--brink-red);
-	margin-right: 1rem;
-}
-
-.main-search-sort-select {
-	min-width: 100%;
-	font-family: 'Kanit', sans-serif;
-	font-weight: 300;
-	border: 1px solid var(--brink-red);
-	color: var(--brink-red);
-	padding: 0.1rem 1rem;
-	border-radius: 30rem;
-}
-
-.main-search-sort-select option {
-	font-weight: 300;
-}
-
 /* All campaigns section styles */
 #allCampaigns {
-	background: rgb(157,105,163);
-	background: linear-gradient(90deg, rgba(157,105,163,1) 0%, 
-		rgba(232,93,117,1) 50%, rgba(245,251,239,1) 100%);
+	background: rgb(13,208,236);
+	background: linear-gradient(0deg, rgba(13,208,236,1) 0%, 
+		rgba(46,216,219,1) 67%, rgba(141,239,172,1) 100%, 
+		rgba(141,239,172,1) 100%, rgba(13,208,236,1) 100%);
 	padding: 9rem 0rem 9rem 0rem;
 }
 
@@ -438,7 +361,7 @@
 	box-shadow: 0px 6px 6px 6px rgba(0, 0, 0, 0.3);
 }
 
-.btn-spring-green {
+#allCampaigns .btn {
 	font-size: 1.2rem;
 	font-weight: 200;
 	border: 1px solid var(--spring-green);
@@ -448,7 +371,7 @@
 	transition: all 100ms ease;
 }
 
-#allCampaigns .card:hover .btn-spring-green {
+#allCampaigns .card:hover .btn {
 	border: 1px solid var(--brink-red);
 	background-color: var(--brink-red);
 	color: #fff;
@@ -460,24 +383,9 @@
 	box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.3);
 }
 
-#allCampaigns .btn:active {
-	transform: translate(0);
-	box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.6);
-}
-
 .card-img-container {
 	aspect-ratio: 16 / 9;
 	opacity: 0.75;
-}
-
-#allCampaigns .page-link {
-	background-color: rgba(0, 0, 0 , 0);
-	color: #fff;
-	border: 1px solid #fff;
-}
-
-#allCampaigns .active .page-link {
-	background-color: var(--dark-blue);
 }
 
 /* Split session image styles */
@@ -489,8 +397,10 @@
 #ourMissions {
 	background: rgb(97,112,115);
 	background: linear-gradient(0deg, rgba(97,112,115,1) 0%, 
-		rgba(178,185,186,1) 3%, rgba(218,222,222,1) 9%, 
-		rgba(252,252,252,1) 21%, rgba(252,252,252,1) 100%);
+		rgba(203,207,208,1) 3%, rgba(227,229,230,1) 6%, 
+		gba(243,244,244,1) 9%, rgba(252,252,252,1) 12%, 
+		rgba(243,244,244,1) 100%, rgba(252,252,252,1) 100%, 
+		rgba(252,252,252,1) 147%);
 	padding: 3rem 6rem 9rem 6rem;
 }
 
@@ -566,21 +476,6 @@
 	.campaign-grid {
 		grid-template-columns: 1fr 1fr;
 	}
-	
-	/* Main search modal styles */
-	.modal-dialog {
-	    max-width: 60vw;
-	}
-	
-	.search-modal .modal-content {
-		padding: 1rem 3rem;
-	}
-	
-	.main-search-sort-select {
-		width: 60%;
-		margin-left: auto;
-		margin-right: auto;
-	}
 }
 
 @media (min-width: 1024px) {
@@ -650,3 +545,100 @@
 		padding: 6rem 18rem;
 	}
 }
+
+
+
+
+
+/* Search modal styles */
+.search-modal {
+	
+}
+
+.search-modal h3 {
+	color: var(--brink-red);
+	font-family: 'Kanit', sans-serif;
+	font-size: 1.5rem;
+	margin: 0;
+}
+
+.btn-brink-red-bold {
+	font-family: 'Kanit', sans-serif;
+	font-weight: 500;
+	color: var(--brink-red);
+	border-radius: 30rem;
+	border: 2px solid var(--brink-red);
+	background-color: #fff;
+}
+
+.btn-brink-red-bold:hover {
+	color: #fff;
+	background-color: var(--brink-red);
+}
+
+.keyword-search {
+	width: 100%;
+	border: 1px solid var(--brink-red);
+	color: var(--brink-red);
+	border-radius: 30rem;
+	padding: 0.3rem 1rem;
+}
+
+.keyword-search:focus-visible {
+	outline: 2px solid var(--brink-red);
+}
+
+.keyword-search::placeholder {
+	color: var(--brink-red);
+}
+
+.checkbox-brink-red {
+	margin-right: 0.3rem;
+	border: 1px solid var(--brink-red);
+}
+
+.checkbox-brink-red:checked {
+	background-color: var(--brink-red);
+}
+
+.label-brink-red {
+	font-family: 'Kanit', sans-serif;
+	color: var(--brink-red);
+	margin-right: 1rem;
+}
+
+.main-search-sort-select {
+	font-family: 'Kanit', sans-serif;
+	font-weight: 300;
+	border: 1px solid var(--brink-red);
+	color: var(--brink-red);
+	padding: 0.1rem 1rem;
+	border-radius: 30rem;
+}
+
+.main-search-sort-select option {
+	font-weight: 300;
+}
+
+@media (min-width: 768px) {
+	
+	/* Main search modal styles */
+	.modal-dialog {
+	    max-width: 60vw;
+	}
+	
+	.search-modal .modal-content {
+		padding: 1rem 3rem;
+	}
+	
+	.main-search-sort-select {
+		width: 60%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+
+
+
+

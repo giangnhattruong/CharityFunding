@@ -9,9 +9,17 @@
 	rel="stylesheet"
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 	crossorigin="anonymous">
-	<!-- Bootstrap Icon -->
+<!-- Bootstrap Icon -->
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+<!-- Google font Kanix font-family: 'Cinzel', sans-serif -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Kanit:wght@100;200;300;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../css/testStyles.css">
+	
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
@@ -20,121 +28,362 @@
 	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
 	crossorigin="anonymous"></script>
 <body>
+<nav id="navbar" class="navbar navbar-expand-lg navbar-light">
+<div class="container-fluid d-lg-flex justify-content-lg-between">
+<a id="logo" class="navbar-brand d-flex align-items-center" href="#">
+	<img src="../media/logo.png" alt="Logo" height="45px">
+	<h3 class="ms-1 mb-0">TBS</h3></a>
+	
+<button class="navbar-toggler" type="button" 
+	data-bs-toggle="collapse" data-bs-target="#navbarToggler" 
+	aria-controls="navbarToggler" aria-expanded="false" 
+	aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
 
-<!-- <div class="container">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-          <div class="col-md-9 col-lg-6 col-xl-6 my-lg-5 py-lg-5">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid" alt="Sample image">
-          </div>
-          <div class="col-md-8 col-lg-6 col-xl-5 offset-xl-1 my-lg-5 py-lg-5">
-            <form>
-              <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-                <p class="lead fw-normal mb-0 me-3">Sign in with</p>
-                <button type="button" class="btn btn-primary btn-floating mx-1">
-                  <img>
-                </button>
+<div class="collapse navbar-collapse d-lg-flex justify-content-lg-between" 
+	id="navbarToggler">
+<div id="header-primary-items">
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  <li class="nav-item">
+    <a class="nav-link header-primary-link" href="#">Explore</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link header-primary-link" href="#">Donation history</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link header-primary-link" href="#">Campaigns</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link header-primary-link" href="#">Users</a>
+  </li>
+</ul>
+</div>
 
-                <button type="button" class="btn btn-primary btn-floating mx-1">
-                  <i class="fab fa-twitter"></i>
-                </button>
+<div id="header-secondary-items">
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+ <!--  <li class="nav-item">
+    <a class="nav-link" href="#">Admin dashboard</a>
+  </li> -->
+  <li class="nav-item">
+    <a class="nav-link" href="#">Profile</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Logout</a>
+  </li>
+</ul>
+</div>
+</div>
+</div>
+</nav>
 
-                <button type="button" class="btn btn-primary btn-floating mx-1">
-                  <i class="fab fa-linkedin-in"></i>
-                </button>
-              </div>
+<main id="main-body">
+<section id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+<div class="carousel-inner">
+<div class="carousel-item active">
+  <img width="100vw" src="../media/carousel-img-1.jpg" 
+  	class="carousel-img d-block w-100" alt="Hand holding heart">
+  <div class="img-middle-caption d-none d-md-block">
+    <h5>A helping hand for </br><span>A hoping heart</span></h5>
+    <p>Your donation can save millions people around the world and 
+    make the world a better place.</p>
+  </div>
+</div>
+<div class="carousel-item">
+  <img width="100vw" src="../media/carousel-img-2.jpg" 
+  	class="carousel-img d-block w-100" alt="smiling kid">
+  <div class="img-middle-caption d-none d-md-block">
+    <h5>Help the poor children</h5>
+    <p>Your donation is able to support under-privileged children and
+    give them hope for a brighter future.</p>
+  </div>
+</div>
+<div class="carousel-item">
+  <img width="100vw" src="../media/carousel-img-3.jpg" 
+  	class="carousel-img d-block w-100" alt="kid having fun together">
+  <div class="img-middle-caption d-none d-md-block">
+    <h5>Build new generation</h5>
+    <p>Your donation can help many kids go to school and 
+    make the world more beautiful.</p>
+  </div>
+</div>
+</div>
 
-              <div class="divider d-flex align-items-center my-4">
-                <p class="text-center fw-bold mx-3 mb-0">Or</p>
-              </div>
+<button class="carousel-control-prev" type="button" 
+	data-bs-target="#mainCarousel" data-bs-slide="prev">
+  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Previous</span>
+</button>
+<button class="carousel-control-next" type="button" 
+	data-bs-target="#mainCarousel" data-bs-slide="next">
+  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Next</span>
+</button>
+  
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+<path fill="#fcfcfc" fill-opacity="1" 
+	d="M0,96L120,128C240,160,480,224,720,256C960,288,1200,288,1320,288L1440,288L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z">
+</path></svg>
+</section>
 
-              Email input
-              <div class="form-outline mb-4">
-                <input type="email" id="form3Example3" class="form-control form-control-lg" placeholder="Enter a valid email address">
-                <label class="form-label" for="form3Example3" style="margin-left: 0px;">Email address</label>
-              <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 88.8px;"></div><div class="form-notch-trailing"></div></div></div>
+<section id="aboutUs" class="row g-0">
+<div class="col-12 col-md-5">
+<h3>About us</h3>
+<p>Charity funding is a non-profit organization founded since 2021. 
+Our vision is to support people who are suffering from war, natural disasters, disease, poverty,... 
+around the world, especially under-privileged children. With your help, we can spread the hope to many 
+and make the world a better place.</p>
+</div>
+<div class="col-12 col-md-7 d-flex justify-content-center 
+	align-items-center">
+<img width="45%" src="../media/aboutus.png" alt="Green globe picture">
+</div>
+</section>
 
-              Password input
-              <div class="form-outline mb-3">
-                <input type="password" id="form3Example4" class="form-control form-control-lg" placeholder="Enter password">
-                <label class="form-label" for="form3Example4" style="margin-left: 0px;">Password</label>
-              <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 64.8px;"></div><div class="form-notch-trailing"></div></div></div>
+<section id="allCampaigns" 
+	class="wave-border d-flex flex-column align-items-center">
+<h3 class="text-white">Our campaigns</h3>
 
-              <div class="d-flex justify-content-between align-items-center">
-                Checkbox
-                <div class="form-check mb-0">
-                  <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3">
-                  <label class="form-check-label" for="form2Example3">
-                    Remember me
-                  </label>
-                </div>
-                <a href="#!" class="text-body">Forgot password?</a>
-              </div>
+<div class="campaign-grid">
+<div class="card overflow-hidden" style="width: 21rem; height: 100%;">
+<div class="card-img-container overflow-hidden">
+  <img src="../media/carousel-img-1.jpg" class="card-img-top" alt="...">
+</div>
+  <div class="card-body">
+    <h5 class="card-title">Some quick example title</h5>
+    <table class="campaigns-summary">
+    <tr>
+    <td><strong>Status</strong></td>
+    <td><strong>: ...UPPERCASE...</strong></td>
+    </tr>
+    <tr>
+    <td>Location</td>
+    <td>: Africa</td>
+    </tr>
+    <tr>
+    <td>Donation target</td>
+    <td>: $50,000</td>
+    </tr>
+    <tr>
+    <td>Total supporters</td>
+    <td>: 3250 people</td>
+    </tr>
+    <tr>
+    <td>Total donations</td>
+    <td>: $35,197.97</td>
+    </tr>
+    </table>
+    <a href="#" class="btn">See more</a>
+  </div>
+</div>
+<div class="card overflow-hidden" style="width: 21rem; height: 100%;">
+<div class="card-img-container overflow-hidden">
+  <img src="../media/carousel-img-2.jpg" class="card-img-top" alt="...">
+</div>
+  <div class="card-body">
+    <h5 class="card-title">Sed ut perspiciatis unde omnis iste natus error sit voluptatem</h5>
+    <table class="campaigns-summary">
+    <tr>
+    <td><strong>Status</strong></td>
+    <td><strong>: OPEN</strong></td>
+    </tr>
+    <tr>
+    <td>Location</td>
+    <td>: Africa</td>
+    </tr>
+    <tr>
+    <td>Target</td>
+    <td>: $50,000</td>
+    </tr>
+    <tr>
+    <td>Total supporters</td>
+    <td>: 3250 people</td>
+    </tr>
+    <tr>
+    <td>Total donations</td>
+    <td>: $35,197.97</td>
+    </tr>
+    </table>
+    <a href="#" class="btn">See more</a>
+  </div>
+</div>
+<div class="card overflow-hidden" style="width: 21rem; height: 100%;">
+<div class="card-img-container overflow-hidden">
+  <img src="../media/cover.jpg" class="card-img-top" alt="...">
+</div>
+  <div class="card-body">
+    <h5 class="card-title">Some quick example text to build on the card title</h5>
+    <table class="campaigns-summary">
+    <tr>
+    <td><strong>Status</strong></td>
+    <td><strong>: CLOSED</strong></td>
+    </tr>
+    <tr>
+    <td>Location</td>
+    <td>: Africa</td>
+    </tr>
+    <tr>
+    <td>Target</td>
+    <td>: $50,000</td>
+    </tr>
+    <tr>
+    <td>Total supporters</td>
+    <td>: 3250 people</td>
+    </tr>
+    <tr>
+    <td>Total donations</td>
+    <td>: $35,197.97</td>
+    </tr>
+    </table>
+    <a href="#" class="btn">See more</a>
+  </div>
+</div>
+</div>
 
-              <div class="text-center text-lg-start mt-4 pt-2">
-                <button type="button" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
-                <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!" class="link-danger">Register</a></p>
-              </div>
+<svg class="wave-top" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+	<path fill="#fcfcfc" fill-opacity="1" 
+		d="M0,160L120,154.7C240,149,480,139,720,144C960,149,1200,171,1320,181.3L1440,192L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"></path></svg>
+<svg class="wave-bottom" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+  <path fill="#fcfcfc" fill-opacity="1" 
+  	d="M0,128L48,138.7C96,149,192,171,288,170.7C384,171,480,149,576,122.7C672,96,768,64,864,74.7C960,85,1056,139,1152,144C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+</svg>
+</section>
 
-            </form>
-          </div>
-        </div>
-      </div> -->
+<session id="splitSectionImg" 
+	class="wave-border d-flex justify-content-center">
+<img width="100%" src="../media/split-section-img.png" 
+	class="container" alt="Group of children" >
+<svg class="wave-bottom" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+	<path fill="#fcfcfc" fill-opacity="1" 
+		d="M0,320L40,320C80,320,160,320,240,309.3C320,299,400,277,480,256C560,235,640,213,720,186.7C800,160,880,128,960,117.3C1040,107,1120,117,1200,106.7C1280,96,1360,64,1400,48L1440,32L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path></svg>
+</session>
+
+<section id="ourMissions">
+<h3>Our main missions</h3>
+<div class="d-flex flex-wrap justify-content-evenly">
+<div class="mission d-flex flex-column align-items-center">
+<i class="bi bi-book"></i>
+<h5 class="text-center">Education</h5>
+<p class="text-justify">Education is the backbone of a nation. 
+But many children do not get a chance to go to school due to their poverty. 
+So we are raising funds for a project called education for everyone and every child will go to school.</p>
+</div>
+
+<div class="mission d-flex flex-column align-items-center">
+<i class="bi bi-heart-pulse"></i>
+<h5 class="text-center">Medical</h5>
+<p class="text-justify">People in Africa, Philistine, afghanistan, 
+Livia and many other countries are not getting the proper medical treatment. 
+So we have open a slogan and a project called “people will not suffer for medical treatment.</p>
+</div>
+
+<div class="mission d-flex flex-column align-items-center">
+<i class="bi bi-droplet"></i>
+<h5 class="text-center">Pure water</h5>
+<p class="text-justify">Millions of people around the world live under a lower scale of poverty. 
+They do not get pure, safe and sound drinking water. 
+So we are trying to serve them pure health water for their better future.</p>
+</div>
+</div>
+</section>
+
+<section id="cta" class="d-flex flex-column align-items-center">
+<h3>How can you help?</h3>
+<p>By registering an account at Charity Funding and donate to our 
+campaigns, you are sending life-changing gifts to many people who are in need.</p>
+<div class="d-flex justify-content-center">
+<a class="btn btn-outline-warning" href="#allCampaigns">Explore now</a>
+</div>
+</section>
+</main>
+
+
+
+
+
+
+
+<div class="my-modal d-block search-modal" aria-hidden="true" 
+	aria-labelledby="searchModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+      	<h3>Search</h3>
+        <button type="button" class="btn-close modal-close-btn" 
+        	aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <form>
+      <div class="d-flex mb-3">
+      <input type="checkbox" class="form-check-input checkbox-brink-red">
+      <label class="form-check-label label-brink-red">Open</label>
+      <input type="checkbox" class="form-check-input checkbox-brink-red">
+      <label class="form-check-label label-brink-red">Closed</label>
+      </div>
       
+      <div class="row mb-3">
+      <div class="col">
+      <input type="text" class="keyword-search"
+      	placeholder="Keyword" >
+      </div>
       
+      <div class="col">
+      <input type="text" class="keyword-search"
+      	placeholder="Location" >
+      </div>
+      </div>
       
+      <select class="form-select main-search-sort-select">
+      <option>Sorting</option>
+      <option>Sorting</option>
+      <option>Sorting</option>
+      </select>
       
-      <div class="row d-flex justify-content-center">
-        <div class="col-12">
-          <div class="card rounded-3 text-black">
-            <div class="row g-0">
-              <div class="col-lg-6">
-                <div class="card-body p-md-5 mx-md-4">
+      <div>
+      </div>
+      </form>
+      </div>
+      <div class="modal-footer justify-content-center border-0">
+        <button class="btn btn-brink-red-bold px-5">GO</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-                  <div class="text-center">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp" style="width: 185px;" alt="logo">
-                    <h4 class="mt-1 mb-5 pb-1">We are The Lotus Team</h4>
-                  </div>
 
-                  <form>
-                    <p>Please login to your account</p>
 
-                    <div class="form-outline mb-4">
-                      <input type="email" id="form2Example11" class="form-control" placeholder="Phone number or email address">
-                      <label class="form-label" for="form2Example11" style="margin-left: 0px;">Username</label>
-                    <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 66.4px;"></div><div class="form-notch-trailing"></div></div></div>
 
-                    <div class="form-outline mb-4">
-                      <input type="password" id="form2Example22" class="form-control">
-                      <label class="form-label" for="form2Example22" style="margin-left: 0px;">Password</label>
-                    <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 64.8px;"></div><div class="form-notch-trailing"></div></div></div>
 
-                    <div class="text-center pt-1 mb-5 pb-1">
-                      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button">Log
-                        in</button>
-                      <a class="text-muted" href="#!">Forgot password?</a>
-                    </div>
 
-                    <div class="d-flex align-items-center justify-content-center pb-4">
-                      <p class="mb-0 me-2">Don't have an account?</p>
-                      <button type="button" class="btn btn-outline-danger">Create new</button>
-                    </div>
 
-                  </form>
 
-                </div>
-              </div>
-              <div class="col-lg-6 d-flex align-items-center gradient-custom-2 bg-green-gradient">
-                <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                  <h4 class="mb-4">We are more than just a company</h4>
-                  <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+<a href="#navbar" id="toTop"><i class="bi bi-arrow-up"></i></a>
+
+<div id="footer" class="container-fluid mt-auto px-5">
+  <footer class="py-5">
+    <div class="row g-0">
+      <div class="col-6">
+        <h5>Contact</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="mailto:truonggnfx13372@gmail.com" class="nav-link p-0 text-muted">Email: truonggnfx13372@gmail.com</a></li>
+          <li class="nav-item mb-2"><a href="tel:+84938798685" class="nav-link p-0 text-muted">Phone: (+84) 938-798-685</a></li>
+        </ul>
       </div>
 
+      <div class="col-2 offset-4">
+        <h5>Sitemap</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Explore</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="py-4 my-4 border-top">
+      <p class="text-center">&#174;Copyright 2022</p>
+    </div>
+  </footer>
+</div>
 </body>
 </html>

@@ -19,12 +19,12 @@ const pagination = function() {
     let endRowNumber = pageSize * currentPage;
     
     for (let i = 1; i <= totalItems; i++) {
-		let rowID = `#row-${i}`;
+		let itemID = `#item${i}`;
 		
 		if (i >= startRowNumber && i <= endRowNumber) {
-			$(rowID).removeClass("d-none");
+			$(itemID).removeClass("d-none");
 		} else {
-			$(rowID).addClass("d-none");
+			$(itemID).addClass("d-none");
 		}
 	}
 	

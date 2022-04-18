@@ -67,3 +67,12 @@ $(".modal-close-btn").on("click", function() {
 	$(".my-modal").hide();
 	removeDataFromModal();
 })
+
+// Show search modal button
+$(".search-btn").on("click", function() {
+	$(".search-modal").show();
+})
+
+$(".reload-btn").on("click", function() {
+	location.reload();
+})

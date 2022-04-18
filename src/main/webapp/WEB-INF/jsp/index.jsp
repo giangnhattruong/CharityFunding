@@ -20,41 +20,61 @@
 </head>
 <body class="d-flex h-100 text-center text-white">
 
-	<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-		<header class="mb-auto">
-			<div>
-				<h3 class="float-md-start mb-0">
-					<img src="<c:url value="/resources/assets/media/logo.png" />" 
-						alt="Logo" height="45px"></h3>
-				<nav class="nav nav-masthead justify-content-center float-md-end">
-					<a class="nav-link" href="<c:url value="/explore" />">Explore</a> 
-					<a class="nav-link" href="<c:url value="/login" />">Login</a> 
-					<a class="nav-link" href="<c:url value="/register" />">Sign-up</a>
-				</nav>
-			</div>
-		</header>
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+<header class="mb-auto">
+<div>
+<h3 class="float-md-start mb-0">
+<img src="<c:url value="/resources/assets/media/logo.png" />" 
+	alt="Logo" height="45px"></h3>
+<nav class="nav nav-masthead justify-content-center float-md-end">
+<a class="nav-link" href="<c:url value="/explore" />">Explore</a>
 
-		<main class="px-3">
-			<h1>Help To Give Hope</h1>
-			<figure class="text-center">
-			  <blockquote class="blockquote">
-			    <p>“We know only too well that what we are doing is nothing more than a drop in the ocean. But if the drop were not there, the ocean would be missing something."</p>
-			  </blockquote>
-			  <figcaption class="blockquote-footer">
-			    <cite title="Source Title">Mother Teresa</cite>
-			  </figcaption>
-			</figure>
-			<p class="lead">
-				<a href="<c:url value="/explore" />"
-					class="btn btn-lg btn-secondary fw-bold border-white bg-white">
-					Learn more</a>
-			</p>
-		</main>
+<c:if test="${email != null && userRole > 0 && currentPosition != 'admin pages'}">
+<a class="nav-link" 
+	href="<c:url value="/admin" />">Admin dashboard</a>
+</c:if>
 
-		<footer class="mt-auto text-white-50">
-			<p>&#174;Copyright 2022</p>
-		</footer>
-	</div>
-	
+<c:if test="${email != null && currentPosition != 'user pages'}">
+<a class="nav-link" 
+	href="<c:url value="/user" />">Profile</a>
+</c:if>
+
+<c:if test="${email == null}">
+<a class="nav-link" 
+	href="<c:url value="/register" />">Sign up</a>
+<a class="nav-link" 
+	href="<c:url value="/login" />">Login</a>
+</c:if>
+
+<c:if test="${email != null}">
+<a class="nav-link" 
+	href="<c:url value="/logout" />">Logout</a>
+</c:if>
+</nav>
+</div>
+</header>
+
+<main class="px-3">
+<h1>Help To Give Hope</h1>
+<figure class="text-center">
+  <blockquote class="blockquote">
+    <p>“We know only too well that what we are doing is nothing more than a drop in the ocean. But if the drop were not there, the ocean would be missing something."</p>
+  </blockquote>
+  <figcaption class="blockquote-footer">
+    <cite title="Source Title">Mother Teresa</cite>
+</figcaption>
+</figure>
+<p class="lead">
+<a href="<c:url value="/explore" />"
+			class="btn btn-lg btn-secondary fw-bold border-white bg-white">
+			Learn more</a>
+</p>
+</main>
+
+<footer class="mt-auto text-white-50">
+<p>&#174;Copyright 2022</p>
+</footer>
+</div>
+
 </body>
 </html>

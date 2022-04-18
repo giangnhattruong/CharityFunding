@@ -7,7 +7,7 @@
 <div class="box-inset-shadow dashboard py-5 mx-3">
 <h1 class="display-5 text-center glow mb-5">Campaigns</h1>
 
-<c:import url="/WEB-INF/jsp/common/searchCampaigns.jsp">
+<c:import url="/WEB-INF/jsp/admin/searchCampaigns.jsp">
 	<c:param name="action">campaigns</c:param>
 </c:import>
 

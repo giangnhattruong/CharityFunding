@@ -49,7 +49,7 @@
 	<tbody>
 	
 	<c:forEach varStatus="loopStatus" var="user" items="${userList}">
-	  <tr id="row-${loopStatus.index + 1}">
+	  <tr id="item${loopStatus.index + 1}">
 	    <c:if test="${user.userRole == 0}">
 	    <td class="text-center"><a class="btn btn-outline-secondary"
 	    	href="<c:url value="/admin/users/update/${user.userID}" />">
