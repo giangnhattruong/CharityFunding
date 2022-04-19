@@ -19,7 +19,6 @@
         <h5>Sitemap</h5>
         <ul class="nav flex-column">
           <li class="nav-item mb-2"><a href="<c:url value="/explore" />" class="nav-link p-0 text-muted">Explore</a></li>
-          <li class="nav-item mb-2"><a href="<c:url value="/about" />" class="nav-link p-0 text-muted">About</a></li>
           <li class="nav-item mb-2"><a href="<c:url value="/contact" />" class="nav-link p-0 text-muted">Contact</a></li>
         </ul>
       </div>

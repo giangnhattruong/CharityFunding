@@ -21,6 +21,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.funix.dao.CampaignDAOImpl;
 import com.funix.dao.ICampaignDAO;
+import com.funix.javamail.EmailAPIImpl;
+import com.funix.javamail.IEmailAPI;
 import com.funix.model.Campaign;
 import com.funix.model.CampaignFilter;
 import com.funix.service.Navigation;
@@ -66,7 +68,8 @@ public class MainController {
 		ModelAndView mv = new ModelAndView();
 		
 		// Get campaign list from filter object.
-		ICampaignDAO campaignDAO = new CampaignDAOImpl(dataSource);
+		ICampaignDAO campaignDAO = 
+				new CampaignDAOImpl(dataSource);
 		List<Campaign> campaignList = campaignDAO
 				.getManyCampaigns(filter);
 		
@@ -95,31 +98,7 @@ public class MainController {
 		mv.setViewName("redirect:/explore/#allCampaigns");
 		return mv;		
 	}
-	
-	@RequestMapping(value = "/about",
-			method = RequestMethod.GET)
-	public ModelAndView getAboutPage() {
-		ModelAndView mv =
-				new ModelAndView();
-		
-		Navigation.addMainNavItemMap(mv);
-		mv.setViewName("main/about");
-		
-		return mv;
-	}
-	
-	@RequestMapping(value = "/contact",
-			method = RequestMethod.GET)
-	public ModelAndView getContactPage() {
-		ModelAndView mv =
-				new ModelAndView();
-		
-		Navigation.addMainNavItemMap(mv);
-		mv.setViewName("main/contact");
-		
-		return mv;
-	}
-	
+
 	@RequestMapping(value = "/campaign",
 			method = RequestMethod.GET)
 	public ModelAndView getCampaignPage(@RequestParam int id) {
@@ -130,6 +109,45 @@ public class MainController {
 		Navigation.addMainNavItemMap(mv);
 		mv.setViewName("main/campaignDetails");
 		
+		return mv;
+	}
+	
+	/**
+	 * Render contact page.
+	 * @param message
+	 * @return
+	 */
+	@RequestMapping(value = "/contact",
+			method = RequestMethod.GET)
+	public ModelAndView getContactPage(
+			@ModelAttribute("message") String message) {
+		ModelAndView mv = new ModelAndView();
+		Navigation.addMainNavItemMap(mv);
+		mv.addObject("message", message);
+		mv.setViewName("main/contact");
+		return mv;
+	}
+	
+	/**
+	 * Handle contact form submit.
+	 * @param request
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequestMapping(value = "/contact",
+			method = RequestMethod.POST)
+	public ModelAndView sendContactMessage(
+			HttpServletRequest request,
+			RedirectAttributes redirectAttributes) {
+		ModelAndView mv = new ModelAndView();
+		IEmailAPI emailAPI = new EmailAPIImpl();
+		String fullname = request.getParameter("fullname");
+		String userEmail = request.getParameter("email");
+		String userMessage = request.getParameter("message");
+		emailAPI.sendContactMessage(fullname, userEmail, userMessage);
+		redirectAttributes.addFlashAttribute("message", 
+				"Your message has been sent.");
+		mv.setViewName("redirect:/contact");
 		return mv;
 	}
 	

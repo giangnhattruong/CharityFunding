@@ -642,3 +642,17 @@ html {
 
 
 
+
+/* Contact page styles */
+#contactInfo, #contactForm {
+	font-family: 'Kanit', sans-serif;
+	color: var(--dark-blue);
+}
+
+#contactInfo i {
+	font-size: 2.1rem;
+}
+
+.contact-item {
+	max-width: 15rem;
+}

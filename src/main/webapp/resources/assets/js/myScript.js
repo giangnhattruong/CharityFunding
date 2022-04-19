@@ -8,10 +8,25 @@ $("#resetSearchButton").on("click", function() {
 	location.reload();
 })
 
+//Validate empty input
+const validateEmptyInput = function(form) {
+	let isValidated = true;
+	
+	form.find(":required").each(function() {
+		if ($(this).val() === '') {
+			isValidated = false;
+		}
+	})
+	
+	return isValidated;
+}
+
 // Disable submit button after user click on submit
 $("#submitButton").on("click", function() {
-	$("#submitForm").submit();
-	$(this).addClass("disabled");
+	if (validateEmptyInput($("#submitForm"))) {
+		$("#submitForm").submit();
+		$(this).addClass("disabled");
+	}
 })
 
 // Function get and append data info to confirm modal body

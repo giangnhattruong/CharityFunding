@@ -58,17 +58,17 @@
 </section>
 
 <section id="aboutUs" class="row g-0">
-<div class="col-12 col-md-5">
+<div class="col-12 col-md-6">
 <h3>About us</h3>
 <p>Charity funding is a non-profit organization founded since 2021. 
 Our vision is to support people who are suffering from war, natural disasters, disease, poverty,... 
 around the world, especially under-privileged children. With your help, we can spread the hope to many 
 and make the world a better place.</p>
 </div>
-<div class="col-12 col-md-7 d-flex justify-content-center 
-	align-items-center">
-<img width="45%" src="<c:url value='/resources/assets/media/aboutus.png' />" 
-	alt="Green globe picture">
+
+<c:url var="aboutImg" value='/resources/assets/media/aboutus.png' />
+<div class="d-none d-md-block col offset-md-1 d-flex justify-content-center align-items-center"
+	style="background: url('${aboutImg}') center/contain no-repeat;">
 </div>
 </section>
 
@@ -147,14 +147,15 @@ and make the world a better place.</p>
 </svg>
 </section>
 
-<session id="splitSectionImg" 
-	class="wave-border d-flex justify-content-center">
-<img width="100%" src="<c:url value='/resources/assets/media/split-section-img.png' />" 
-	class="container" alt="Group of children" >
+<c:url var="splitSectionImg" value='/resources/assets/media/split-section-img.png' />
+<section id="splitSectionImg" 
+	class="wave-border d-flex justify-content-center d-none d-md-block"
+	style="background: url('${splitSectionImg}') center/contain no-repeat;
+		height: calc(100vw * 0.3);">
 <svg class="wave-bottom" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
 	<path fill="#fcfcfc" fill-opacity="1" 
 		d="M0,320L40,320C80,320,160,320,240,309.3C320,299,400,277,480,256C560,235,640,213,720,186.7C800,160,880,128,960,117.3C1040,107,1120,117,1200,106.7C1280,96,1360,64,1400,48L1440,32L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path></svg>
-</session>
+</section>
 
 <section id="ourMissions">
 <h3>Our main missions</h3>

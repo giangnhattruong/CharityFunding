@@ -24,6 +24,11 @@ import com.funix.config.MyKey;
 public class EmailAPIImpl implements IEmailAPI {
 	
 	/**
+	 * Admin email which receiving contact message from users.
+	 */
+	private static final String ADMIN_EMAIL = "truonggnfx13372@funix.edu.vn";
+	
+	/**
 	 * Send to user email an account verifying message contains 
 	 * new auto-generated password and a account verifying URL.
 	 * @param password
@@ -107,6 +112,34 @@ public class EmailAPIImpl implements IEmailAPI {
 		    Transport.send(message);
 		    return true;
 		} catch (MessagingException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+
+	/**
+	 * Send contact messages from website visitors to admin.
+	 * @param fullname
+	 * @param userEmail
+	 * @param userMessage
+	 * @return
+	 */
+	@Override
+	public boolean sendContactMessage(String fullname, String userEmail, String userMessage) {
+		String subject = "Charity Funding contact message from user";
+		String content = "<p>Sender name: " + fullname + "</p>"
+				+ "<p>Email: " + userEmail + "</p>"
+				+ "<p>Message: " + userMessage + "</p>";
+		Session session = getMailSession();
+		
+		try {
+			Message message = getMessage(ADMIN_EMAIL, 
+					session, subject, content);
+		    Transport.send(message);
+		    return true;
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}

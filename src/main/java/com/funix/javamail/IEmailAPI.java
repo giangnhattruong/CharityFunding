@@ -41,5 +41,15 @@ public interface IEmailAPI {
 	 */
 	boolean sendResetPasswordURL(String URL, 
 			String email, int liveMins);
+	
+	/**
+	 * Send contact messages from website visitors to admin.
+	 * @param fullname
+	 * @param userEmail
+	 * @param userMessage
+	 * @return
+	 */
+	boolean sendContactMessage(String fullname,
+			String userEmail, String userMessage);
 		
 }
