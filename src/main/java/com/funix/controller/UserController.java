@@ -22,6 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.funix.auth.IAuthTokenizer;
 import com.funix.auth.JWTImpl;
+import com.funix.banktransaction.ITransaction;
+import com.funix.banktransaction.TransactionImpl;
 import com.funix.dao.DonationHistoryDAOImpl;
 import com.funix.dao.IDonationHistoryDAO;
 import com.funix.dao.IUserDAO;
@@ -84,9 +86,15 @@ public class UserController {
 		if (!isLegalUser(request, authUser)) {
 			mv.setViewName("redirect:/explore");
 		} else {
-			// Get all history.
+			// Verify donation history
 			IDonationHistoryDAO historyDAO = 
 					new DonationHistoryDAOImpl(dataSource);
+			ITransaction transaction = new TransactionImpl();
+			List<String> transactionCodeList =
+					transaction.verify(historyDAO.getTransactionCodeList());
+			historyDAO.verifyHistoryStatus(transactionCodeList);
+			
+			// Get all history.
 			List<DonationHistory> historyList = historyDAO
 					.getUserHistory(authUser.getEmail(), filter);
 			

@@ -5,6 +5,7 @@
 package com.funix.banktransaction;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -15,9 +16,16 @@ import java.util.Random;
 public class TransactionImpl implements ITransaction {
 	
 	/**
-	 * Simulating a bank transaction success rate (from 1-10).
+	 * Simulating a bank transaction success rate 
+	 * when transferring (from 1-10).
 	 */
 	private static final double TRANSACTION_SUCCESS_RATE = 7;
+	
+	/**
+	 * Simulating a bank transaction success rate after 
+	 * transferring (from 0 - 1).
+	 */
+	private static final double TRANSACTION_CODE_VERIFIED_RATE = 0.3;
 	
 	/**
 	 * Min amount allower per transaction.
@@ -96,7 +104,7 @@ public class TransactionImpl implements ITransaction {
 	 */
 	@Override
 	public void send() {
-		//Simulate a transaction failure percent is less than 30%.
+		// Simulate a transaction failure percent is less than 30%.
 		Random random = new Random();
 		int number = random.nextInt(10) + 1;
 		
@@ -106,6 +114,26 @@ public class TransactionImpl implements ITransaction {
 		} else {
 			transactionStatus = false;
 		}
+	}
+	
+	/**
+	 * Verify transaction code list.
+	 * @param transactionCodeList
+	 * @return
+	 */
+	@Override
+	public List<String> verify(List<String> transactionCodeList) {
+		// Stimulate 95% of transaction codes is verified.
+		Random random = new Random();
+		int removeSize = (int) (transactionCodeList.size() 
+				* (1 - TRANSACTION_CODE_VERIFIED_RATE));
+		
+		for (int i = 0; i < removeSize; i++) {
+			int randomIndex = random.nextInt(transactionCodeList.size());
+			transactionCodeList.remove(randomIndex);
+		}
+		
+		return transactionCodeList;
 	}
 	
 	/**

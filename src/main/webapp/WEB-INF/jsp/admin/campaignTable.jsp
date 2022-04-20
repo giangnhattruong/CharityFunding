@@ -79,9 +79,12 @@
 	    <td>${campaign.location}</td>
 	    <td>${campaign.startDate}</td>
 	    <td>${campaign.endDate}</td>
-	    <td>${campaign.targetAmount}</td>
-	    <td>${campaign.totalDonations}</td>
-	    <td>${campaign.totalSupporters}</td>
+	    <td><fmt:formatNumber value="${campaign.targetAmount}"
+         	type="number"/></td>
+	    <td><fmt:formatNumber value="${campaign.totalDonations}"
+         	type="number"/></td>
+	    <td><fmt:formatNumber value="${campaign.totalSupporters}"
+         	type="number"/></td>
 	    <td>${campaign.latestDonationDate}</td>
 	    <td>${campaign.campaignStatus == true ? "Open" : "Closed"}</td>
 	  </tr>

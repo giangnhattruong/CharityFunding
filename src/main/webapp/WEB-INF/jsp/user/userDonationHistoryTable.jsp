@@ -43,7 +43,8 @@
 	    <td>${loopStatus.index + 1}</td>
 	    <td>${history.title}</td>
 	    <td>${history.location}</td>
-	    <td>${history.donation}</td>
+	    <td><fmt:formatNumber value="${history.donation}"
+         type="number"/></td>
 	    <td>${history.donationDate}</td>
 	    <td>${history.transactionCode}</td>
 	    <td>${history.donationStatus == true ? "Verified" : "Not Verified"}</td>

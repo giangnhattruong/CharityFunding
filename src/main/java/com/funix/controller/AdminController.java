@@ -26,6 +26,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cloudinary.Cloudinary;
 import com.funix.auth.IAuthTokenizer;
 import com.funix.auth.JWTImpl;
+import com.funix.banktransaction.ITransaction;
+import com.funix.banktransaction.TransactionImpl;
 import com.funix.dao.CampaignDAOImpl;
 import com.funix.dao.DonationHistoryDAOImpl;
 import com.funix.dao.ICampaignDAO;
@@ -115,9 +117,25 @@ public class AdminController {
 		if (!isLegalUser(request, getUserFromSession(request))) {
 			mv.setViewName("redirect:/explore");
 		} else {
-			// Get donation history.
+			// Verify donation history
 			IDonationHistoryDAO historyDAO = 
 					new DonationHistoryDAOImpl(dataSource);
+			ITransaction transaction = new TransactionImpl();
+			List<String> transactionCodeList =
+					transaction.verify(historyDAO.getTransactionCodeList());
+			
+			
+			
+			
+			System.out.println(historyDAO.getTransactionCodeList().size());
+			System.out.println(transactionCodeList.size());
+			
+			
+			
+			
+			historyDAO.verifyHistoryStatus(transactionCodeList);
+			
+			// Get donation history.
 			List<DonationHistory> historyList = historyDAO
 					.getAllHistory(filter);
 			

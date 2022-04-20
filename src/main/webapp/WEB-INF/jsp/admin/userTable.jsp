@@ -89,8 +89,10 @@
 	    <td>${user.fullname}</td>
 	    <td>${user.address}</td>
 	    <td>${user.phone}</td>
-	    <td>${user.totalDonations}</td>
-	    <td>${user.donationTimes}</td>
+	    <td><fmt:formatNumber value="${user.totalDonations}"
+         	type="number"/></td>
+	    <td><fmt:formatNumber value="${user.donationTimes}"
+         	type="number"/></td>
 	    <td>${user.latestDonationDate}</td>
 	    <td>${user.dateCreated}</td>
 	    <td>${user.userRole == 1 ? "Admin" : "User"}</td>

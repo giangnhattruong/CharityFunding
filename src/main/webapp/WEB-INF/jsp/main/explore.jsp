@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:import url="/WEB-INF/jsp/common/header.jsp"></c:import>
 
@@ -115,15 +116,18 @@ and make the world a better place.</p>
     </tr>
     <tr>
     <td>Donation target</td>
-    <td>: $${campaign.targetAmount}</td>
+    <td>: $<fmt:formatNumber value="${campaign.targetAmount}"
+         type="number"/></td>
     </tr>
     <tr>
     <td>Total supporters</td>
-    <td>: ${campaign.totalSupporters} people</td>
+    <td>: <fmt:formatNumber value="${campaign.totalSupporters}"
+         type="number"/> supporters</td>
     </tr>
     <tr>
     <td>Total donations</td>
-    <td>: $${campaign.totalDonations}</td>
+    <td>: $<fmt:formatNumber value="${campaign.totalDonations}"
+         type="number"/></td>
     </tr>
     </table>
     <a href="<c:url value="/campaign/${campaign.campaignID}" />" 

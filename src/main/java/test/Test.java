@@ -26,7 +26,6 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import com.funix.config.MyKey;
-import com.funix.model.Campaign;
 import com.funix.model.User;
 import com.funix.service.NullConvert;
 
@@ -40,18 +39,20 @@ import io.jsonwebtoken.security.Keys;
 public class Test {
 
 	public static void main(String[] args) {
-		Campaign c1 = new Campaign();
-		c1.setTotalSupporters(3);
-		Campaign c2 = new Campaign();
-		c2.setTotalSupporters(6);
-		Campaign c3 = new Campaign();
-		c3.setTotalSupporters(9);
-		List<Campaign> camps = new ArrayList<>();
-		Collections.addAll(camps, c1, c2, c3);
+		List<Integer> ints = new ArrayList();
+		Collections.addAll(ints, 1, 2, 3 ,4, 5, 6, 7, 8, 9, 10);
 		
-		long total = camps.stream().count();
-		int sum = camps.stream().mapToInt(c -> c.getTotalSupporters()).sum();
-		System.out.println(sum);
+		Random random = new Random();
+		int number = random.nextInt(10) + 1;
+		int removeSize = (int) (ints.size() 
+				* (1 - 0.7));
+		
+		for (int i = 0; i < removeSize; i++) {
+			int randomIndex = random.nextInt(ints.size());
+			ints.remove(randomIndex);
+		}
+		
+		System.out.println(ints);
 	}
 	
 	public static String generateRandomCode() {

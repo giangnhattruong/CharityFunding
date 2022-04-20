@@ -33,6 +33,12 @@ public interface IDonationHistoryDAO {
 	void verifyHistoryStatus(List<String> transactionCodeList);
 	
 	/**
+	 * Get all transaction code list.
+	 * @return
+	 */
+	List<String> getTransactionCodeList();
+	
+	/**
 	 * Get all donations history 
 	 * base on search and sort filter.
 	 * @param filter

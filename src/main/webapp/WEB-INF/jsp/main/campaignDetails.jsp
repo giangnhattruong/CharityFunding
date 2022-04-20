@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:import url="/WEB-INF/jsp/common/header.jsp"></c:import>
 
@@ -34,15 +35,18 @@
 </tr>
 <tr>
 <td>Target</td>
-<td>: $${campaign.targetAmount}</td>
+<td>: $<fmt:formatNumber value="${campaign.targetAmount}"
+         type="number"/></td>
 </tr>
 <tr>
 <td>Supporters</td>
-<td>: ${campaign.totalSupporters} people</td>
+<td>: <fmt:formatNumber value="${campaign.totalSupporters}"
+         type="number"/> people</td>
 </tr>
 <tr>
 <td>Donations</td>
-<td>: $${campaign.totalDonations}</td>
+<td>: $<fmt:formatNumber value="${campaign.totalDonations}"
+         type="number"/></td>
 </tr>
 <tr>
 <td>Start date</td>

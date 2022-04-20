@@ -197,18 +197,18 @@ CREATE OR ALTER TRIGGER dbo.deleteCampaign
 GO
 
 INSERT INTO userTbl (email, password, fullname, address, phone, userRole, userStatus)
-VALUES ('truonggn@gmail.com', 'Asdf!2345', 'GIANG NHAT TRUONG', 'LAM DONG', '0938798685', 1, 1),
-	('andnt@gmail.com', 'Asdf!2345', 'NGUYEN THI TAM ANH', 'HO CHI MINH', '0951576853', 0, 1),
-	('danhng@gmail.com', 'Asdf!2345', 'NGUYEN VAN DANH', 'HA NOI', '0935489321', 0, 1),
-	('tungdb@gmail.com', 'Asdf!2345', 'DUONG BACH TUNG', 'QUANG NGAI', '0348962895', 0, 1),
-	('lannt@gmail.com', 'Asdf!2345', 'NGUYEN THI LAN', 'HUE', '0758965345', 0, 1),
-	('trungdq@gmail.com', 'Asdf!2345', 'DUONG QUOC TRUNG', 'QUANG NAM', '0953548624', 0, 1),
-	('namnv@gmail.com', 'Asdf!2345', 'NGUYEN VAN NAM', 'THANH HOA', '0853487962', 0, 0),
-	('sarahrivers@gmail.com', 'Asdf!2345', 'Sarah Rivers', 'Florida', '0762356875', 0, 1),
-	('johndoe@gmail.com', 'Asdf!2345', 'John Doe', 'California', '0876325884', 0, 1),
-	('janesmith@gmail.com', 'Asdf!2345', 'Jane Smith', 'New York', '0957365254', 0, 1),
-	('marktimber@gmail.com', 'Asdf!2345', 'Mark Timber', 'Alabama', '0356682635', 0, 1),
-	('clementthomas@gmail.com', 'Asdf!2345', 'Clement Thomas', 'Texas', '0865216896', 0, 1)
+VALUES ('truonggn@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'GIANG NHAT TRUONG', 'LAM DONG', '0938798685', 1, 1),
+	('andnt@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'NGUYEN THI TAM ANH', 'HO CHI MINH', '0951576853', 0, 1),
+	('danhng@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'NGUYEN VAN DANH', 'HA NOI', '0935489321', 0, 1),
+	('tungdb@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'DUONG BACH TUNG', 'QUANG NGAI', '0348962895', 0, 1),
+	('lannt@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'NGUYEN THI LAN', 'HUE', '0758965345', 0, 1),
+	('trungdq@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'DUONG QUOC TRUNG', 'QUANG NAM', '0953548624', 0, 1),
+	('namnv@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'NGUYEN VAN NAM', 'THANH HOA', '0853487962', 0, 0),
+	('sarahrivers@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'Sarah Rivers', 'Florida', '0762356875', 0, 1),
+	('johndoe@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'John Doe', 'California', '0876325884', 1, 1),
+	('janesmith@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'Jane Smith', 'New York', '0957365254', 0, 1),
+	('marktimber@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'Mark Timber', 'Alabama', '0356682635', 1, 1),
+	('clementthomas@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'Clement Thomas', 'Texas', '0865216896', 0, 1)
 
 INSERT INTO campaignTbl (title, description, location, targetAmount, imgURL, startDate, endDate)
 VALUES 
@@ -315,18 +315,18 @@ in harmony with themselves and the world.',
 '2022-01-01', '2022-03-24')
 
 INSERT INTO donationHistoryTbl (userID, campaignID, donation, donationDate, transactionCode, donationStatus)
-VALUES (1, 12, 100, '2022-02-15', '123', 1),
-(5, 12, 300, '2021-03-10', '321', 1),
-(2, 6, 250, '2022-02-23', '234', 1),
-(6, 9, 1000, '2021-11-27', '432', 0),
-(3, 3, 600, '2022-03-26', '345', 1),
-(4, 7, 150, '2022-03-08', '543', 1),
-(12, 11, 5, '2022-01-14', '654', 0),
-(8, 3, 320, '2022-04-29', '567', 0),
-(6, 12, 500, '2022-03-15', '765', 1),
-(3, 4, 50, '2022-03-17', '789', 1),
-(6, 3, 1000000, '2022-03-16', '987', 1),
-(6, 3, 20, '2022-03-19', '980', 1),
-(1, 4, 500000, '2022-03-27', '999', 0)
+VALUES (1, 12, 100, '2022-02-15', 'UIWHJBFHSGFNSJDKFHBIUDS', 0),
+(5, 12, 300, '2021-03-10', 'IUQWHJKDSAFHSHFJKSDHF', 0),
+(2, 6, 250, '2022-02-23', 'WQIAHSNFJKLHSAFAIHFN', 0),
+(6, 9, 1000, '2021-11-27', 'ASFDJAKLSFNLSKJFLASKFK', 0),
+(3, 3, 600, '2022-03-26', 'ASKLJFAKLSJFALK:SJFLKJFLAF', 0),
+(4, 7, 150, '2022-03-08', 'ASKJFASKLJFLSKAJFLKSJFLAS', 0),
+(12, 11, 5, '2022-01-14', 'ASKLJFKLSAJFLSAJFKLSAKLASJF', 0),
+(8, 3, 320, '2022-04-29', 'QIOHNJHDSNILKSNJSKHFSAFJK', 0),
+(6, 12, 500, '2022-03-15', 'OPJKSKJBVNASFDYIUAGFBJHSF', 0),
+(3, 4, 50, '2022-03-17', 'OIYEBJKNBSUSYAIUHNJKGDJKSH', 0),
+(6, 3, 1000000, '2022-03-16', 'POYEFBVHGUYGAWJHFBSDJKFH', 0),
+(6, 3, 20, '2022-03-19', 'MNJHAUIHJNJKVIULHNUHFUSSHFD', 0),
+(1, 4, 500000, '2022-03-27', 'QUIHFNSNMBNJKDSSKLDJFKLDSFSFD', 0)
 
 COMMIT TRANSACTION
