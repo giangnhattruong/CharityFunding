@@ -2,7 +2,40 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<div class="container-fluid rounded box-inset-shadow">
+<section class="col-12 col-lg-9 px-5">
+<h1 class="dashboard-title">Campaigns</h1>
+<div class="d-flex flex-wrap justify-content-evenly my-3">
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+</div>
+
+<c:choose>
+<c:when test="${campaignList.size() == 0}">
+<h3>No record found.</h3>
+</c:when>
+<c:otherwise>
 <div class="d-flex justify-content-start pt-3">
 <a class="btn btn-light me-3 mb-3 button-shadow"
 	href="<c:url value="/admin/campaigns/new" />">
@@ -13,12 +46,7 @@
 	Remove selected campaign(s)</button>
 </div>
 
-<c:choose>
-<c:when test="${campaignList.size() == 0}">
-<h3>No record found.</h3>
-</c:when>
-<c:otherwise>
-<div class="table-responsive">
+<div class="table-responsive dashboard-table p-1">
 <form method="post" id="actionForm"
 	action="<c:url value="/admin/campaigns/delete" />">
 <table style="width: 1500px" 
@@ -82,4 +110,4 @@
 </script>
 <script defer src="<c:url value="/resources/assets/js/pagination.js"/>">
 </script>
-</div>
+</section>

@@ -2,14 +2,42 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<div class="container-fluid rounded box-inset-shadow">
+<section class="col-12 col-lg-9 px-5">
+<h1 class="dashboard-title">Donation history</h1>
+<div class="d-flex flex-wrap justify-content-evenly my-3">
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+</div>
+
 <c:choose>
 <c:when test="${historyList.size() == 0}">
 <h3>No record found.</h3>
 </c:when>
 <c:otherwise>
-<div class="table-responsive">
-<table style="width: 1500px" 
+<div class="table-responsive dashboard-table p-1">
+<table style="width: 1800px" 
 		class="table table-borderless table-fixed table-hover table-sm">
     <thead class="bottom-shadow">
       <tr>
@@ -51,4 +79,4 @@
 
 <script defer src="<c:url value="/resources/assets/js/pagination.js"/>">
 </script>
-</div>
+</section>

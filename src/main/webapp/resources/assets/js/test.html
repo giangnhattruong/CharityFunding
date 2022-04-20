@@ -81,97 +81,95 @@
 
 
 
-<section id="campaignCoverImg" class="row g-0"
-	style="background: url('../media/carousel-img-2.jpg') center/cover no-repeat;">
-<h1 class="col col-lg-8">Campaign title example with maximum sixty characters length</h1>
-</section>
-
-<section id="campaignContent" class="container py-5">
-<div class="row">
-<div id="description" class="col-12 order-2 col-lg-8 order-lg-1">
-<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium 
-doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore 
-veritatis et quasi architecto beatae vitae dicta sunt explicabo. 
-Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, 
-sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. 
-Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, 
-adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et 
-dolore magnam aliquam quaerat voluptatem.</p>
-</div>
-
-<div id="campaignDetails" class="col order-1 order-lg-2">
-<h3>Details</h3>
-<table>
-<tr>
-<td><strong>Status</strong></td>
-<td><strong>: Open</strong></td>
-</tr>
-<tr>
-<td>Location</td>
-<td>: Africa</td>
-</tr>
-<tr>
-<td>Target</td>
-<td>: $100,000</td>
-</tr>
-<tr>
-<td>Supporters</td>
-<td>: 657 people</td>
-</tr>
-<tr>
-<td>Donations</td>
-<td>: $67,578</td>
-</tr>
-<tr>
-<td>Start date</td>
-<td>: 2022/05/04</td>
-</tr>
-<tr>
-<td>End date</td>
-<td>: 2022/08/03</td>
-</tr>
-</table>
-</div>
-</div>
-</section>
 
 
-<section id="donationSection"  class="row g-0">
-<div class="col d-none d-lg-block"
-	style="background: url('../media/claudio-schwarz-helping-hand.jpg') 
-	center/cover no-repeat;">
-</div>
-<div class="donation-content col-lg-7 p-5">
-<h3 class="text-warning">Donate</h3>
-<!-- 
+<div class="row g-0">
+<aside id="search" class="col-12 col-lg-3 p-5 px-lg-3">
+<h3 class="mb-3">Search campaign</h3>
 <form>
-<div class="mb-3">
-<label>Your full name</label>
-<input class="form-control" type="text" name="fullname"  
-	placeholder="Enter your full name..." required>
+<div class="d-flex">
+<div class="form-check me-3 mb-3">
+<input type="checkbox" class="form-check-input" name="asd"
+	id="statusClosed"/>
+<label class="form-check-label">
+	Closed</label>
 </div>
-<div class="mb-3">
-<label>Donation amount</label>
-<input class="form-control" type="number" step="0.01" name="amount" 
-	placeholder="$0.00 (must be in range $5 - $10,000)" required>
+<div class="form-check me-3 mb-3">
+<input type="checkbox" class="form-check-input" 
+	id="statusClosed"/>
+<label class="form-check-label">
+	Closed</label>
 </div>
-<div class="mb-3">
-<label>Your bank number</label>
-<input class="form-control" type="text" name="bankNumber"  
-	placeholder="Enter your bank number" required>
 </div>
-<div class="d-flex mt-4">
-<button class="btn donate-btn btn-outline-warning py-2 px-5">Send</button>
+
+<div class="row">
+<div class="col col-lg-12 mb-3">
+<input class="form-control me-3" type="text"
+	placeholder="Keyword..." 
+	aria-label="search for campaign"/>
+</div>
+<div class="col col-lg-12 mb-3">
+<input class="form-control" type="text"
+	placeholder="Location..." 
+	aria-label="Location"/>
+</div>
+</div>
+
+<select class="form-select form-select-sm ms-auto sort-form">
+  <option value="date-desc">
+	Sort by ascending latest donation date</option>
+  <option value="target-desc">
+	Sort by descending donation target</option>
+</select>
+
+<div class="d-flex justify-content-center mt-3">
+<input type="submit" class="btn btn-brink-red-bold me-3 px-5" 
+	value="Search">
+<button class="reload-btn"><i class="bi bi-arrow-clockwise"></i></button>
 </div>
 </form>
-</div> -->
+</aside>
 
-<div class="d-flex flex-column align-items-center">
-<h5>Please login first to donate.</h5>
-<a class="btn btn-outline-warning py-2 px-5">Login Now</a>
+<section class="col-12 col-lg-9 px-5">
+<h1 class="dashboard-title">Campaigns</h1>
+<div class="d-flex flex-wrap justify-content-evenly my-3">
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
+<div class="dashboard-summary-item button-shadow">
+<i class="bi bi-gift me-3"></i>
+<span>121 Campaigns</span>
+</div>
 </div>
 
+dashboard-table p-1
 </section>
+</div>
+
+
+
+
+
+
+
+
 
 
 </main>

@@ -4,8 +4,7 @@
 
 <c:import url="/WEB-INF/jsp/common/header.jsp"></c:import>
 
-<div class="box-inset-shadow dashboard py-5 mx-3">
-<h1 class="display-5 text-center glow mb-5">Donation History</h1>
+<div class="row g-0">
 <c:import url="/WEB-INF/jsp/admin/searchAdminDonationHistory.jsp"></c:import>
 <c:import url="/WEB-INF/jsp/admin/adminDonationHistoryTable.jsp"></c:import>
 </div>

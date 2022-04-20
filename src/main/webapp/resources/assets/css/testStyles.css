@@ -571,7 +571,7 @@ html {
 	color: var(--brink-red);
 	border-radius: 30rem;
 	border: 2px solid var(--brink-red);
-	background-color: #fff;
+	background-color: rgba(255, 255, 255, 0.3);
 }
 
 .btn-brink-red-bold:hover {
@@ -788,5 +788,91 @@ html {
 	
 	#campaignDetails td {
 		color: var(--dark-blue);
+	}
+}
+
+
+
+
+.reload-btn {
+	border: 0;
+	background-color: rgba(0, 0, 0, 0);
+	color: #fff;
+	font-size: 1.8rem;
+	font-weight: 500;
+	transition: all 100ms ease;
+}
+
+.reload-btn:hover {
+	transform: rotate(180deg);
+}
+
+
+
+
+
+
+
+
+
+
+/* Dashboard styles */
+#search {
+	color: #fff;
+	background: rgb(2,0,36);
+	background: linear-gradient(120deg, rgba(2,0,36,1) 0%, 
+		rgba(0,181,218,1) 35%, rgba(0,255,93,1) 100%);
+	box-shadow: 3px 0 9px 1px #000;
+	z-index: 0;
+	margin: 0.1rem 0;
+}
+
+#search input, #search select {
+	border-radius: 1rem;
+}
+
+#search .reload-btn {
+	color : var(--brink-red);
+}
+
+.dashboard-summary-item {
+	font-family: 'Kanit', sans-serif;
+	font-size: 1.2rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 3px;
+	background-color: var(--brink-red);
+	color: #fff;
+	padding: 1rem 3rem;
+	margin-bottom: 1rem;
+}
+
+.dashboard-title {
+	font-family: 'Kanit', sans-serif;
+	font-size: 3rem;
+	color: var(--dark-blue);
+	text-align: center;
+	margin: 1rem 0;
+}
+
+.dashboard-table {
+	border-radius: 9px;
+	box-shadow: inset 0 0 6px 1px #000;
+}
+
+@media (min-width: 992px) {
+	/* Dashboard search styles */	
+	@keyframes slice-in {
+		0% {
+			transform: translate(-100%, 0);
+		}
+		100% {
+			transform: translate(0, 0);
+		}
+	}
+	
+	#search {
+		animation: slice-in 300ms ease;
 	}
 }

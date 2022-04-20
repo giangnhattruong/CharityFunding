@@ -3,30 +3,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<div id="search" class="container p-5 mb-5 button-shadow">
+<c:url var="action" value="/admin/donation-history" />
+
+<aside id="search" class="col-12 col-lg-3 p-5 px-lg-3">
+<h3 class="mb-3">Search history</h3>
 <form:form id="search-history" method="POST" 
 	cssClass="search-form"
 	modelAttribute="filter"
-	action="donation-history" >
-<div class="row">
-<div class="col-12 col-md mb-3">
-<form:input cssClass="form-control me-3" type="text" path="userKeyword"
-	placeholder="User email/fullname..." 
-	aria-label="Search for user email or fullname"/>
-</div>
-<div class="col-12 col-md mb-3">
-<form:input cssClass="form-control" type="text" path="campaignKeyword"
-	placeholder="Campaign title/location..." 
-	aria-label="Search for Campaign title or location"/>
-</div>
-<div class="col-12 col-md mb-3">
-<form:input cssClass="form-control me-3" type="text" path="transactionKeyword"
-	placeholder="Bank's transaction code..." 
-	aria-label="Search for bank's transaction code"/>
-</div>
-</div>
-
-<div class="d-flex flex-wrap">
+	action="${action}" >
+<div class="d-flex">
 <div class="form-check me-3 mb-3">
 <form:checkbox cssClass="form-check-input" path="statusOk"
 	id="statusOk"/>
@@ -39,6 +24,26 @@
 <form:label cssClass="form-check-label" path="statusNotOk">
 	Not verified</form:label>
 </div>
+</div>
+
+<div class="row">
+<div class="col col-lg-12 mb-3">
+<form:input cssClass="form-control me-3" type="text" path="userKeyword"
+	placeholder="Email/fullname..." 
+	aria-label="Search for user email or fullname"/>
+</div>
+<div class="col col-lg-12 mb-3">
+<form:input cssClass="form-control" type="text" path="campaignKeyword"
+	placeholder="Campaign keyword..." 
+	aria-label="Search for campaign title or location"/>
+</div>
+<div class="col col-lg-12 mb-3">
+<form:input cssClass="form-control me-3" type="text" path="transactionKeyword"
+	placeholder="Transaction code..." 
+	aria-label="Search for bank's transaction code"/>
+</div>
+</div>
+
 <form:select cssClass="form-select form-select-sm ms-auto sort-form" 
 	path="sortBy" style="width: 280px">
   <form:option value="date-desc">
@@ -62,12 +67,11 @@
   <form:option value="transaction-code-asc">
   	Sort by ascending transaction code</form:option>
 </form:select>
-</div>
 
 <div class="d-flex justify-content-center mt-3">
-<input type="submit" class="btn btn-outline-secondary me-3 px-5" 
+<input type="submit" class="btn btn-brink-red-bold me-3 px-5" 
 	value="Search">
-<span id="resetSearchButton" class="btn btn-secondary me-3 px-5">Reset</span>
+<button class="reload-btn"><i class="bi bi-arrow-clockwise"></i></button>
 </div>
 </form:form>
-</div>
+</aside>

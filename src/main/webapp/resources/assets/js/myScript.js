@@ -3,9 +3,11 @@ $(".sort-form").on("change", function() {
 	$(".search-form").submit();
 })
 
-// Reload page when user click on form reset button
-$("#resetSearchButton").on("click", function() {
-	location.reload();
+// Reload page when user click on form reload button
+$(".reload-btn").on("click", function() {
+	window.history.forward(1);
+	window.location.reload(true);
+	return false;
 })
 
 //Validate empty input
@@ -94,8 +96,4 @@ $(".modal-close-btn").on("click", function() {
 // Show search modal button
 $(".search-btn").on("click", function() {
 	$(".search-modal").show();
-})
-
-$(".reload-btn").on("click", function() {
-	location.reload();
 })
