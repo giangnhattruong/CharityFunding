@@ -4,6 +4,8 @@
 
 package com.funix.javamail;
 
+import com.funix.model.DonationHistory;
+
 /**
  * Email API for sending email to users.
  * @author Giang_Nhat_Truong
@@ -51,5 +53,23 @@ public interface IEmailAPI {
 	 */
 	boolean sendContactMessage(String fullname,
 			String userEmail, String userMessage);
+	
+	/**
+	 * Send a notify message to user after user donate successfully.
+	 * @param fullname
+	 * @param email
+	 * @param donation
+	 * @param transactionCode
+	 * @return
+	 */
+	boolean sendTransactionNotifyToUser(String fullname, 
+			String email, double donation, String transactionCode);
+	
+	/**
+	 * Send a notify message to admin after user donate successfully.
+	 * @param donation
+	 * @return
+	 */
+	boolean sendTransactionNotifyToAdmin(DonationHistory donation);
 		
 }

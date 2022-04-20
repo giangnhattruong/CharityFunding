@@ -410,6 +410,12 @@ public class User {
 				+ donationTimes + ", latestDonationDate=" + latestDonationDate + "]";
 	}
 	
-	
+	/**
+	 * Check if this object contains a real user.
+	 * @return
+	 */
+	public boolean isEmpty() {
+		return userID == 0;
+	}
 	
 }

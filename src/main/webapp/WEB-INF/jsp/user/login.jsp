@@ -13,12 +13,13 @@
 <h4 class="mt-1 mb-5 pb-1">TBS Charity Team</h4>
 </div>
 
-<form:form method="POST" id="submitForm"
+<form:form method="POST" id="loginForm"
 	modelAttribute="user"
 	action="login">
+<input type="hidden" name="previousURL"/>
 <p class="h5 mb-5 text-center">Please login to your account</p>
-
 <p class="small text-danger">${message}</p>
+
 <div class="mb-4" 
 	style="width: 24em">
 <form:label cssClass="form-label" 
@@ -36,7 +37,7 @@
 </div>
 
 <div class="text-center d-flex justify-content-center align-items-center mb-3">
-<button id="submitButton" 
+<button id="loginButton" 
 	class="btn bg-sm-green-gradient me-3">Log in</button>
 <a class="text-muted" 
 	href="<c:url value="/login/forgot-password" />">Forgot password?</a>

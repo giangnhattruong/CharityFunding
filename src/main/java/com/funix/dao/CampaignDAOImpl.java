@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -94,10 +95,17 @@ public class CampaignDAOImpl implements ICampaignDAO {
 	 */
 	@Override
 	public Campaign getCampaign(int campaignID) {
+		Campaign campaign = new Campaign();
 		String SQL = "SELECT * FROM dbo.getCampaignDonationSummary()"
 				+ "WHERE campaignID = ?";
-		Campaign campaign = jdbcTemplate.queryForObject(SQL, 
-				new CampaignRowMapper(), campaignID);
+		
+		try {
+			campaign = jdbcTemplate.queryForObject(SQL, 
+					new CampaignRowMapper(), campaignID);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		
 		return campaign;
 	}
 	

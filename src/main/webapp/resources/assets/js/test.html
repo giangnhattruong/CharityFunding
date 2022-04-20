@@ -81,60 +81,96 @@
 
 
 
+<section id="campaignCoverImg" class="row g-0"
+	style="background: url('../media/carousel-img-2.jpg') center/cover no-repeat;">
+<h1 class="col col-lg-8">Campaign title example with maximum sixty characters length</h1>
+</section>
 
+<section id="campaignContent" class="container py-5">
+<div class="row">
+<div id="description" class="col-12 order-2 col-lg-8 order-lg-1">
+<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium 
+doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore 
+veritatis et quasi architecto beatae vitae dicta sunt explicabo. 
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, 
+sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. 
+Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, 
+adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et 
+dolore magnam aliquam quaerat voluptatem.</p>
+</div>
 
-<section id="contactInfo" 
-	class="container d-flex flex-wrap justify-content-evenly my-5">
-<div class="contact-item d-flex flex-column align-items-center">
-<i class="bi bi-geo-alt-fill"></i>
-<p><strong>Address: </strong></p>
-<p>123 Sample Street, NA, 983708</p>
+<div id="campaignDetails" class="col order-1 order-lg-2">
+<h3>Details</h3>
+<table>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>: Open</strong></td>
+</tr>
+<tr>
+<td>Location</td>
+<td>: Africa</td>
+</tr>
+<tr>
+<td>Target</td>
+<td>: $100,000</td>
+</tr>
+<tr>
+<td>Supporters</td>
+<td>: 657 people</td>
+</tr>
+<tr>
+<td>Donations</td>
+<td>: $67,578</td>
+</tr>
+<tr>
+<td>Start date</td>
+<td>: 2022/05/04</td>
+</tr>
+<tr>
+<td>End date</td>
+<td>: 2022/08/03</td>
+</tr>
+</table>
 </div>
-<div class="contact-item d-flex flex-column align-items-center">
-<i class="bi bi-telephone-fill"></i>
-<p><strong>Phone: </strong></p>
-<p>0938798685</p>
-</div>
-<div class="contact-item d-flex flex-column align-items-center">
-<i class="bi bi-envelope-fill"></i>
-<p><strong>Email: </strong></p>
-<p>truonggnfx13372@funix.edu.vn</p>
 </div>
 </section>
 
-<section id="contactForm" class="container my-5">
-<div class="row g-0 button-shadow">
-<div id="contactImg" class="card- d-none d-md-block col-md-5 col-lg-4"
-	style="background: url('../media/steve-johnson-unsplash.jpg') 
-		center/cover no-repeat;">
+
+<section id="donationSection"  class="row g-0">
+<div class="col d-none d-lg-block"
+	style="background: url('../media/claudio-schwarz-helping-hand.jpg') 
+	center/cover no-repeat;">
 </div>
-<div class="col d-flex flex-column p-5">
-<div class="text-center mb-3">
-<h3>Contact Us</h3>
-<p>If you have any suggestions, please leave your message here.</p>
-</div>
-<form method="POST" action="contact" id="submitForm">
+<div class="donation-content col-lg-7 p-5">
+<h3 class="text-warning">Donate</h3>
+<!-- 
+<form>
 <div class="mb-3">
-<label for="fullname" class="form-label">Your full-name</label>
-<input type="text" class="form-control" name="fullname" id="fullname" required>
-</div>
-<div class="mb-3">
-<label for="email" class="form-label">Email</label>
-<input type="email" class="form-control" name="email" id="email">
+<label>Your full name</label>
+<input class="form-control" type="text" name="fullname"  
+	placeholder="Enter your full name..." required>
 </div>
 <div class="mb-3">
-<label for="message" class="form-label">Message</label>
-<textarea type="text" class="form-control" name="message" id="message"
-style="min-height: 9rem" placeholder="Leave your message here..." required>
-</textarea>
+<label>Donation amount</label>
+<input class="form-control" type="number" step="0.01" name="amount" 
+	placeholder="$0.00 (must be in range $5 - $10,000)" required>
 </div>
-<div class="d-flex justify-content-center">
-<button id="submitBtn" 
-	class="btn btn-brink-red-bold py-2 px-5">Submit</button>
+<div class="mb-3">
+<label>Your bank number</label>
+<input class="form-control" type="text" name="bankNumber"  
+	placeholder="Enter your bank number" required>
+</div>
+<div class="d-flex mt-4">
+<button class="btn donate-btn btn-outline-warning py-2 px-5">Send</button>
 </div>
 </form>
+</div> -->
+
+<div class="d-flex flex-column align-items-center">
+<h5>Please login first to donate.</h5>
+<a class="btn btn-outline-warning py-2 px-5">Login Now</a>
 </div>
-</div>
+
 </section>
 
 

@@ -1,9 +1,12 @@
 :root {
 	--smoke-white: rgba(0, 0, 0, 0.01);
 	--spring-green: #40f99b;
+	--spring-green-transparent: rgba(64,249,155,0.75);
 	--dark-blue: #617073;
+	--dark-blue-transparent: rgba(97, 112, 115, 0.7); ;
 	--pearly-purple: #9d69a3;
 	--ivory-white: #f5fbef;
+	--ivory-white-transparent: rgba(245, 251, 239, 0.6);
 	--brink-red: #e85d75;
 }
 
@@ -620,6 +623,114 @@ html {
 	font-weight: 300;
 }
 
+/* Campaign details styles */
+#campaignCoverImg, 
+#campaignContent,
+#donationSection {
+	font-family: 'Kanit', sans-serif;
+}
+
+#campaignCoverImg {
+	position: relative;
+	height: calc(60vw * 9 / 16);
+	transition: all 300ms ease;
+}
+
+#campaignCoverImg h1 {
+	position: absolute;
+	left: 0%;
+	bottom: 0%;
+	background-color: var(--dark-blue-transparent);
+	text-align: center;
+	padding: 0.3rem 1.8rem;
+	font-size: 1.8rem;
+	font-variant: small-caps;
+	color: #fff;
+}
+
+#campaignCoverImg:hover {
+	filter: grayscale(30%);
+}
+
+#campaignCoverImg:hover h1 {
+	background-color: var(--pearly-purple);
+}
+
+#campaignContent {
+	font-weight: 300;
+	font-size: 1.2rem;
+}
+
+#campaignDetails {
+	display: flex;
+	flex-direction: column;
+	font-size: 1.2rem;
+}
+
+#campaignDetails {
+	border-radius: 3px;
+	padding: 3rem;
+}
+
+#campaignDetails h3 {
+	text-align: center;
+	margin-bottom: 3rem;
+	color: var(--brink-red);
+	font-size: 2.4rem;
+}
+
+#campaignDetails td {
+	color: var(--dark-blue);
+}
+
+.donation-content {
+	background-color: var(--dark-blue);
+	color: var(--ivory-white);
+	font-size: 1.5rem;
+	font-weight: 300;
+}
+
+.donation-content h3 {
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 2.4rem;
+	margin-bottom: 3rem;
+}
+
+.donation-content input {
+	border-radius: 30rem;
+}
+
+.donate-btn {
+	font-size: 1.2rem;
+	border-radius: 3px;
+}
+
+.donation-content input:placeholder {
+	border-radius: 30rem;
+}
+
+/* Contact page styles */
+#contactInfo, #contactForm {
+	font-family: 'Kanit', sans-serif;
+	color: var(--dark-blue);
+}
+
+#contactInfo i {
+	font-size: 2.1rem;
+}
+
+.contact-item {
+	max-width: 15rem;
+}
+
+@media (min-width: 576px) {
+	/* Campaign details styles */
+	#campaignCoverImg h1 {
+		padding: 0.3rem 2.1rem;
+	}
+}
+
 @media (min-width: 768px) {
 	
 	/* Main search modal styles */
@@ -636,23 +747,46 @@ html {
 		margin-left: auto;
 		margin-right: auto;
 	}
+	
+	/* Campaign details styles */
+	#campaignCoverImg h1 {
+		font-size: 2.4rem;
+		padding: 0.3rem 3rem;
+	}
 }
 
-
-
-
-
-
-/* Contact page styles */
-#contactInfo, #contactForm {
-	font-family: 'Kanit', sans-serif;
-	color: var(--dark-blue);
-}
-
-#contactInfo i {
-	font-size: 2.1rem;
-}
-
-.contact-item {
-	max-width: 15rem;
+@media (min-width: 992px) {
+	/* Campaign details styles */
+	#campaignDetails {
+		border-radius: 1rem;
+		padding: 1.8rem 3rem 3rem 3rem;
+		background-color: var(--spring-green-transparent);
+		margin-top: -10rem;
+		z-index: 2;
+		box-shadow: 0px 2px 30px 3px #000;
+		transition: all 300ms ease;
+	}
+	
+	#campaignDetails:hover {
+		background-color: var(--pearly-purple);
+	}
+	
+	#campaignDetails:hover h3 {
+		color: var(--ivory-white);
+	}
+	
+	#campaignDetails:hover td {
+		color: #fff;
+	}
+	
+	#campaignDetails h3 {
+		text-align: center;
+		margin-bottom: 3rem;
+		color: var(--pearly-purple);
+		font-size: 2.4rem;
+	}
+	
+	#campaignDetails td {
+		color: var(--dark-blue);
+	}
 }

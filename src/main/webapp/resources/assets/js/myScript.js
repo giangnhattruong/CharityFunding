@@ -29,6 +29,14 @@ $("#submitButton").on("click", function() {
 	}
 })
 
+// Append previous URL to login form
+$("#loginButton").on("click", function(e) {
+	e.preventDefault();
+	$("[name=previousURL]").val(document.referrer);
+	$("#loginForm").submit();
+	$(this).addClass("disabled");
+})
+
 // Function get and append data info to confirm modal body
 const appendDataInfoToModal = function() {
 	let count = 0;

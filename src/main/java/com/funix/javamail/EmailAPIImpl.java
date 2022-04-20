@@ -20,6 +20,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import com.funix.config.MyKey;
+import com.funix.model.DonationHistory;
 
 public class EmailAPIImpl implements IEmailAPI {
 	
@@ -131,6 +132,66 @@ public class EmailAPIImpl implements IEmailAPI {
 		String content = "<p>Sender name: " + fullname + "</p>"
 				+ "<p>Email: " + userEmail + "</p>"
 				+ "<p>Message: " + userMessage + "</p>";
+		Session session = getMailSession();
+		
+		try {
+			Message message = getMessage(ADMIN_EMAIL, 
+					session, subject, content);
+		    Transport.send(message);
+		    return true;
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * Send a notify message to user after user donate successfully.
+	 * @param fullname
+	 * @param email
+	 * @param donation
+	 * @param transactionCode
+	 * @return
+	 */
+	@Override
+	public boolean sendTransactionNotifyToUser(String fullname, String email, 
+			double donation, String transactionCode) {
+		String subject = "Your donation of $" + donation + " has been successfully sent";
+		String content = "<p>Dear " + fullname + ", we appreciate your donation. "
+				+ "Your help means a lot to those who are struggling right now. "
+				+ "And we're working hard to deliver your donation to them as soon "
+				+ "as posible.</p>"
+				+ "<p>Your transaction code: " + transactionCode + "</p>";
+		Session session = getMailSession();
+		
+		try {
+			Message message = getMessage(email, 
+					session, subject, content);
+		    Transport.send(message);
+		    return true;
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * Send a notify message to admin after user donate successfully.
+	 * @param fullname
+	 * @param email
+	 * @param donation
+	 * @param transactionCode
+	 * @return
+	 */
+	@Override
+	public boolean sendTransactionNotifyToAdmin(DonationHistory donation) {
+		String subject = "User ID " + donation.getUserID() + " has donated $" 
+				+ donation.getDonation() + " to campaign ID " + donation.getCampaignID();
+		String content = "<p>The transaction has been added to the database "
+				+ "and waiting for bank verification.</p>"
+				+ "<p>Transaction code: " + donation.getTransactionCode() + "</p>";
 		Session session = getMailSession();
 		
 		try {

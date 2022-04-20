@@ -75,6 +75,14 @@ public class DonationHistory {
 	public DonationHistory() {
 	}
 	
+	public DonationHistory(int campaignID, int userID,
+			double donation, String transactionCode) {
+		this.campaignID = campaignID;
+		this.userID = userID;
+		this.donation = donation;
+		this.transactionCode = transactionCode;
+	}
+	
 	/**
 	 * Constructor used in DonationHistoryRowMapper.
 	 * @param donationHistoryID

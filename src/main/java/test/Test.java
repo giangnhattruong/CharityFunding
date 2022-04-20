@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.crypto.SecretKey;
 import javax.mail.Authenticator;
@@ -35,12 +36,28 @@ import io.jsonwebtoken.security.Keys;
 public class Test {
 
 	public static void main(String[] args) {
-		try {
-			sendVerifingMessage();
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		String transactionCode = "";
+		Random random = new Random();
+		int number = random.nextInt(10);
+		
+		if (number >= 3) {
+			transactionCode = generateRandomCode();
 		}
+		
+		System.out.println(transactionCode);
+	}
+	
+	public static String generateRandomCode() {
+		StringBuilder stringBuilder = 
+				new StringBuilder();
+		
+		for (int i = 0; i < 60; i++) {
+			Random random = new Random();
+			char randomChar = (char) (random.nextInt(26) + 65);
+			stringBuilder.append(randomChar);
+		}
+		
+		return stringBuilder.toString();
 	}
 	
 	public static void sendVerifingMessage() 
@@ -51,7 +68,6 @@ public class Test {
 	    props.put("mail.transport.protocol", "smtp");
 	    props.put("mail.smtp.auth", "true");
 	    props.put("mail.smtp.starttls.enable", "true");
-//	    props.put("mail.debug", "true");
 	    props.setProperty("mail.smtp.ssl.enable", "false");
 	    
 	    Session session = Session.getInstance(props, new Authenticator() {

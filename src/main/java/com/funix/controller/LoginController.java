@@ -122,9 +122,14 @@ public class LoginController {
 			redirectAttributes.addFlashAttribute("user", user);
 			mv.setViewName("redirect:/login");
 		} else {
-			// If info match, login and redirect to home page.
+			// If info match, login and redirect to home page or previous page.
 			doLogin(request, originalUser);
-			mv.setViewName("redirect:/explore");
+			String previousURL = request.getParameter("previousURL");
+			String redirectURL = previousURL.equals("") || 
+					!previousURL.contains("/campaign/") ? 
+									"redirect:/explore" :
+									"redirect:" + previousURL;
+			mv.setViewName(redirectURL);
 		}
 		
 		return mv;

@@ -107,7 +107,7 @@ and make the world a better place.</p>
     <table class="campaigns-summary">
     <tr>
     <td><strong>Status</strong></td>
-    <td><strong>: ${fn:toUpperCase(campaign.campaignStatus)}</strong></td>
+    <td><strong>: ${campaign.campaignStatus == true ? "OPEN" : "CLOSED"}</strong></td>
     </tr>
     <tr>
     <td>Location</td>
@@ -126,7 +126,7 @@ and make the world a better place.</p>
     <td>: $${campaign.totalDonations}</td>
     </tr>
     </table>
-    <a href="<c:url value="/explore/${campaign.campaignID}" />" 
+    <a href="<c:url value="/campaign/${campaign.campaignID}" />" 
     	class="btn btn-spring-green">See more</a>
   </div>
 </div>

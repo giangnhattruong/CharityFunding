@@ -97,7 +97,7 @@ public class Campaign {
 	 * Count errors from campaign form input values.
 	 */
 	private int validateErrorCount;
-
+	
 	/**
 	 * Default constructor.
 	 */
@@ -332,5 +332,13 @@ public class Campaign {
 	public void setFile(MultipartFile file) {
 		this.file = file;
 	}
-	
+
+	/**
+	 * Check if this object contains a real campaign or not.
+	 * @return
+	 */
+	public boolean isEmpty() {
+		return campaignID == 0;
+	}
+
 }
