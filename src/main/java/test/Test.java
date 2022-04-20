@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -23,6 +26,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import com.funix.config.MyKey;
+import com.funix.model.Campaign;
 import com.funix.model.User;
 import com.funix.service.NullConvert;
 
@@ -36,15 +40,18 @@ import io.jsonwebtoken.security.Keys;
 public class Test {
 
 	public static void main(String[] args) {
-		String transactionCode = "";
-		Random random = new Random();
-		int number = random.nextInt(10);
+		Campaign c1 = new Campaign();
+		c1.setTotalSupporters(3);
+		Campaign c2 = new Campaign();
+		c2.setTotalSupporters(6);
+		Campaign c3 = new Campaign();
+		c3.setTotalSupporters(9);
+		List<Campaign> camps = new ArrayList<>();
+		Collections.addAll(camps, c1, c2, c3);
 		
-		if (number >= 3) {
-			transactionCode = generateRandomCode();
-		}
-		
-		System.out.println(transactionCode);
+		long total = camps.stream().count();
+		int sum = camps.stream().mapToInt(c -> c.getTotalSupporters()).sum();
+		System.out.println(sum);
 	}
 	
 	public static String generateRandomCode() {

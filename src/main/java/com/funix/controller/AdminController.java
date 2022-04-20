@@ -115,15 +115,22 @@ public class AdminController {
 		if (!isLegalUser(request, getUserFromSession(request))) {
 			mv.setViewName("redirect:/explore");
 		} else {
-			// Get and show all donation history.
+			// Get donation history.
 			IDonationHistoryDAO historyDAO = 
 					new DonationHistoryDAOImpl(dataSource);
 			List<DonationHistory> historyList = historyDAO
 					.getAllHistory(filter);
 			
+			// Get donation summary
+			long numberOfTransactions = historyList.stream().count();
+			double donationSum = historyList.stream()
+					.mapToDouble(h -> h.getDonation()).sum();
+			
 			Navigation.addAdminNavItemMap(mv);
 			mv.addObject("filter", filter);
 			mv.addObject("historyList", historyList);
+			mv.addObject("numberOfTransactions", numberOfTransactions);
+			mv.addObject("donationSum", donationSum);
 			mv.setViewName("admin/donationHistory");
 		}
 		
@@ -167,16 +174,26 @@ public class AdminController {
 		if (!isLegalUser(request, getUserFromSession(request))) {
 			mv.setViewName("redirect:/explore");
 		} else {
-			// Get and show all charity campaigns.
+			// Get all charity campaigns.
 			ICampaignDAO campaignDAO = 
 					new CampaignDAOImpl(dataSource);
 			List<Campaign> campaignList = campaignDAO
 					.getManyCampaigns(filter);
 			
+			// Get campaigns summary
+			long numberOfCampaigns = campaignList.stream().count();
+			double donationSum = campaignList.stream()
+					.mapToDouble(c -> c.getTotalDonations()).sum();
+			int supporterSum = campaignList.stream()
+					.mapToInt(c -> c.getTotalSupporters()).sum();
+			
 			Navigation.addAdminNavItemMap(mv);
 			mv.addObject("message", message);
 			mv.addObject("filter", filter);
 			mv.addObject("campaignList", campaignList);
+			mv.addObject("numberOfCampaigns", numberOfCampaigns);
+			mv.addObject("donationSum", donationSum);
+			mv.addObject("supporterSum", supporterSum);
 			mv.setViewName("admin/campaigns");
 		}
 		
@@ -464,14 +481,21 @@ public class AdminController {
 		if (!isLegalUser(request, getUserFromSession(request))) {
 			mv.setViewName("redirect:/explore");
 		} else {
-			// Get and show all users.
+			// Get all users.
 			IUserDAO userDao = new UserDAOImpl(dataSource);
 			List<User> userList = userDao.getManyUsers(filter);
+			
+			// Get users summary.
+			long numberOfUsers = userList.stream().count();
+			double donationSum = userList.stream()
+					.mapToDouble(u -> u.getTotalDonations()).sum();
 			
 			Navigation.addAdminNavItemMap(mv);
 			mv.addObject("message", message);
 			mv.addObject("filter", filter);
 			mv.addObject("userList", userList);
+			mv.addObject("numberOfUsers", numberOfUsers);
+			mv.addObject("donationSum", donationSum);
 			mv.setViewName("admin/users");
 		}
 		return mv;

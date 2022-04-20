@@ -84,14 +84,22 @@ public class UserController {
 		if (!isLegalUser(request, authUser)) {
 			mv.setViewName("redirect:/explore");
 		} else {
+			// Get all history.
 			IDonationHistoryDAO historyDAO = 
 					new DonationHistoryDAOImpl(dataSource);
 			List<DonationHistory> historyList = historyDAO
 					.getUserHistory(authUser.getEmail(), filter);
 			
+			// Get history summary.
+			long numberOfTransactions = historyList.stream().count();
+			double donationSum = historyList.stream()
+					.mapToDouble(h -> h.getDonation()).sum();
+			
 			Navigation.addUserNavItemMap(mv);		
 			mv.addObject("filter", filter);
 			mv.addObject("historyList", historyList);
+			mv.addObject("numberOfTransactions", numberOfTransactions);
+			mv.addObject("donationSum", donationSum);
 			mv.setViewName("user/donationHistory");
 		}
 		

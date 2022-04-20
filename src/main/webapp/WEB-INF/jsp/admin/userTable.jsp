@@ -1,33 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <section class="col-12 col-lg-9 px-5">
 <h1 class="dashboard-title">Users</h1>
 <div class="d-flex flex-wrap justify-content-evenly my-3">
 <div class="dashboard-summary-item button-shadow">
-<i class="bi bi-gift me-3"></i>
-<span>121 Campaigns</span>
+<i class="bi bi-people me-3"></i>
+<span><fmt:formatNumber value="${numberOfUsers}"
+         type="number"/> Users</span>
 </div>
 <div class="dashboard-summary-item button-shadow">
-<i class="bi bi-gift me-3"></i>
-<span>121 Campaigns</span>
-</div>
-<div class="dashboard-summary-item button-shadow">
-<i class="bi bi-gift me-3"></i>
-<span>121 Campaigns</span>
-</div>
-<div class="dashboard-summary-item button-shadow">
-<i class="bi bi-gift me-3"></i>
-<span>121 Campaigns</span>
-</div>
-<div class="dashboard-summary-item button-shadow">
-<i class="bi bi-gift me-3"></i>
-<span>121 Campaigns</span>
-</div>
-<div class="dashboard-summary-item button-shadow">
-<i class="bi bi-gift me-3"></i>
-<span>121 Campaigns</span>
+<i class="bi bi-currency-dollar me-1"></i>
+<span><fmt:formatNumber value="${donationSum}"
+         type="number"/> Donations</span>
 </div>
 </div>
 

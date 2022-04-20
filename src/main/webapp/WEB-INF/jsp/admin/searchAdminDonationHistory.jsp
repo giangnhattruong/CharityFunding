@@ -45,7 +45,7 @@
 </div>
 
 <form:select cssClass="form-select form-select-sm ms-auto sort-form" 
-	path="sortBy" style="width: 280px">
+	path="sortBy">
   <form:option value="date-desc">
   	Sort by descending date(default)</form:option>
   <form:option value="donation-desc">
