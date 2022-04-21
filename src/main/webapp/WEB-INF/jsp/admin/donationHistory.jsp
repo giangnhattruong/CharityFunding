@@ -9,4 +9,8 @@
 <c:import url="/WEB-INF/jsp/admin/adminDonationHistoryTable.jsp"></c:import>
 </div>
 
+<c:if test="${message != null && message != ''}">
+<c:import url="/WEB-INF/jsp/common/notifyModal.jsp"></c:import>
+</c:if>
+
 <c:import url="/WEB-INF/jsp/common/footer.jsp"></c:import>

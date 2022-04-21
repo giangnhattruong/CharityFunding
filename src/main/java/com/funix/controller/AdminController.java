@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -44,6 +47,8 @@ import com.funix.model.User;
 import com.funix.model.UserFilter;
 import com.funix.multipart.CloudinaryImpl;
 import com.funix.multipart.IImageAPI;
+import com.funix.processfile.IProcessFile;
+import com.funix.processfile.ProcessFileImpl;
 import com.funix.service.Navigation;
 import com.funix.service.NullConvert;
 import com.funix.service.PasswordService;
@@ -110,6 +115,7 @@ public class AdminController {
 	@RequestMapping(value = "donation-history", method = RequestMethod.GET)
 	public ModelAndView getDonationHistory(
 			@ModelAttribute("filter") DonationHistoryFilter filter,
+			@ModelAttribute("message") String message,
 			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
 		
@@ -123,16 +129,8 @@ public class AdminController {
 			ITransaction transaction = new TransactionImpl();
 			List<String> transactionCodeList =
 					transaction.verify(historyDAO.getTransactionCodeList());
-			
-			
-			
-			
-			System.out.println(historyDAO.getTransactionCodeList().size());
-			System.out.println(transactionCodeList.size());
-			
-			
-			
-			
+
+			// Verify transaction codes.
 			historyDAO.verifyHistoryStatus(transactionCodeList);
 			
 			// Get donation history.
@@ -146,6 +144,7 @@ public class AdminController {
 			
 			Navigation.addAdminNavItemMap(mv);
 			mv.addObject("filter", filter);
+			mv.addObject("message", message);
 			mv.addObject("historyList", historyList);
 			mv.addObject("numberOfTransactions", numberOfTransactions);
 			mv.addObject("donationSum", donationSum);
@@ -165,12 +164,52 @@ public class AdminController {
 	@RequestMapping(value = "donation-history", 
 			method = RequestMethod.POST)
 	public ModelAndView searchDonationHistory(
-			@ModelAttribute("filter") DonationHistoryFilter filter, 
+			@ModelAttribute("filter") DonationHistoryFilter filter,
 		    BindingResult result,
 		    RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView();
 		redirectAttributes.addFlashAttribute("filter", filter);
 		mv.setViewName("redirect:/admin/donation-history");
+		return mv;
+	}
+	
+	/**
+	 * Handle upload donation history file.
+	 * @param multipartFile
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequestMapping(value = "donation-history/upload",
+			method = RequestMethod.POST)
+	public ModelAndView uploadDonationHistory(
+			@RequestParam("file") MultipartFile multipartFile,
+			RedirectAttributes redirectAttributes) {
+		ModelAndView mv = new ModelAndView();
+		
+		// Get history list from uploaded file.
+		IProcessFile processFile = new ProcessFileImpl();
+		List<DonationHistory> historyList = processFile
+				.getDonationHistory(multipartFile);
+		
+		if (historyList.isEmpty()) {
+			// If there is no history, or file can't be processed, return error.
+			redirectAttributes.addFlashAttribute("message", 
+					"File can not be processed. "
+					+ "Please check your file and upload again.");
+			mv.setViewName("redirect:/admin/donation-history");
+		} else {
+			// If file is successfully processed, then create history.
+			IDonationHistoryDAO historyDAO =
+					new DonationHistoryDAOImpl(dataSource);
+			for (DonationHistory history: historyList) {
+				historyDAO.create(history);
+			}
+			
+			redirectAttributes.addFlashAttribute("message", 
+					"File has been uploaded and processed.");
+			mv.setViewName("redirect:/admin/donation-history");
+		}
+		
 		return mv;
 	}
 

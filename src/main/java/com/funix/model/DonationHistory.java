@@ -57,7 +57,7 @@ public class DonationHistory {
 	/**
 	 * Donation/transaction date.
 	 */
-	private LocalDate donationDate;
+	private LocalDate donationDate = LocalDate.now();
 	
 	/**
 	 * Bank transaction code.

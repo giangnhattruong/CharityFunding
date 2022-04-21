@@ -62,7 +62,7 @@ CREATE TABLE donationHistoryTbl (
 	campaignID int,
 	donation money NOT NULL,
 	donationDate date DEFAULT GETDATE(),
-	transactionCode varchar(255),
+	transactionCode varchar(255) UNIQUE,
 	donationStatus int DEFAULT 0,
 	CONSTRAINT FK_history_user FOREIGN KEY(userID) REFERENCES userTbl(userID),
 	CONSTRAINT FK_history_campaign FOREIGN KEY(campaignID) REFERENCES campaignTbl(campaignID)

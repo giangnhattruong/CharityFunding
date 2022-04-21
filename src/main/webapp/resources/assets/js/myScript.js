@@ -126,4 +126,6 @@ function onSignIn(googleUser) {
          
          // Disconect user account.
          gapi.auth2.getAuthInstance().disconnect();
+         
+		$(".waiting-modal").show();
       }

@@ -1,11 +1,12 @@
 package test;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -26,6 +27,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import com.funix.config.MyKey;
+import com.funix.model.DonationHistory;
 import com.funix.model.User;
 import com.funix.service.NullConvert;
 
@@ -39,20 +41,12 @@ import io.jsonwebtoken.security.Keys;
 public class Test {
 
 	public static void main(String[] args) {
-		List<Integer> ints = new ArrayList();
-		Collections.addAll(ints, 1, 2, 3 ,4, 5, 6, 7, 8, 9, 10);
-		
-		Random random = new Random();
-		int number = random.nextInt(10) + 1;
-		int removeSize = (int) (ints.size() 
-				* (1 - 0.7));
-		
-		for (int i = 0; i < removeSize; i++) {
-			int randomIndex = random.nextInt(ints.size());
-			ints.remove(randomIndex);
-		}
-		
-		System.out.println(ints);
+		  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
+		  String date = "22/04/05";
+
+		  //convert String to LocalDate
+		  LocalDate localDate = LocalDate.parse(date, formatter);
+		  System.out.println(localDate);
 	}
 	
 	public static String generateRandomCode() {
@@ -175,18 +169,19 @@ public class Test {
 		return phone.matches(phoneRegex);
 	}
 
-	public static void testIO() {
-		try (FileReader reader = new FileReader("testInput.csv");
-				FileWriter writer = new FileWriter("testOutput.txt", false)) {
+	public static List<DonationHistory> testIO() {
+		List<DonationHistory> historyList = new ArrayList<>();
+		
+		File file = new File("test.csv");
+		try (FileReader reader = new FileReader(file)) {
 			BufferedReader bufferReader = new BufferedReader(reader);
-			StringBuilder content = new StringBuilder();
-			String output = "";
 			int lineNumber = 0;
 			
 			while (true) {
 				String line = bufferReader.readLine();
 				lineNumber++;
 				
+				// Screen out file header.
 				if (lineNumber == 1) {
 					continue;
 				}
@@ -195,16 +190,20 @@ public class Test {
 					break;
 				}
 					
-				content.append(line);
-				content.append("\n");
+				// Get row values and add to DonationHistory object.
+				DonationHistory history = new DonationHistory();
+				String[] values = line.split(",");
+				history.setUserID(NullConvert.toInt(values[0]));
+				history.setCampaignID(NullConvert.toInt(values[1]));
+				history.setDonation(NullConvert.toDouble(values[2]));
+				history.setTransactionCode(values[3]);
+				System.out.println(history);
 			}
-			
-			output = content.toString();
-			writer.write(output);
-			System.out.println("Test IO done.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		return historyList;
 	}
 
 }

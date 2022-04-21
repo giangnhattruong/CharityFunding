@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <section class="col-12 col-lg-9 px-5">
 <h1 class="dashboard-title">Donation history</h1>
@@ -23,6 +24,17 @@
 <h3>No record found.</h3>
 </c:when>
 <c:otherwise>
+
+<form id="submitForm" method="POST"
+	action="<c:url value='/admin/donation-history/upload' />" 
+	enctype="multipart/form-data">
+<label for="file" class="form-label upload-label">Upload donation history file</label>
+<div class="d-flex mb-3 upload-file">
+<input class="form-control" type="file" id="file" name="file" required>
+<button class="btn btn-secondary ms-1">Upload</button>
+</div>
+</form>	
+	
 <div class="table-responsive dashboard-table p-1">
 <table style="width: 1800px" 
 		class="table table-borderless table-fixed table-hover table-sm">

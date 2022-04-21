@@ -815,6 +815,19 @@
 	box-shadow: inset 0 0 6px 1px #000;
 }
 
+.upload-file, .upload-label {
+	font-family: 'Kanit', sans-serif;
+	color: var(--dark-blue);
+}
+
+.upload-label {
+	font-size: 1.2rem;
+}
+
+.upload-file input {
+	border: 2px solid var(--dark-blue);
+}
+
 @media (min-width: 576px) {
 	#campaignCoverImg h1 {
 		padding: 0.3rem 2.1rem;

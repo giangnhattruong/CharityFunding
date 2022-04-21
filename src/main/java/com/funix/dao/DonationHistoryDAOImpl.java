@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.funix.model.DonationHistory;
@@ -42,11 +43,17 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 	@Override
 	public void create(DonationHistory history) {
 		String SQL = "INSERT INTO donationHistoryTbl"
-				+ "(userID, campaignID, donation, transactionCode) "
-				+ "VALUES (?, ?, ?, ?)";
-		jdbcTemplate.update(SQL, history.getUserID(),
-				history.getCampaignID(), history.getDonation(),
-				history.getTransactionCode());
+				+ "(userID, campaignID, donation, transactionCode, donationDate) "
+				+ "VALUES (?, ?, ?, ?, ?)";
+		
+		try {
+			jdbcTemplate.update(SQL, history.getUserID(),
+					history.getCampaignID(), history.getDonation(),
+					history.getTransactionCode(), 
+					history.getDonationDate().toString());
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -59,7 +66,13 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 		String SQL = "EXECUTE updateHistoryStatus ?";
 		
 		for (String transactionCode: transactionCodeList) {
-			jdbcTemplate.update(SQL, transactionCode);
+			try {
+				jdbcTemplate.update(SQL, transactionCode);
+			} catch (DataAccessException e) {
+				System.out.println("Transaction failed to update: " 
+						+ transactionCode);
+				e.printStackTrace();
+			}
 		}
 	}
 	
