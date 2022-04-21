@@ -17,14 +17,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.funix.auth.GoogleOAuth;
 import com.funix.auth.IAuthTokenizer;
 import com.funix.auth.JWTImpl;
+import com.funix.config.MyKey;
 import com.funix.dao.IUserDAO;
 import com.funix.dao.UserDAOImpl;
 import com.funix.javamail.EmailAPIImpl;
 import com.funix.javamail.IEmailAPI;
 import com.funix.model.User;
 import com.funix.service.Navigation;
+import com.funix.service.PasswordService;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 
 /**
  * Handle login user and forgot password.
@@ -83,7 +87,8 @@ public class LoginController {
 		} else {
 			Navigation.addMainNavItemMap(mv);
 			mv.addObject("message", message);
-			mv.addObject("uesr", user);
+			mv.addObject("user", user);
+			mv.addObject("myClientID", MyKey.GOOGLE_OAUTH_CLIENT_ID);
 			mv.setViewName("user/login");
 		}
 		
@@ -130,6 +135,67 @@ public class LoginController {
 									"redirect:/explore" :
 									"redirect:" + previousURL;
 			mv.setViewName(redirectURL);
+		}
+		
+		return mv;
+	}
+	
+	/**
+	 * Handle sign in with google o-auth 2.
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/google-signin",
+			method = RequestMethod.POST)
+	public ModelAndView googleSignIn(
+			RedirectAttributes redirectAttributes,
+			HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView();
+		
+		// Get user id token from google client.
+		String id_token = request.getParameter("id_token");
+		
+		try {
+			// Parse user id token for email and name.
+			GoogleIdToken.Payload payload = GoogleOAuth
+					.getPayload(id_token);
+			String name = (String) payload.get("name");
+			String email = payload.getEmail();
+			
+			// Get user from database if there is one.
+			IUserDAO userDAO = new UserDAOImpl(dataSource);
+			User user = userDAO.getUserSimpleInfo(email);
+			
+			// Create a new user with basic information if there isn't one.
+			if (user.isEmpty()) {
+				user.setEmail(email);
+				String randomPassword = PasswordService
+						.generateRandomPassword();
+				user.setPassword(passwordEncoder, randomPassword);
+				user.setFullname(name);
+				user.setUserStatus(true);
+				userDAO.create(user);
+				
+				// Send password to user email.
+				IEmailAPI emailAPI = new EmailAPIImpl();
+				emailAPI.sendNewPassword(randomPassword, email);
+			}
+			
+			// Log user in and redirect to previous page or home page.
+			doLogin(request, user);
+			String previousURL = request.getParameter("previousURL");
+			String redirectURL = previousURL.equals("") || 
+					!previousURL.contains("/campaign/") ? 
+							"redirect:/explore" :
+								"redirect:" + previousURL;
+			mv.setViewName(redirectURL);
+		} catch (Exception e) {
+			// Return error if some thing not going well.
+			redirectAttributes
+				.addFlashAttribute("message", "Something went wrong "
+						+ "when signing in with Google. Please try again later.");
+			mv.setViewName("main/error");
+			e.printStackTrace();
 		}
 		
 		return mv;

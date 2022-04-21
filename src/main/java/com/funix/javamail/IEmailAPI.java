@@ -33,6 +33,14 @@ public interface IEmailAPI {
 	 */
 	boolean sendNewPassword(String password, 
 			String URL, String email);
+	
+	/**
+	 * Over loading sendNewPassword method with default login URL.
+	 * @param password
+	 * @param URL
+	 * @param email
+	 */
+	boolean sendNewPassword(String password, String email);
 
 	/**
 	 * Send to user an message with 

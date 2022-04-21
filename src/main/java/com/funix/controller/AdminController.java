@@ -850,12 +850,8 @@ public class AdminController {
 						
 						// Send email with new password to user.
 						String email = user.getEmail();
-						String loginURL = DOMAIN
-								+ request.getContextPath() 
-								+ "/login";
 						emailResult = emailAPI
-								.sendNewPassword(randomPassword, 
-										loginURL, email);
+								.sendNewPassword(randomPassword, email);
 						
 						/*
 						 * In case errors happen when sending email, 

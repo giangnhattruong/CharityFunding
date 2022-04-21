@@ -27,7 +27,13 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
 	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
 	crossorigin="anonymous"></script>
+	
+<!-- Google oauth -->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<meta name="google-signin-scope" content="profile email">
+<meta name="google-signin-client_id" content="">
 <body>
+
 <nav id="navbar" class="navbar navbar-expand-lg navbar-light">
 <div class="container-fluid d-lg-flex justify-content-lg-between">
 <a id="logo" class="navbar-brand d-flex align-items-center" href="#">
@@ -79,98 +85,9 @@
 
 <main id="main-body">
 
-
-
-
-
-<div class="row g-0">
-<aside id="search" class="col-12 col-lg-3 p-5 px-lg-3">
-<h3 class="mb-3">Search campaign</h3>
-<form>
-<div class="d-flex">
-<div class="form-check me-3 mb-3">
-<input type="checkbox" class="form-check-input" name="asd"
-	id="statusClosed"/>
-<label class="form-check-label">
-	Closed</label>
-</div>
-<div class="form-check me-3 mb-3">
-<input type="checkbox" class="form-check-input" 
-	id="statusClosed"/>
-<label class="form-check-label">
-	Closed</label>
-</div>
-</div>
-
-<div class="row">
-<div class="col col-lg-12 mb-3">
-<input class="form-control me-3" type="text"
-	placeholder="Keyword..." 
-	aria-label="search for campaign"/>
-</div>
-<div class="col col-lg-12 mb-3">
-<input class="form-control" type="text"
-	placeholder="Location..." 
-	aria-label="Location"/>
-</div>
-</div>
-
-<select class="form-select form-select-sm ms-auto sort-form">
-  <option value="date-desc">
-	Sort by ascending latest donation date</option>
-  <option value="target-desc">
-	Sort by descending donation target</option>
-</select>
-
-<div class="d-flex justify-content-center mt-3">
-<input type="submit" class="btn btn-brink-red-bold me-3 px-5" 
-	value="Search">
-<button class="reload-btn"><i class="bi bi-arrow-clockwise"></i></button>
-</div>
-</form>
-</aside>
-
-<section class="col-12 col-lg-9 px-5">
-<h1 class="dashboard-title">Campaigns</h1>
-<div class="d-flex flex-wrap justify-content-evenly my-3">
-<div class="dashboard-summary-item button-shadow">
-<i class="bi bi-gift me-3"></i>
-<span>121 Campaigns</span>
-</div>
-<div class="dashboard-summary-item button-shadow">
-<i class="bi bi-gift me-3"></i>
-<span>121 Campaigns</span>
-</div>
-<div class="dashboard-summary-item button-shadow">
-<i class="bi bi-gift me-3"></i>
-<span>121 Campaigns</span>
-</div>
-<div class="dashboard-summary-item button-shadow">
-<i class="bi bi-gift me-3"></i>
-<span>121 Campaigns</span>
-</div>
-<div class="dashboard-summary-item button-shadow">
-<i class="bi bi-gift me-3"></i>
-<span>121 Campaigns</span>
-</div>
-<div class="dashboard-summary-item button-shadow">
-<i class="bi bi-gift me-3"></i>
-<span>121 Campaigns</span>
-</div>
-</div>
-
-dashboard-table p-1
-</section>
-</div>
-
-
-
-
-
-
-
-
-
+<h2>Servlet OAuth example</h2>
+<br>
+<div class="g-signin2" data-onsuccess="onSignIn"></div>
 
 </main>
 
@@ -215,10 +132,13 @@ dashboard-table p-1
 </div>
 
 <script>
-	$(".btn").on("click", function(e) {
-		e.preventDefault();
-		$(".waiting-modal").show();
-	})
+	function onSignIn(googleUser) {
+	  var profile = googleUser.getBasicProfile();
+	  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+	  console.log('Name: ' + profile.getName());
+	  console.log('Image URL: ' + profile.getImageUrl());
+	  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+	}
 </script>
 </body>
 </html>

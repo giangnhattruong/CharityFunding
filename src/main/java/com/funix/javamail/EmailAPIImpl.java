@@ -71,7 +71,7 @@ public class EmailAPIImpl implements IEmailAPI {
 	@Override
 	public boolean sendNewPassword(String password, 
 			String URL, String email) {
-		String subject = "Your password at Charity Funding has been reset";
+		String subject = "Your new password at Charity Funding";
 		String content = "<p>Please login with your new password: " 
 				+ "<strong>" + password + "</strong></p>"
 				+ "<u><a href='" + URL + "'>Login now<a></u>";
@@ -87,6 +87,18 @@ public class EmailAPIImpl implements IEmailAPI {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	/**
+	 * Over loading sendNewPassword method with default login URL.
+	 * @param password
+	 * @param email
+	 * @return
+	 */
+	public boolean sendNewPassword(String password, String email) {
+		String defaultLoginURL = 
+				"http://localhost:8080/CharityFunding_truonggnfx13372/login";
+		return sendNewPassword(password, defaultLoginURL, email);
 	}
 
 	/**
@@ -117,7 +129,6 @@ public class EmailAPIImpl implements IEmailAPI {
 			return false;
 		}
 	}
-	
 
 	/**
 	 * Send contact messages from website visitors to admin.

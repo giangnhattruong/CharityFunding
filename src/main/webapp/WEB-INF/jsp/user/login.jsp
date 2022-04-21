@@ -2,6 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<!-- Google oauth -->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<meta name="google-signin-scope" content="profile email">
+<meta name="google-signin-client_id" content="${myClientID}">
 
 <c:import url="/WEB-INF/jsp/common/header.jsp"></c:import>
 
@@ -19,6 +23,9 @@
 <input type="hidden" name="previousURL"/>
 <p class="h5 mb-5 text-center">Please login to your account</p>
 <p class="small text-danger">${message}</p>
+
+<!-- Google sign in -->
+<div class="g-signin2 mb-3" data-onsuccess="onSignIn"></div>
 
 <div class="mb-4" 
 	style="width: 24em">
