@@ -2,6 +2,7 @@
 
 </main>
 
+<c:import url="/WEB-INF/jsp/common/waitingModal.jsp"></c:import>
 <a href="#navbar" id="toTop"><i class="bi bi-arrow-up"></i></a>
 
 <div id="footer" class="container-fluid mt-auto px-5">

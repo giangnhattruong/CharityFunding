@@ -100,11 +100,11 @@ public class TransactionImpl implements ITransaction {
 	}
 
 	/**
-	 * Execute a transaction. Simulating a real bank transaction.
+	 * Execute a transaction. Simulate a real bank transaction.
 	 */
 	@Override
 	public void send() {
-		// Simulate a transaction failure percent is less than 30%.
+		// Simulate sending a transaction, some may be failed.
 		Random random = new Random();
 		int number = random.nextInt(10) + 1;
 		
@@ -117,13 +117,13 @@ public class TransactionImpl implements ITransaction {
 	}
 	
 	/**
-	 * Verify transaction code list.
+	 * Verify transaction code list. Simulate bank checking transactions. 
 	 * @param transactionCodeList
 	 * @return
 	 */
 	@Override
 	public List<String> verify(List<String> transactionCodeList) {
-		// Stimulate 95% of transaction codes is verified.
+		// Simulate verifying list of transaction codes.
 		Random random = new Random();
 		int removeSize = (int) (transactionCodeList.size() 
 				* (1 - TRANSACTION_CODE_VERIFIED_RATE));

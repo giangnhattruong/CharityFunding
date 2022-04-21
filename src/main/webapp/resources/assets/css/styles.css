@@ -585,7 +585,7 @@
 	}
 	
 	/* Main search modal styles */
-	.modal-dialog {
+	.search-modal .modal-dialog {
 	    max-width: 60vw;
 	}
 	

@@ -28,6 +28,7 @@ $("#submitButton").on("click", function() {
 	if (validateEmptyInput($("#submitForm"))) {
 		$("#submitForm").submit();
 		$(this).addClass("disabled");
+		$(".waiting-modal").show();
 	}
 })
 
@@ -37,6 +38,7 @@ $("#loginButton").on("click", function(e) {
 	$("[name=previousURL]").val(document.referrer);
 	$("#loginForm").submit();
 	$(this).addClass("disabled");
+	$(".waiting-modal").show();
 })
 
 // Function get and append data info to confirm modal body
@@ -85,6 +87,7 @@ $("#modal-action-btn").on("click", function() {
 	$("#actionForm").submit();
 	$(".confirm-action-modal").hide();
 	removeDataFromModal();
+	$(".waiting-modal").show();
 })
 
 // Hide model when user click on close/return button
