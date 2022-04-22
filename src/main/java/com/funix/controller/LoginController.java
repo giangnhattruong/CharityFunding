@@ -119,7 +119,7 @@ public class LoginController {
 					"Invalid username or password.");
 			redirectAttributes.addFlashAttribute("user", user);
 			mv.setViewName("redirect:/login");
-		} else if (!originalUser.getUserStatus()) {
+		} else if (!isValidUser(originalUser)) {
 			// Return error if user is in-active.
 			redirectAttributes.addFlashAttribute("message", 
 					"Your account is not active. "
@@ -181,14 +181,23 @@ public class LoginController {
 				emailAPI.sendNewPassword(randomPassword, email);
 			}
 			
-			// Log user in and redirect to previous page or home page.
-			doLogin(request, user);
-			String previousURL = request.getParameter("previousURL");
-			String redirectURL = previousURL.equals("") || 
-					!previousURL.contains("/campaign/") ? 
-							"redirect:/explore" :
-								"redirect:" + previousURL;
-			mv.setViewName(redirectURL);
+			if (!isValidUser(user)) {
+				// Return error if user is in-active.
+				redirectAttributes.addFlashAttribute("message", 
+						"Your account is not active. "
+						+ "Please contact admin for more information.");
+				redirectAttributes.addFlashAttribute("user", user);
+				mv.setViewName("redirect:/login");
+			} else {
+				// Log user in and redirect to previous page or home page.
+				doLogin(request, user);
+				String previousURL = request.getParameter("previousURL");
+				String redirectURL = previousURL.equals("") || 
+						!previousURL.contains("/campaign/") ? 
+								"redirect:/explore" :
+									"redirect:" + previousURL;
+				mv.setViewName(redirectURL);
+			}
 		} catch (Exception e) {
 			// Return error if some thing not going well.
 			redirectAttributes
@@ -402,6 +411,15 @@ public class LoginController {
 	 */
 	private boolean doesUserExist(User user) {
 		return user.getUserID() != 0;
+	}
+	
+	/**
+	 * Check if an existing user is active.
+	 * @param user
+	 * @return
+	 */
+	private boolean isValidUser(User user) {
+		return user.getUserStatus() == true;
 	}
 	
 }
