@@ -81,6 +81,7 @@
 
 <c:url var="action" value="/campaign/${campaign.campaignID}" />
 <form:form method="POST"
+	id="submitForm"
 	modelAttribute="transaction"
 	action="${action}">
 <div class="mb-3">
@@ -99,7 +100,8 @@
 	placeholder="Enter your bank number" />
 </div>
 <div class="d-flex mt-4">
-<button class="btn donate-btn btn-outline-warning py-2 px-5">Send</button>
+<button id="submitButton"
+	class="btn donate-btn btn-outline-warning py-2 px-5">Send</button>
 </div>
 </form:form>
 </c:if>
