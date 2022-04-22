@@ -147,7 +147,7 @@ public class MainController {
 	}
 	
 	/**
-	 * Handle donation submit.
+	 * Handle donation.
 	 * @param campaignID
 	 * @param transaction
 	 * @param redirectAttributes
@@ -169,9 +169,19 @@ public class MainController {
 			mv.setViewName("redirect:/explore");
 		} else {
 			// Validate transaction input before sending.
-			String validateMessage = transaction.validate();
+			ICampaignDAO campaignDAO = 
+					new CampaignDAOImpl(dataSource);
+			Campaign campaign = campaignDAO
+					.getCampaign(campaignID);
+			String validateMessage = transaction.
+					validate();
 			
-			if (!validateMessage.equals("success")) {
+			if (campaign.getCampaignStatus() == false) {
+				// Don't allow donation if campaign is closed.
+				redirectAttributes
+					.addFlashAttribute("message", "Campaign is closed.");
+			} else if (!validateMessage.equals("success")) {
+				// Return error if user input is not valid.
 				redirectAttributes
 					.addFlashAttribute("transaction", transaction);
 				redirectAttributes

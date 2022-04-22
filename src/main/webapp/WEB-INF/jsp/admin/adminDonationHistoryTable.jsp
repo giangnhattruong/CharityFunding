@@ -25,11 +25,13 @@
 </c:when>
 <c:otherwise>
 
-<form id="submitForm" method="POST"
+<form id="submitForm" method="POST" class="upload-file"
 	action="<c:url value='/admin/donation-history/upload' />" 
 	enctype="multipart/form-data">
-<label for="file" class="form-label upload-label">Upload donation history file</label>
-<div class="d-flex mb-3 upload-file">
+<label for="file" class="form-label 
+	text-dark-blue me-1">Upload donation history file</label>
+<span class="text-brink-red">(csv file only)</span>
+<div class="d-flex mb-3">
 <input class="form-control" type="file" id="file" name="file" required>
 <button class="btn btn-secondary ms-1">Upload</button>
 </div>

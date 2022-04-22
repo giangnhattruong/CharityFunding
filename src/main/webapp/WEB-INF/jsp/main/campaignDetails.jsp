@@ -70,9 +70,11 @@
 		center/cover no-repeat;">
 </div>
 <div class="donation-content col-lg-7 p-5">
-<h3 class="text-warning">Donate</h3>
+<h3 class="text-warning">${campaign.campaignStatus == true ? 
+													"Donate" :
+													"Campaign is closed."}</h3>
 
-<c:if test="${email != null}">
+<c:if test="${email != null && campaign.campaignStatus == true}">
 <c:if test="${validateMessage != ''}">
 <p class="validate-message">${validateMessage}</p>
 </c:if>
@@ -102,13 +104,14 @@
 </form:form>
 </c:if>
 
-<c:if test="${email == null}">
+<c:if test="${email == null && campaign.campaignStatus == true}">
 <div class="d-flex flex-column align-items-center">
 <h5>Please login first to donate.</h5>
 <a class="btn btn-outline-warning py-2 px-5"
 	href="<c:url value='/login' />">Login Now</a>
 </div>
 </c:if>
+
 </div>
 </section>
 

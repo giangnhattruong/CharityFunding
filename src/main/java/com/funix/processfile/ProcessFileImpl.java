@@ -18,14 +18,14 @@ import com.funix.model.DonationHistory;
 import com.funix.service.NullConvert;
 
 /**
- * Process history uploaded files.
+ * Process history uploaded files in CSV.
  * @author Giang_Nhat_Truong
  *
  */
 public class ProcessFileImpl implements IProcessFile {
 
 	/**
-	 * Get list of donation history from uploaded file.
+	 * Get list of donation history from uploaded file in CSV.
 	 * @param file
 	 * @return
 	 */
@@ -33,31 +33,33 @@ public class ProcessFileImpl implements IProcessFile {
 	public List<DonationHistory> getDonationHistory(MultipartFile file) {
 		List<DonationHistory> historyList = new ArrayList<>();
 		
-		try (BufferedReader bufferReader = 
-				new BufferedReader(new InputStreamReader(file
-						.getInputStream(), "UTF-8"))) {
-			int lineNumber = 0;
-			
-			while (true) {
-				String line = bufferReader.readLine();
-				lineNumber++;
+		if (file.getOriginalFilename().endsWith("csv")) {
+			try (BufferedReader bufferReader = 
+					new BufferedReader(new InputStreamReader(file
+							.getInputStream(), "UTF-8"))) {
+				int lineNumber = 0;
 				
-				// Screen out file header.
-				if (lineNumber == 1) {
-					continue;
+				while (true) {
+					String line = bufferReader.readLine();
+					lineNumber++;
+					
+					// Screen out file header.
+					if (lineNumber == 1) {
+						continue;
+					}
+					
+					if (line == null) {
+						break;
+					}
+					
+					// Get row values and add to DonationHistory object.
+					DonationHistory history = getHistory(line);
+					historyList.add(history);
 				}
-				
-				if (line == null) {
-					break;
-				}
-				
-				// Get row values and add to DonationHistory object.
-				DonationHistory history = getHistory(line);
-				historyList.add(history);
+			} catch (IllegalStateException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-		} catch (IllegalStateException | IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		}
 		
 		return historyList;

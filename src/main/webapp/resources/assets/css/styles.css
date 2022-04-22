@@ -72,6 +72,16 @@
 	color: #fff;
 }
 
+.text-dark-blue {
+	font-family: 'Kanit', sans-serif;
+	color: var(--dark-blue);
+}
+
+.text-brink-red {
+	font-family: 'Kanit', sans-serif;
+	color: var(--brink-red);
+}
+
 .shadow {
   box-shadow: 3px 3px 5px 6px #ccc;
 }
@@ -815,12 +825,7 @@
 	box-shadow: inset 0 0 6px 1px #000;
 }
 
-.upload-file, .upload-label {
-	font-family: 'Kanit', sans-serif;
-	color: var(--dark-blue);
-}
-
-.upload-label {
+.upload-file label {
 	font-size: 1.2rem;
 }
 
