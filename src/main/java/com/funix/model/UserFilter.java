@@ -4,6 +4,8 @@
 
 package com.funix.model;
 
+import java.util.Arrays;
+
 import com.funix.service.SQLConvert;
 
 /**
@@ -22,24 +24,20 @@ public class UserFilter {
 	private String keyword;
 	
 	/**
-	 * Status of an user active/verified.
+	 * Status of an user:
+	 * 0-In-active
+	 * 1-Active
+	 * 2-Banned
+	 * 3-Deleted
 	 */
-	private boolean statusActive;
+	private String[] statuses;
 	
 	/**
-	 * Status of an user in-active/unverified.
+	 * Role of an user.
+	 * 0-User
+	 * 1-Admin
 	 */
-	private boolean statusInactive;
-	
-	/**
-	 * Role of an user admin/user.
-	 */
-	private boolean roleAdmin;
-	
-	/**
-	 * Role of an user admin/user.
-	 */
-	private boolean roleUser;
+	private String[] roles;
 	
 	/**
 	 * Order of user records sorted by 
@@ -52,10 +50,8 @@ public class UserFilter {
 	 * user search form values.
 	 */
 	public UserFilter() {
-		statusActive = true;
-		statusInactive = true;
-		roleAdmin = true;
-		roleUser = true;
+		statuses = new String[]{"0", "1", "2"};
+		roles = new String[]{"0", "1"};
 		sortBy = "date-desc";
 	}
 
@@ -72,7 +68,7 @@ public class UserFilter {
 	 * @return
 	 */
 	public String getStatusFilter() {
-		return SQLConvert.convertStatus(statusActive, statusInactive);
+		return SQLConvert.convertToListString(statuses);
 	}
 	
 	/**
@@ -80,7 +76,7 @@ public class UserFilter {
 	 * @return
 	 */
 	public String getRoleFilter() {
-		return SQLConvert.convertRole(roleAdmin, roleUser);
+		return SQLConvert.convertToListString(roles);
 	}
 
 	/**
@@ -100,36 +96,20 @@ public class UserFilter {
 		this.keyword = keyword;
 	}
 
-	public boolean getStatusActive() {
-		return statusActive;
+	public String getStatuses() {
+		return Arrays.toString(statuses);
 	}
 
-	public void setStatusActive(boolean statusActive) {
-		this.statusActive = statusActive;
+	public void setStatuses(String[] statuses) {
+		this.statuses = statuses;
 	}
 
-	public boolean getStatusInactive() {
-		return statusInactive;
+	public String getRoles() {
+		return Arrays.toString(roles);
 	}
 
-	public void setStatusInactive(boolean statusInactive) {
-		this.statusInactive = statusInactive;
-	}
-	
-	public boolean getRoleAdmin() {
-		return roleAdmin;
-	}
-
-	public void setRoleAdmin(boolean roleAdmin) {
-		this.roleAdmin = roleAdmin;
-	}
-
-	public boolean isRoleUser() {
-		return roleUser;
-	}
-
-	public void setRoleUser(boolean roleUser) {
-		this.roleUser = roleUser;
+	public void setRoles(String[] roles) {
+		this.roles = roles;
 	}
 
 	public String getSortBy() {

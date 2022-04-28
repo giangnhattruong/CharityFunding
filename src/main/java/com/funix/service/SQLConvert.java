@@ -5,6 +5,7 @@
 package com.funix.service;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Helper class for converting inputs from search form
@@ -29,44 +30,14 @@ public class SQLConvert {
 	
 	/**
 	 * Convert status inputs to string which
-	 * can be used in SQL "LIKE" operator.
-	 * @param statusOn
-	 * @param statusOff
+	 * can be used in SQL "IN" operator.
+	 * @param status
 	 * @return
 	 */
-	public static String convertStatus(boolean statusOn, boolean statusOff) {
-		String status = "";
-
-		if (statusOn == true && statusOff == true) {
-			status = "%%";
-		} else if (statusOn == true && statusOff == false) {
-			status = "%1%";
-		} else if (statusOn == false && statusOff == true) {
-			status = "%0%";
-		}
-
-		return status;
-	}
-	
-	/**
-	 * Convert role inputs to string which
-	 * can be used in SQL "LIKE" operator.
-	 * @param roleAdmin
-	 * @param roleUser
-	 * @return
-	 */
-	public static String convertRole(boolean roleAdmin, boolean roleUser) {
-		String role = "";
-		
-		if (roleAdmin == true && roleUser == true) {
-			role = "%%";
-		} else if (roleAdmin == true && roleUser == false) {
-			role = "%1%";
-		} else if (roleAdmin == false && roleUser == true) {
-			role = "%0%";
-		}
-		
-		return role;
+	public static String convertToListString(String[] list) {
+		return Arrays.toString(list)
+			.replace("[", "(")
+			.replace("]", ")");
 	}
 	
 	/**
@@ -208,17 +179,6 @@ public class SQLConvert {
 		}
 
 		return orderBy;
-	}
-	
-	/**
-	 * Convert array of string to list of value string
-	 * which can be used with SQL "IN" operator.
-	 * @param stringArray
-	 * @return
-	 */
-	public static String convertList(String[] stringArray) {
-		return Arrays.toString(stringArray)
-				.replace('[', '(').replace(']', ')');
 	}
 	
 }

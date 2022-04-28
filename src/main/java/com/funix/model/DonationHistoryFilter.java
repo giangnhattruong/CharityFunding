@@ -4,6 +4,8 @@
 
 package com.funix.model;
 
+import java.util.Arrays;
+
 import com.funix.service.SQLConvert;
 
 /**
@@ -32,14 +34,11 @@ public class DonationHistoryFilter {
 	private String transactionKeyword;
 	
 	/**
-	 * Status of a donating transaction is verified/success.
+	 * Status of a donating transaction:
+	 * 0-Not-verified
+	 * 1-Verified
 	 */
-	private boolean statusOk;
-	
-	/**
-	 * Status of a donating transaction is not verified/not success.
-	 */
-	private boolean statusNotOk;
+	private String[] statuses;
 	
 	/**
 	 * Order of donation history records sorted by 
@@ -52,8 +51,7 @@ public class DonationHistoryFilter {
 	 * donation history search form values.
 	 */
 	public DonationHistoryFilter() {
-		statusOk = true;
-		statusNotOk = true;
+		statuses = new String[] {"0", "1"};
 		sortBy = "date-desc";
 	}
 
@@ -86,7 +84,7 @@ public class DonationHistoryFilter {
 	 * @return
 	 */
 	public String getStatusFilter() {
-		return SQLConvert.convertStatus(statusOk, statusNotOk);
+		return SQLConvert.convertToListString(statuses);
 	}
 
 	/**
@@ -122,20 +120,12 @@ public class DonationHistoryFilter {
 		this.transactionKeyword = transactionKeyword;
 	}
 
-	public boolean getStatusOk() {
-		return statusOk;
+	public String getStatuses() {
+		return Arrays.toString(statuses);
 	}
 
-	public void setStatusOk(boolean statusOk) {
-		this.statusOk = statusOk;
-	}
-
-	public boolean getStatusNotOk() {
-		return statusNotOk;
-	}
-
-	public void setStatusNotOk(boolean statusNotOk) {
-		this.statusNotOk = statusNotOk;
+	public void setStatuses(String[] statuses) {
+		this.statuses = statuses;
 	}
 
 	public String getSortBy() {

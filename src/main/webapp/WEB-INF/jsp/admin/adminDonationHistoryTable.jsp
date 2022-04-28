@@ -33,7 +33,7 @@
 <span class="text-brink-red">(csv file only)</span>
 <div class="d-flex mb-3">
 <input class="form-control" type="file" id="file" name="file" required>
-<button class="btn btn-secondary ms-1">Upload</button>
+<button id="submitButton" class="btn btn-secondary ms-1">Upload</button>
 </div>
 </form>	
 	

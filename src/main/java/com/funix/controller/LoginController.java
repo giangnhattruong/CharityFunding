@@ -173,7 +173,7 @@ public class LoginController {
 						.generateRandomPassword();
 				user.setPassword(passwordEncoder, randomPassword);
 				user.setFullname(name);
-				user.setUserStatus(true);
+				user.setUserStatus(1);
 				userDAO.create(user);
 				
 				// Send password to user email.
@@ -419,7 +419,7 @@ public class LoginController {
 	 * @return
 	 */
 	private boolean isValidUser(User user) {
-		return user.getUserStatus() == true;
+		return user.getUserStatus() == 1;
 	}
 	
 }

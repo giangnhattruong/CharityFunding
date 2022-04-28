@@ -39,24 +39,19 @@
 <div class="table-responsive dashboard-table p-1">
 <form method="post" id="actionForm"
 	action="<c:url value="/admin/users/delete" />">
-<table style="width: 1500px" 
-		class="table table-borderless table-fixed table-hover table-sm">
+<table style="min-width: 778px"
+	class="table table-borderless table-fixed table-hover table-sm">
     <thead class="bottom-shadow">
       <tr>
         <th scope="col"></th>
         <th scope="col">
 	        <input class="form-check-input" type="checkbox"
 				id="selectOrDeselectAll">
-				<span class="ms-1">Select all</span></th>
+			<span class="ms-1">All</span></th>
         <th scope="col">No</th>
         <th scope="col">Email</th>
         <th scope="col">Full-name</th>
-        <th scope="col">Address</th>
         <th scope="col">Phone</th>
-        <th scope="col">Donations(USD)</th>
-        <th scope="col">Donation times</th>
-        <th scope="col">Latest donation</th>
-        <th scope="col">Date joined</th>
         <th scope="col">Role</th>
         <th scope="col">Status</th>
       </tr>
@@ -64,18 +59,19 @@
 	<tbody>
 	
 	<c:forEach varStatus="loopStatus" var="user" items="${userList}">
-	  <tr id="item${loopStatus.index + 1}">
-	    <c:if test="${user.userRole == 0}">
-	    <td class="text-center"><a class="btn btn-outline-secondary"
-	    	href="<c:url value="/admin/users/update/${user.userID}" />">
-	    	<i class="bi bi-pencil-square"></i>Edit</a></td>
+	  <tr id="item${loopStatus.index + 1}"
+	  	 class="${user.userStatus == 3 ? 'text-muted' : ''}">
+	    <c:if test="${user.userStatus == 3}">
 	    <td class="text-center">
-	    <input class="form-check-input table-row" type="checkbox" 
-	    	name="userIDs" data-info="${user.email}"
-	    	value="${user.userID}">
+	    <span class="btn btn-outline-secondary disabled">Deleted</span>
+	    </td>
+	    <td class="text-center">
+	    <input class="form-check-input" type="checkbox" 
+	    	name="userIDs" value="${user.userID}" disabled>
 	    </td>
 	    </c:if>
-	    <c:if test="${user.userRole > 0}">
+	    
+	    <c:if test="${user.userRole > 0 && user.userStatus != 3}">
 	    <td class="text-center">
 	    <span class="btn btn-outline-info disabled">Admin</span>
 	    </td>
@@ -84,19 +80,39 @@
 	    	name="userIDs" value="${user.userID}" disabled>
 	    </td>
 	    </c:if>
+	    
+	    <c:if test="${user.userRole == 0 && user.userStatus != 3}">
+	    <td class="text-center"><a class="btn bg-sm-green-gradient"
+	    	href="<c:url value="/admin/users/update/${user.userID}" />">
+	    	<i class="bi bi-pencil-square me-1"></i>Edit</a></td>
+	    <td class="text-center">
+	    <input class="form-check-input table-row" type="checkbox" 
+	    	name="userIDs" 
+	    	data-info="${user.email}${user.userStatus != 0 ? ' (in used)' : ''}"
+	    	value="${user.userID}">
+	    </td>
+	    </c:if>
+	    
 	    <td>${loopStatus.index + 1}</td>
 	    <td>${user.email}</td>
 	    <td>${user.fullname}</td>
-	    <td>${user.address}</td>
 	    <td>${user.phone}</td>
-	    <td><fmt:formatNumber value="${user.totalDonations}"
-         	type="number"/></td>
-	    <td><fmt:formatNumber value="${user.donationTimes}"
-         	type="number"/></td>
-	    <td>${user.latestDonationDate}</td>
-	    <td>${user.dateCreated}</td>
 	    <td>${user.userRole == 1 ? "Admin" : "User"}</td>
-	    <td>${user.userStatus == true ? "Active" : "In-active"}</td>
+	    
+	    <c:if test="${user.userStatus == 0}">
+	    <c:set var="userStatus" value="In-active" />
+	    </c:if>
+	    <c:if test="${user.userStatus == 1}">
+	    <c:set var="userStatus" value="Active" />
+	    </c:if>
+	    <c:if test="${user.userStatus == 2}">
+	    <c:set var="userStatus" value="Banned" />
+	    </c:if>
+	    <c:if test="${user.userStatus == 3}">
+	    <c:set var="userStatus" value="Deleted" />
+	    </c:if>
+	    <td>${userStatus}</td>
+	    
 	  </tr>
 	</c:forEach>
 	</tbody>

@@ -4,6 +4,8 @@
 
 package com.funix.model;
 
+import java.util.Arrays;
+
 import com.funix.service.SQLConvert;
 
 /**
@@ -27,14 +29,12 @@ public class CampaignFilter {
 	private String location;
 	
 	/**
-	 * Status of a charity campaign is still open.
+	 * Status of a charity campaign:
+	 * 0-Closed
+	 * 1-Opening
+	 * 2-Deleted
 	 */
-	private boolean statusOpen;
-	
-	/**
-	 * Status of a charity campaign is closed.
-	 */
-	private boolean statusClosed;
+	private String[] statuses;
 	
 	/**
 	 * Order of campaign records sorted by 
@@ -47,8 +47,7 @@ public class CampaignFilter {
 	 * campaign search form values.
 	 */
 	public CampaignFilter() {
-		statusOpen = true;
-		statusClosed = true;
+		statuses = new String[] {"0", "1"};
 		sortBy = "date-desc";
 	}
 
@@ -73,7 +72,7 @@ public class CampaignFilter {
 	 * @return
 	 */
 	public String getStatusFilter() {
-		return SQLConvert.convertStatus(statusOpen, statusClosed);
+		return SQLConvert.convertToListString(statuses);
 	}
 
 	/**
@@ -101,20 +100,12 @@ public class CampaignFilter {
 		this.location = location;
 	}
 
-	public boolean getStatusOpen() {
-		return statusOpen;
+	public String getStatuses() {
+		return Arrays.toString(statuses);
 	}
 
-	public void setStatusOpen(boolean statusOpen) {
-		this.statusOpen = statusOpen;
-	}
-
-	public boolean getStatusClosed() {
-		return statusClosed;
-	}
-
-	public void setStatusClosed(boolean statusClosed) {
-		this.statusClosed = statusClosed;
+	public void setStatuses(String[] statuses) {
+		this.statuses = statuses;
 	}
 
 	public String getSortBy() {

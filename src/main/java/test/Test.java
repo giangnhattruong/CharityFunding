@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -41,12 +42,8 @@ import io.jsonwebtoken.security.Keys;
 public class Test {
 
 	public static void main(String[] args) {
-		  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
-		  String date = "22/04/05";
-
-		  //convert String to LocalDate
-		  LocalDate localDate = LocalDate.parse(date, formatter);
-		  System.out.println(localDate);
+		  String[] str = {"1", "2", "3"};
+		  System.out.println(Arrays.toString(str).replace("[", "").replace("]", ""));
 	}
 	
 	public static String generateRandomCode() {

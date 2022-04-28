@@ -331,8 +331,7 @@ public class AdminController {
 			String validatingMessage = "";
 			
 			/*
-			 * All campaign fields is set by Spring binding result,
-			 * except LocalDate fields have to be set explicitly.
+			 * Set campaign startDate, endDate and status manually.
 			 */
 			String startDateString = request.getParameter("startDate");
 			String endDateString = request.getParameter("endDate");
@@ -340,20 +339,23 @@ public class AdminController {
 			LocalDate endDate = NullConvert.toLocalDate(endDateString);
 			campaign.setStartDate(startDate);
 			campaign.setEndDate(endDate);
+			int campaignStatus = request
+					.getParameter("open") != null ? 1 : 0;
+			campaign.setCampaignStatus(campaignStatus);
 			
 			validatingMessage = campaignDAO.create(campaign);
 			
 			if (!validatingMessage.equals("success")) {
 				// Return error if validate failed.
 				redirectAttributes
-				.addFlashAttribute("message", validatingMessage);
+					.addFlashAttribute("message", validatingMessage);
 				redirectAttributes
-				.addFlashAttribute("campaign", campaign);
+					.addFlashAttribute("campaign", campaign);
 				mv.setViewName("redirect:/admin/campaigns/new");
 			} else {
 				// Redirect to all campaigns page with success message.
 				redirectAttributes
-				.addFlashAttribute("message", 
+					.addFlashAttribute("message", 
 						"Campaign has been successfully created.");
 				mv.setViewName("redirect:/admin/campaigns");
 			}
@@ -370,12 +372,13 @@ public class AdminController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "campaigns/update/{pathID}", 
+	@RequestMapping(value = "campaigns/update/{campaignID}", 
 			method = RequestMethod.GET)
 	public ModelAndView getCampaignUpdatingForm(
-			@PathVariable int pathID, 
+			@PathVariable int campaignID, 
 			@ModelAttribute("message") String message, 
 			@ModelAttribute("campaign") Campaign campaign, 
+			RedirectAttributes redirectAttributes,
 			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
 		
@@ -386,31 +389,43 @@ public class AdminController {
 			IImageAPI imageAPI = new CloudinaryImpl(cloudinary);
 			ICampaignDAO campaignDAO = 
 					new CampaignDAOImpl(dataSource, imageAPI);
-			int campaignID = pathID;
+			Campaign originalCampaign = campaignDAO
+					.getCampaign(campaignID);
 			
-			/*
-			 * Check if the campaign instance is not passed from
-			 * the last failed submit, then get a campaign instance from
-			 * database.
+			/**
+			 * Check if campaign is allowed to be updated.
 			 */
-			if (campaign.getCampaignID() == 0) {
-				campaign = campaignDAO.getCampaign(campaignID);
+			if (!isUpdateAllowed(originalCampaign)) {
+				// Return error if campaign is not allow to be updated.
+				redirectAttributes
+					.addFlashAttribute("message", 
+							"You cannot edit this campaign.");
+				mv.setViewName("redirect:/admin/campaigns");
+			} else {
+				/*
+				 * Check if the campaign instance is not passed from
+				 * the last failed submit, then get a campaign instance from
+				 * database.
+				 */
+				if (message.equals("")) {
+					campaign = originalCampaign;
+				}
+				
+				// Get image thumbnail and pass to view.
+				String imgURL = campaign.getImgURL();
+				if (imgURL != null) {
+					String imgHTML = imageAPI
+							.transformImage(imgURL, 80, 60);
+					mv.addObject("imgHTML", imgHTML);
+				}
+				
+				Navigation.addAdminNavItemMap(mv);
+				mv.addObject("formTitle", "Update");
+				mv.addObject("formAction", 
+						"/admin/campaigns/update/" + campaignID);
+				mv.addObject("campaign", campaign);
+				mv.setViewName("admin/createOrUpdateCampaign");
 			}
-			
-			// Get image thumbnail and pass to view.
-			String imgURL = campaign.getImgURL();
-			if (imgURL != null) {
-				String imgHTML = imageAPI
-						.transformImage(imgURL, 80, 60);
-				mv.addObject("imgHTML", imgHTML);
-			}
-			
-			Navigation.addAdminNavItemMap(mv);
-			mv.addObject("formTitle", "Update");
-			mv.addObject("formAction", 
-					"/admin/campaigns/update/" + campaignID);
-			mv.addObject("campaign", campaign);
-			mv.setViewName("admin/createOrUpdateCampaign");
 		}
 		
 		return mv;
@@ -443,33 +458,49 @@ public class AdminController {
 			ICampaignDAO campaignDAO = 
 					new CampaignDAOImpl(dataSource, imageAPI);
 			String validatingMessage = "";
+			Campaign originalCampaign = campaignDAO
+					.getCampaign(campaignID);
 			
-			/*
-			 * All campaign fields is set by Spring binding result,
-			 * except LocalDate fields have to be set explicitly.
+			/**
+			 * Check if campaign is allowed to be updated.
 			 */
-			String startDateString = request.getParameter("startDate");
-			String endDateString = request.getParameter("endDate");
-			LocalDate startDate = NullConvert.toLocalDate(startDateString);
-			LocalDate endDate = NullConvert.toLocalDate(endDateString);
-			campaign.setStartDate(startDate);
-			campaign.setEndDate(endDate);
-			validatingMessage = campaignDAO.update(campaignID, campaign);
-			
-			if (!validatingMessage.equals("success")) {
-				// Return error if validate failed.
-				campaign.setCampaignID(campaignID);
+			if (!isUpdateAllowed(originalCampaign)) {
+				// Return error if campaign is not allow to be updated.
 				redirectAttributes
-				.addFlashAttribute("message", validatingMessage);
-				redirectAttributes
-				.addFlashAttribute("campaign", campaign);
-				mv.setViewName("redirect:/admin/campaigns/update/" + campaignID);
-			} else {
-				// Redirect to all campaigns page with success message.
-				redirectAttributes
-				.addFlashAttribute("message", 
-						"Campaign has been successfully updated.");
+					.addFlashAttribute("message", 
+							"You cannot edit this campaign.");
 				mv.setViewName("redirect:/admin/campaigns");
+			} else {
+				/*
+				 * Set campaign startDate, endDate and status manually.
+				 */
+				String startDateString = request.getParameter("startDate");
+				String endDateString = request.getParameter("endDate");
+				LocalDate startDate = NullConvert.toLocalDate(startDateString);
+				LocalDate endDate = NullConvert.toLocalDate(endDateString);
+				campaign.setStartDate(startDate);
+				campaign.setEndDate(endDate);
+				int campaignStatus = request
+						.getParameter("open") != null ? 1 : 0;
+				campaign.setCampaignStatus(campaignStatus);
+				validatingMessage = campaignDAO.update(campaignID, campaign);
+				
+				if (!validatingMessage.equals("success")) {
+					// Return error if validate failed.
+					campaign.setCampaignID(campaignID);
+					redirectAttributes
+						.addFlashAttribute("message", validatingMessage);
+					redirectAttributes
+						.addFlashAttribute("campaign", campaign);
+					mv.setViewName("redirect:/admin/campaigns/update/" 
+						+ campaignID);
+				} else {
+					// Redirect to all campaigns page with success message.
+					redirectAttributes
+						.addFlashAttribute("message", 
+							"Campaign has been successfully updated.");
+					mv.setViewName("redirect:/admin/campaigns");
+				}
 			}
 		}
 		
@@ -505,7 +536,7 @@ public class AdminController {
 			String[] campaignIDArray = request
 					.getParameterValues("campaignIDs");
 			String campaignIDs = SQLConvert
-					.convertList(campaignIDArray);
+					.convertToListString(campaignIDArray);
 			
 			if (campaignIDArray != null) {
 				campaignDAO.delete(campaignIDs);
@@ -690,7 +721,7 @@ public class AdminController {
 	 * @return
 	 */
 	private String generateToken(String email, int userRole,
-			boolean userStatus, double tokenLiveMins) {
+			int userStatus, double tokenLiveMins) {
 		IAuthTokenizer authTokenizer = 
 				new JWTImpl(email, VERIFY_TOKEN_LIVE_TIME_MINS);
 		return authTokenizer.encodeUser();
@@ -703,10 +734,10 @@ public class AdminController {
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping(value = "users/update/{pathID}", 
+	@RequestMapping(value = "users/update/{userID}", 
 			method = RequestMethod.GET)
 	public ModelAndView getUserUpdatingForm(
-			@PathVariable int pathID, 
+			@PathVariable int userID, 
 			@ModelAttribute("message") String message, 
 			@ModelAttribute("user") User user,
 			RedirectAttributes redirectAttributes,
@@ -718,7 +749,6 @@ public class AdminController {
 			mv.setViewName("redirect:/explore");
 		} else {
 			IUserDAO userDAO = new UserDAOImpl(dataSource);
-			int userID = pathID;
 			
 			/*
 			 * Check if the user instance is not passed from
@@ -730,12 +760,11 @@ public class AdminController {
 			}
 			
 			/*
-			 * Check if user is admin, then notify error,
-			 * otherwise, proceed to render form.
+			 * Check if user is allowed to be updated.
 			 */
-			if (user.getUserRole() > 0) {
+			if (!isUpdateAllowed(user)) {
 				redirectAttributes.addFlashAttribute("message", 
-						"Editing other admin's informations is not allowed.");
+						"Sorry! You cannot edit this user.");
 				mv.setViewName("redirect:/admin/users");
 			} else {
 				Navigation.addAdminNavItemMap(mv);
@@ -772,11 +801,16 @@ public class AdminController {
 		if (!isLegalUser(request, getUserFromSession(request))) {
 			mv.setViewName("redirect:/explore");
 		} else {
-			IUserDAO userDAO = new UserDAOImpl(dataSource);
 			String validatingMessage = user.validate();
+			IUserDAO userDAO = new UserDAOImpl(dataSource);
+			User originalUser = userDAO.getUserSimpleInfo(userID);
 			
-			if (userDAO.isAdmin(userID)) {
-				// Return error if admin user try to update another admin.
+			/**
+			 * Check if original user is not admin or deleted,
+			 * then allow user to be updated.
+			 */
+			if (!isUpdateAllowed(originalUser)) {
+				// Return error if user try to update another admin user or deleted user.
 				redirectAttributes
 					.addFlashAttribute("message", "This action is forbidden!");
 				mv.setViewName("redirect:/admin/users");
@@ -788,6 +822,18 @@ public class AdminController {
 					.addFlashAttribute("user", user);
 				mv.setViewName("redirect:/admin/users/update/" + userID);
 			} else {
+				/*
+				 * If user have activate their account, then admin can
+				 * ban or re-activate that user. Otherwise, keep their status
+				 * as 0-not-verified.
+				 */
+				if (originalUser.getUserStatus() != 0) {
+					// Check if user is banned by admin or not.
+					int userStatus = request
+							.getParameter("activated") != null ? 1 : 2;
+					user.setUserStatus(userStatus);
+				}
+				
 				// Update user.
 				userDAO.update(userID, user);
 				redirectAttributes
@@ -824,7 +870,7 @@ public class AdminController {
 			 * to string for using with SQL query "IN" operator. 
 			 */
 			String[] userIDArray = request.getParameterValues("userIDs");
-			String userIDs = SQLConvert.convertList(userIDArray);
+			String userIDs = SQLConvert.convertToListString(userIDArray);
 			
 			// Delete user in list.
 			if (userIDArray != null) {
@@ -878,8 +924,8 @@ public class AdminController {
 					int userID = NullConvert.toInt(userIDString);
 					User user = userDAO.getUserSummaryInfo(userID);
 					
-					// Update user only (not admin).
-					if (user.getUserRole() == 0) {
+					// Update allowed user only.
+					if (isUpdateAllowed(user)) {
 						// Update user new random password.
 						String randomPassword = PasswordService
 								.generateRandomPassword();
@@ -940,7 +986,27 @@ public class AdminController {
 	 * @return
 	 */
 	private boolean isLegalUser(HttpServletRequest request, User user) {
-		return user.getUserStatus() && user.getUserRole() > 0;
+		return user.getUserStatus() == 1 && user.getUserRole() > 0;
+	}
+
+	/**
+	 * Check if user is not admin (role-1) or not deleted (status-3).
+	 * Then allow user to be updated.
+	 * @param user
+	 * @return
+	 */
+	private boolean isUpdateAllowed(User user) {
+		return user.getUserRole() != 1 || user.getUserStatus() != 3;
+	}
+	
+	/**
+	 * Check if campaign is not deleted (status-2).
+	 * Then allow campaign to be updated.
+	 * @param user
+	 * @return
+	 */
+	private boolean isUpdateAllowed(Campaign campaign) {
+		return campaign.getCampaignStatus() != 2;
 	}
 
 }

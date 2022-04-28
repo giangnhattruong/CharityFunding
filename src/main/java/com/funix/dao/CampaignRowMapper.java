@@ -35,8 +35,7 @@ public class CampaignRowMapper implements RowMapper<Campaign> {
 				.toLocalDate(resultSet.getDate("startDate"));
 		LocalDate endDate = NullConvert
 				.toLocalDate(resultSet.getDate("endDate"));
-		int status = resultSet.getInt("campaignStatus");
-		boolean campaignStatus = status == 1 ? true : false;
+		int campaignStatus = resultSet.getInt("campaignStatus");
 		LocalDate dateCreated = resultSet.getDate("dateCreated").toLocalDate();
 		double totalDonations = resultSet.getDouble("totalDonations");
 		int totalSupporters = resultSet.getInt("totalSupporters");

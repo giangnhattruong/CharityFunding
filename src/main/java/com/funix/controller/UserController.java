@@ -213,7 +213,7 @@ public class UserController {
 				// Update user in database.
 				IUserDAO userDAO = new UserDAOImpl(dataSource);
 				user.setUserRole(authUser.getUserRole());
-				user.setUserStatus(true);
+				user.setUserStatus(1);
 				userDAO.update(authUser.getEmail(), user);
 				
 				// Redirect to profile page with success message.
@@ -322,7 +322,7 @@ public class UserController {
 	 * @return
 	 */
 	private boolean isLegalUser(HttpServletRequest request, User user) {
-		boolean result = user.getUserStatus();
+		boolean result = user.getUserStatus() == 1;
 		
 		// Log user out if their status is in-active.
 		if (result == false) {

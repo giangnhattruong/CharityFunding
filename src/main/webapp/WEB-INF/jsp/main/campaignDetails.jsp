@@ -27,7 +27,7 @@
 <table>
 <tr>
 <td><strong>Status</strong></td>
-<td><strong>: ${campaign.campaignStatus == true ? "OPEN" : "CLOSED"}</strong></td>
+<td><strong>: ${campaign.campaignStatus == 1 ? "OPEN" : "CLOSED"}</strong></td>
 </tr>
 <tr>
 <td>Location</td>
@@ -70,11 +70,11 @@
 		center/cover no-repeat;">
 </div>
 <div class="donation-content col-lg-7 p-5">
-<h3 class="text-warning">${campaign.campaignStatus == true ? 
+<h3 class="text-warning">${campaign.campaignStatus == 1 ? 
 													"Donate" :
 													"Campaign is closed."}</h3>
 
-<c:if test="${email != null && campaign.campaignStatus == true}">
+<c:if test="${email != null && campaign.campaignStatus == 1}">
 <c:if test="${validateMessage != ''}">
 <p class="validate-message">${validateMessage}</p>
 </c:if>

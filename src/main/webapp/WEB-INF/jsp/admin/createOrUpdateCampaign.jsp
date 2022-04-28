@@ -112,10 +112,10 @@ ${imgHTML}
 <hr class="my-4">
 
 <div class="form-check form-switch">
-<form:checkbox path="campaignStatus" cssClass="form-check-input"
-	id="campaignStatus"/>
- <form:label cssClass="form-check-label" path="campaignStatus">
- Campaign status</form:label>
+<input type="checkbox" name="open" class="form-check-input"
+	id="open" ${campaign.campaignStatus == 1 ? "checked" : ""}/>
+ <label class="form-check-label" 
+ 	for="open">Open</label>
 </div>
 </div>
 </div>

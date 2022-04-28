@@ -60,16 +60,7 @@ public class UserDAOImpl implements IUserDAO {
 				+ "(email, password, fullname, address, "
 				+ "phone, userRole, userStatus) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
-		
-		
-		/*
-		 * If user role is updated to admin,
-		 * then status must be on
-		 */
-		if (user.getUserRole() == 1) {
-			user.setUserStatus(true);
-		}
-		
+		activateStatusIfUserIsAdmin(user);
 		jdbcTemplate.update(SQL, user.getEmail(), 
 				user.getPassword(), user.getFullname(), 
 				user.getAddress(), user.getPhone(), 
@@ -187,16 +178,16 @@ public class UserDAOImpl implements IUserDAO {
 				+ "WHERE (LOWER(email) LIKE ? OR "
 				+ "LOWER(fullname) LIKE ? OR "
 				+ "phone LIKE ?) AND "
-				+ "userStatus LIKE ? AND "
-				+ "userRole LIKE ? "
+				+ "userStatus IN "
+				+ userFilter.getStatusFilter() + " AND "
+				+ "userRole IN " 
+				+ userFilter.getRoleFilter() + " "
 				+ userFilter.getSortByFilter();
 		List<User> userList = jdbcTemplate.query(SQL, 
 				new UserSummaryMapper(), 
 				userFilter.getKeywordFilter(),
 				userFilter.getKeywordFilter(),
-				userFilter.getKeywordFilter(),
-				userFilter.getStatusFilter(),
-				userFilter.getRoleFilter());
+				userFilter.getKeywordFilter());
 		return userList;
 	}
 	
@@ -237,15 +228,7 @@ public class UserDAOImpl implements IUserDAO {
 				+ "SET fullname = ?, address = ?, phone = ?, "
 				+ "userRole = ?, userStatus = ? "
 				+ "WHERE userID = ?";
-		
-		/*
-		 * If user role is updated to admin,
-		 * then status must be turned on.
-		 */
-		if (user.getUserRole() == 1) {
-			user.setUserStatus(true);
-		}
-		
+		activateStatusIfUserIsAdmin(user);
 		jdbcTemplate.update(SQL, user.getFullname(),
 				user.getAddress(), user.getPhone(),
 				user.getUserRole(), user.getUserStatus(),
@@ -265,19 +248,21 @@ public class UserDAOImpl implements IUserDAO {
 				+ "SET fullname = ?, address = ?, phone = ?, "
 				+ "userRole = ?, userStatus = ? "
 				+ "WHERE email = ?";
-		
-		/*
-		 * If user role is updated to admin,
-		 * then status must be turned on.
-		 */
-		if (user.getUserRole() == 1) {
-			user.setUserStatus(true);
-		}
-		
+		activateStatusIfUserIsAdmin(user);
 		jdbcTemplate.update(SQL, user.getFullname(),
 				user.getAddress(), user.getPhone(),
 				user.getUserRole(), user.getUserStatus(),
 				email);
+	}
+
+	/**
+	 * Turn user status to 1-active if user is admin.
+	 * @param user
+	 */
+	private void activateStatusIfUserIsAdmin(User user) {
+		if (user.getUserRole() == 1) {
+			user.setUserStatus(1);
+		}
 	}
 
 	/**
@@ -307,7 +292,7 @@ public class UserDAOImpl implements IUserDAO {
 	}
 	
 	/**
-	 * Delete an existing user.
+	 * Delete an existing user (not admin).
 	 * @param userIDs
 	 */
 	@Override

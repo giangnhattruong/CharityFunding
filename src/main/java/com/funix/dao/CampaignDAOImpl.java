@@ -132,15 +132,15 @@ public class CampaignDAOImpl implements ICampaignDAO {
 				+ "WHERE (LOWER(title) LIKE ? OR "
 				+ "	LOWER(description) LIKE ?) AND "
 				+ "	LOWER(location) LIKE ? AND "
-				+ "	campaignStatus LIKE ? "
+				+ "	campaignStatus IN "
+				+ campaignFilter.getStatusFilter() + " "
 				+ campaignFilter.getOrderByFilter();
 		updateAllCampaignStatus();
 		List<Campaign> campaignList = jdbcTemplate.query(SQL, 
 				new CampaignRowMapper(), 
 				campaignFilter.getKeywordFilter(),
 				campaignFilter.getKeywordFilter(), 
-				campaignFilter.getLocationFilter(),
-				campaignFilter.getStatusFilter());
+				campaignFilter.getLocationFilter());
 		return campaignList;
 	}
 

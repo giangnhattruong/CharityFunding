@@ -88,12 +88,15 @@
 </form:select>
 </div>
 
+<c:if test="${formTitle == 'Update' && user.userStatus != 0}">
 <div class="form-check form-switch">
-<form:checkbox path="userStatus" cssClass="form-check-input"
-	id="userStatus"/>
- <form:label cssClass="form-check-label small" path="userStatus">
- User status</form:label>
+<input type="checkbox" name="activate" class="form-check-input"
+	id="activate" ${user.userStatus == 1 ? "checked" : ""}/>
+ <label class="form-check-label small" for="activate">
+ Activate</label>
 </div>
+</c:if>
+
 </div>
 </div>
 

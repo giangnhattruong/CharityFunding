@@ -20,8 +20,7 @@ public class UserSimpleMapper implements RowMapper<User> {
 		String address = resultSet.getString("address");
 		String phone = resultSet.getString("phone");
 		int userRole = resultSet.getInt("userRole");
-		int status = resultSet.getInt("userStatus");
-		boolean userStatus = status == 1 ? true : false;
+		int userStatus = resultSet.getInt("userStatus");
 		LocalDate dateCreated = NullConvert
 				.toLocalDate(resultSet.getDate("dateCreated"));
 		

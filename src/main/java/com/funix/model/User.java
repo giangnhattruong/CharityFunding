@@ -54,9 +54,12 @@ public class User {
 	private int userRole;
 	
 	/**
-	 * User status: verified or unverified.
+	 * User status: 
+	 * 0-unverified
+	 * 1-verified
+	 * 2-deleted
 	 */
-	private boolean userStatus;
+	private int userStatus;
 	
 	/**
 	 * User created date in database.
@@ -103,7 +106,7 @@ public class User {
 	 */
 	public User(int userID, String email, String password, 
 			String fullname, String address, String phone, 
-			int userRole, boolean userStatus, LocalDate dateCreated) {
+			int userRole, int userStatus, LocalDate dateCreated) {
 		this(userID, email, password, fullname, address, 
 				phone, userRole, userStatus, dateCreated,
 				0, 0, null);
@@ -126,7 +129,7 @@ public class User {
 	 */
 	public User(int userID, String email, String password, 
 			String fullname, String address, String phone, 
-			int userRole, boolean userStatus, LocalDate dateCreated, 
+			int userRole, int userStatus, LocalDate dateCreated, 
 			double totalDonations, int donationTimes, 
 			LocalDate latestDonationDate) {
 		this.userID = userID;
@@ -362,11 +365,11 @@ public class User {
 		this.userRole = userRole;
 	}
 
-	public boolean getUserStatus() {
+	public int getUserStatus() {
 		return userStatus;
 	}
 
-	public void setUserStatus(boolean userStatus) {
+	public void setUserStatus(int userStatus) {
 		this.userStatus = userStatus;
 	}
 

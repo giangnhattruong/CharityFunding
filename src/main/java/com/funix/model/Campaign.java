@@ -60,10 +60,12 @@ public class Campaign {
 	private LocalDate endDate;
 	
 	/**
-	 * Status of a campaign still open 
-	 * for donations or closed.
+	 * Status of a campaign:
+	 * 0-Closed
+	 * 1-Open
+	 * 2-Deleted
 	 */
-	private boolean campaignStatus;
+	private int campaignStatus;
 	
 	/**
 	 * Campaign created date on database.
@@ -104,7 +106,7 @@ public class Campaign {
 	public Campaign() {
 		startDate = LocalDate.now();
 		endDate = startDate.plusMonths(3);
-		campaignStatus = true;
+		campaignStatus = 1;
 	}
 	
 	/**
@@ -125,7 +127,7 @@ public class Campaign {
 	 */
 	public Campaign(int campaignID, String title, String description, 
 			double targetAmount, String location, String imgURL, 
-			LocalDate startDate, LocalDate endDate, boolean campaignStatus, 
+			LocalDate startDate, LocalDate endDate, int campaignStatus, 
 			LocalDate dateCreated, double totalDonations,
 			int totalSupporters, LocalDate latestDonationDate) {
 		this.campaignID = campaignID;
@@ -285,11 +287,11 @@ public class Campaign {
 		this.endDate = endDate;
 	}
 
-	public boolean getCampaignStatus() {
+	public int getCampaignStatus() {
 		return campaignStatus;
 	}
 
-	public void setCampaignStatus(boolean campaignStatus) {
+	public void setCampaignStatus(int campaignStatus) {
 		this.campaignStatus = campaignStatus;
 	}
 

@@ -49,7 +49,7 @@
         <th scope="col">
 	        <input class="form-check-input" type="checkbox"
 				id="selectOrDeselectAll">
-				<span class="ms-1">Select all</span></th>
+				<span class="ms-1">All</span></th>
         <th scope="col">No</th>
         <th scope="col">Title</th>
         <th scope="col">Location</th>
@@ -65,15 +65,29 @@
 	<tbody>
 	<c:forEach varStatus="loopStatus" 
 		var="campaign" items="${campaignList}">
-	  <tr id="item${loopStatus.index + 1}">
-	    <td class="text-center"><a class="btn btn-outline-secondary"
+	  <tr id="item${loopStatus.index + 1}"
+	  	class="${campaign.campaignStatus == 2 ? 'text-muted' : ''}">
+	  
+	  	<c:if test="${campaign.campaignStatus == 2}">
+	    <td class="text-center">
+		<span class="btn btn-outline-secondary disabled">Deleted</span>
+	    <td class="text-center">
+	    <input class="form-check-input table-row" type="checkbox" 
+	    	name="campaignIDs" value="${campaign.campaignID}" disabled>
+	    </td>
+	    </c:if>
+	  
+	  	<c:if test="${campaign.campaignStatus != 2 }">
+	    <td class="text-center"><a class="btn bg-sm-green-gradient"
 	    	href="<c:url value="/admin/campaigns/update/${campaign.campaignID}" />">
-	    	<i class="bi bi-pencil-square"></i>Edit</a></td>
+	    	<i class="bi bi-pencil-square me-1"></i>Edit</a></td>
 	    <td class="text-center">
 	    <input class="form-check-input table-row" type="checkbox" 
 	    	name="campaignIDs" data-info="${campaign.title}"
 	    	value="${campaign.campaignID}">
 	    </td>
+	    </c:if>
+	    
 	    <td>${loopStatus.index + 1}</td>
 	    <td>${campaign.title}</td>
 	    <td>${campaign.location}</td>
@@ -86,7 +100,17 @@
 	    <td><fmt:formatNumber value="${campaign.totalSupporters}"
          	type="number"/></td>
 	    <td>${campaign.latestDonationDate}</td>
-	    <td>${campaign.campaignStatus == true ? "Open" : "Closed"}</td>
+	    
+	    <c:if test="${campaign.campaignStatus == 0}">
+	    <c:set var="campaignStatus" value="Closed" />
+	    </c:if>
+	    <c:if test="${campaign.campaignStatus == 1}">
+	    <c:set var="campaignStatus" value="Opening" />
+	    </c:if>
+	    <c:if test="${campaign.campaignStatus == 2}">
+	    <c:set var="campaignStatus" value="Deleted" />
+	    </c:if>
+	    <td>${campaignStatus}</td>
 	  </tr>
 	</c:forEach>
 	</tbody>

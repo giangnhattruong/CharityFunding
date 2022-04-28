@@ -108,7 +108,7 @@ and make the world a better place.</p>
     <table class="campaigns-summary">
     <tr>
     <td><strong>Status</strong></td>
-    <td><strong>: ${campaign.campaignStatus == true ? "OPEN" : "CLOSED"}</strong></td>
+    <td><strong>: ${campaign.campaignStatus == 1 ? "OPEN" : "CLOSED"}</strong></td>
     </tr>
     <tr>
     <td>Location</td>

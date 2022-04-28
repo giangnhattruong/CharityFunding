@@ -11,18 +11,23 @@
 	cssClass="search-form"
 	modelAttribute="filter"
 	action="${action}" >
-<div class="d-flex">
+	
+<strong>Status</strong>
+<div class="d-flex flex-wrap">
 <div class="form-check me-3 mb-3">
-<form:checkbox cssClass="form-check-input" path="statusOk"
-	id="statusOk"/>
-<form:label cssClass="form-check-label" path="statusOk">
-	Verified</form:label>
+<input type="checkbox" class="form-check-input" name="statuses"
+	id="notVerifiedStatus" value="0" 
+	${filter.getStatuses().contains('0') ? 'checked' : ''}/>
+<label class="form-check-label" for="notVerifiedStatus">
+	Not verified</label>
 </div>
+
 <div class="form-check me-3 mb-3">
-<form:checkbox cssClass="form-check-input" path="statusNotOk"
-	id="statusNotOk"/>
-<form:label cssClass="form-check-label" path="statusNotOk">
-	Not verified</form:label>
+<input type="checkbox" class="form-check-input" name="statuses"
+	id="verifiedStatus" value="1" 
+	${filter.getStatuses().contains('1') ? 'checked' : ''}/>
+<label class="form-check-label" for="verifiedStatus">
+	Verified</label>
 </div>
 </div>
 

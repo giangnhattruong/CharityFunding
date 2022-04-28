@@ -97,7 +97,8 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 				+ "(LOWER(email) LIKE ? OR LOWER(fullname) LIKE ?) AND "
 				+ "(LOWER(title) LIKE ? OR LOWER(location) LIKE ?) AND "
 				+ "transactionCode LIKE ? AND "
-				+ "donationStatus LIKE ? "
+				+ "donationStatus IN "
+				+ filter.getStatusFilter() + " "
 				+ filter.getSortByFilter();
 		return jdbcTemplate
 				.query(SQL, new DonationHistoryRowMapper(), 
@@ -105,8 +106,7 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 						filter.getUserKeywordFilter(),
 						filter.getCampaignKeywordFilter(),
 						filter.getCampaignKeywordFilter(),
-						filter.getTransactionKeywordFilter(),
-						filter.getStatusFilter());
+						filter.getTransactionKeywordFilter());
 	}
 
 	/**
@@ -120,7 +120,8 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 				+ "WHERE "
 				+ "(LOWER(title) LIKE ? OR LOWER(location) LIKE ?) AND "
 				+ "transactionCode LIKE ? AND "
-				+ "donationStatus LIKE ? AND "
+				+ "donationStatus IN "
+				+ filter.getStatusFilter() + " AND "
 				+ "userID = ? "
 				+ filter.getSortByFilter();
 		return jdbcTemplate
@@ -128,7 +129,7 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 						filter.getCampaignKeywordFilter(),
 						filter.getCampaignKeywordFilter(),
 						filter.getTransactionKeywordFilter(),
-						filter.getStatusFilter(), userID);
+						userID);
 	}
 
 	/**
@@ -142,7 +143,8 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 				+ "WHERE "
 				+ "(LOWER(title) LIKE ? OR LOWER(location) LIKE ?) AND "
 				+ "transactionCode LIKE ? AND "
-				+ "donationStatus LIKE ? AND "
+				+ "donationStatus IN "
+				+ filter.getStatusFilter() + " AND "
 				+ "email = ? "
 				+ filter.getSortByFilter();
 		return jdbcTemplate
@@ -150,7 +152,7 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 						filter.getCampaignKeywordFilter(),
 						filter.getCampaignKeywordFilter(),
 						filter.getTransactionKeywordFilter(),
-						filter.getStatusFilter(), email);
+						email);
 	}
 
 }

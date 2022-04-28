@@ -11,18 +11,31 @@
 	cssClass="search-form"
 	modelAttribute="filter"
 	action="${action}" >
-<div class="d-flex">
+
+<strong>Status</strong>
+<div class="d-flex flex-wrap">
 <div class="form-check me-3 mb-3">
-<form:checkbox cssClass="form-check-input" path="statusOpen"
-	id="statusOpen"/>
-<form:label cssClass="form-check-label" path="statusOpen">
-	Open</form:label>
+<input type="checkbox" class="form-check-input" name="statuses"
+	id="closedStatus" value="0" 
+	${filter.getStatuses().contains('0') ? 'checked' : ''}/>
+<label class="form-check-label" for="closedStatus">
+	Closed</label>
 </div>
+
 <div class="form-check me-3 mb-3">
-<form:checkbox cssClass="form-check-input" path="statusClosed"
-	id="statusClosed"/>
-<form:label cssClass="form-check-label" path="statusClosed">
-	Closed</form:label>
+<input type="checkbox" class="form-check-input" name="statuses"
+	id="openStatus" value="1" 
+	${filter.getStatuses().contains('1') ? 'checked' : ''}/>
+<label class="form-check-label" for="openStatus">
+	Opening</label>
+</div>
+
+<div class="form-check me-3 mb-3">
+<input type="checkbox" class="form-check-input" name="statuses"
+	id="deletedStatus" value="2" 
+	${filter.getStatuses().contains('2') ? 'checked' : ''}/>
+<label class="form-check-label" for="deletedStatus">
+	Deleted</label>
 </div>
 </div>
 

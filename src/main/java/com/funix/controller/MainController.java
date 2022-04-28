@@ -176,8 +176,8 @@ public class MainController {
 			String validateMessage = transaction.
 					validate();
 			
-			if (campaign.getCampaignStatus() == false) {
-				// Don't allow donation if campaign is closed.
+			if (campaign.getCampaignStatus() != 1) {
+				// Don't allow donation if campaign is not open.
 				redirectAttributes
 					.addFlashAttribute("message", "Campaign is closed.");
 			} else if (!validateMessage.equals("success")) {

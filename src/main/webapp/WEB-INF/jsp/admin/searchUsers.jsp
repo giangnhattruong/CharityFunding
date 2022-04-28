@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <c:url var="action" value="/admin/users" />
@@ -11,30 +12,58 @@
 	cssClass="search-form"
 	modelAttribute="filter"
 	action="${action}" >
+	
+<strong>Status</strong>
 <div class="d-flex flex-wrap">
 <div class="form-check me-3 mb-3">
-<form:checkbox cssClass="form-check-input" path="statusActive"
-	id="statusActive"/>
-<form:label cssClass="form-check-label" path="statusActive">
-	Active</form:label>
+<input type="checkbox" class="form-check-input" name="statuses"
+	id="inactiveStatus" value="0" 
+	${filter.getStatuses().contains('0') ? 'checked' : ''}/>
+<label class="form-check-label" for="inactiveStatus">
+	In-active</label>
 </div>
+
 <div class="form-check me-3 mb-3">
-<form:checkbox class="form-check-input" path="statusInactive"
-	id="statusInactive"/>
-<form:label cssClass="form-check-label" path="statusInactive">
-	In-active</form:label>
+<input type="checkbox" class="form-check-input" name="statuses"
+	id="activeStatus" value="1" 
+	${filter.getStatuses().contains('1') ? 'checked' : ''}/>
+<label class="form-check-label" for="activeStatus">
+	Active</label>
 </div>
+
 <div class="form-check me-3 mb-3">
-<form:checkbox class="form-check-input" path="roleAdmin"
-	id="roleAdmin"/>
-<form:label cssClass="form-check-label" path="roleAdmin">
-	Admin</form:label>
+<input type="checkbox" class="form-check-input" name="statuses"
+	id="bannedStatus" value="2" 
+	${filter.getStatuses().contains('2') ? 'checked' : ''}/>
+<label class="form-check-label" for="bannedStatus">
+	Banned</label>
 </div>
+
 <div class="form-check me-3 mb-3">
-<form:checkbox class="form-check-input" path="roleUser"
-	id="roleUser"/>
-<form:label cssClass="form-check-label" path="roleUser">
-	User</form:label>
+<input type="checkbox" class="form-check-input" name="statuses"
+	id="deletedStatus" value="3" 
+	${filter.getStatuses().contains('3') ? 'checked' : ''}/>
+<label class="form-check-label" for="deletedStatus">
+	Deleted</label>
+</div>
+</div>
+
+<strong>Role</strong>
+<div class="d-flex flex-wrap">
+<div class="form-check me-3 mb-3">
+<input type="checkbox" class="form-check-input" name="roles"
+	id="userRole" value="0" 
+	${filter.getRoles().contains('0') ? 'checked' : ''}/>
+<label class="form-check-label" for="userRole">
+	User</label>
+</div>
+
+<div class="form-check me-3 mb-3">
+<input type="checkbox" class="form-check-input" name="roles"
+	id="adminRole" value="1" 
+	${filter.getRoles().contains('1') ? 'checked' : ''}/>
+<label class="form-check-label" for="adminRole">
+	Admin</label>
 </div>
 </div>
 

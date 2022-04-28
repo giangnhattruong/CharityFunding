@@ -158,7 +158,7 @@ AS
 	ON C.campaignID = S.campaignID
 	WHERE (CONVERT(date, GETDATE()) > C.endDate OR
 			ISNULL(S.totalDonations, 0) >= C.targetAmount) AND
-			campaignStatus != 0
+			campaignStatus = 1
 GO
 
 CREATE OR ALTER PROCEDURE dbo.updateHistoryStatus
@@ -176,10 +176,16 @@ CREATE OR ALTER TRIGGER dbo.deleteUser
     AS
     BEGIN
     SET NOCOUNT ON
-	DELETE donationHistoryTbl 
-	WHERE userID IN (SELECT userID FROM deleted)
-	DELETE userTbl 
-	WHERE userID IN (SELECT userID FROM deleted)
+
+	DELETE userTbl
+	WHERE userID IN (SELECT userID from deleted) AND
+	userStatus = 0
+
+	UPDATE userTbl
+	SET userStatus = 3
+	WHERE userID IN (SELECT userID from deleted) AND
+	userStatus > 0
+
     END
 GO
 
@@ -189,10 +195,11 @@ CREATE OR ALTER TRIGGER dbo.deleteCampaign
     AS
     BEGIN
     SET NOCOUNT ON
-	DELETE donationHistoryTbl
-	WHERE campaignID IN (SELECT campaignID FROM deleted)
-	DELETE campaignTbl
-	WHERE campaignID IN (SELECT campaignID FROM deleted)
+
+	UPDATE campaignTbl
+	SET campaignStatus = 2
+	WHERE campaignID IN (SELECT campaignID from deleted)
+
     END
 GO
 
