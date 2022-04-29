@@ -41,7 +41,7 @@
 <div class="table-responsive dashboard-table p-1">
 <form method="post" id="actionForm"
 	action="<c:url value="/admin/campaigns/delete" />">
-<table style="width: 1500px" 
+<table style="min-width: 778px" 
 		class="table table-borderless table-fixed table-hover table-sm">
     <thead class="bottom-shadow">
       <tr>
@@ -53,12 +53,12 @@
         <th scope="col">No</th>
         <th scope="col">Title</th>
         <th scope="col">Location</th>
-        <th scope="col">Start</th>
+        <!-- <th scope="col">Start</th> -->
         <th scope="col">End</th>
         <th scope="col">Target(USD)</th>
-        <th scope="col">Donations(USD)</th>
+       <!--  <th scope="col">Donations(USD)</th>
         <th scope="col">Supporters</th>
-        <th scope="col">Latest donation</th>
+        <th scope="col">Latest donation</th> -->
         <th scope="col">Status</th>
       </tr>
     </thead>
@@ -91,15 +91,15 @@
 	    <td>${loopStatus.index + 1}</td>
 	    <td>${campaign.title}</td>
 	    <td>${campaign.location}</td>
-	    <td>${campaign.startDate}</td>
+	    <%-- <td>${campaign.startDate}</td> --%>
 	    <td>${campaign.endDate}</td>
 	    <td><fmt:formatNumber value="${campaign.targetAmount}"
          	type="number"/></td>
-	    <td><fmt:formatNumber value="${campaign.totalDonations}"
+	  <%--   <td><fmt:formatNumber value="${campaign.totalDonations}"
          	type="number"/></td>
 	    <td><fmt:formatNumber value="${campaign.totalSupporters}"
          	type="number"/></td>
-	    <td>${campaign.latestDonationDate}</td>
+	    <td>${campaign.latestDonationDate}</td> --%>
 	    
 	    <c:if test="${campaign.campaignStatus == 0}">
 	    <c:set var="campaignStatus" value="Closed" />

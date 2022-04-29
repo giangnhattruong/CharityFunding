@@ -225,7 +225,7 @@ have proper access and social support. You can sponsor one full year of school e
 of a child for just $67.27. Make a difference!', 
 'Nigeria', '50000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018497/campaigns/1_alnimo.jpg', 
-'2022-01-01', '2022-03-01'),
+'2022-01-01', '2022-09-01'),
 ('Feeding the Hungry', N'Help to feed less privilege children in Nigeria. 
 Corona Virus is a bomb that has touched the lives of everyone; 
 rich, middle class and poor, but the bigger question is, 
@@ -234,14 +234,14 @@ we can feed more kids & low-income families in rural communities.
 Will you help us?', 
 'Nigeria', '100000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018498/campaigns/2_ie5rli.jpg', 
-'2021-10-01', '2022-04-01'),
+'2021-10-01', '2022-06-01'),
 ('Give Scholarship', N'Give a scholarship to youth in higher education in Nigeria. 
 We want to send 23 less privileged youths to the high institutions through 
 our scholarship program. Each scholarship is $650 for one child annually. 
 Can you donate $5 for a child to support our scholarship program?', 
 'Nigeria', '30000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018497/campaigns/3_mcmtpv.jpg', 
-'2022-03-01', '2022-05-01'),
+'2022-03-01', '2022-08-01'),
 ('Ukraine aid - Help now!', N'Millions of Ukrainians fell victim of the Russian invasion and 
 became hostages on their own land. The injured and wounded, orphaned children, 
 the elderly, and internal refugees urgently need your help! 
@@ -267,7 +267,7 @@ Your donation allows to increase our impact, install more technology,
 and reach more people. Every donation counts!', 
 'Indonesia', '50000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018498/campaigns/6_a9o9jq.jpg', 
-'2022-02-01', '2022-04-01'),
+'2022-02-01', '2022-07-01'),
 ('Ship Hospital', N'A Ship Hospital to offer medical assistance to isolated populations. 
 Every day so many People live in fear, hopelessness and desperation in East Africa 
 and the Indian Ocean. An estimated ONE BILLION people lack access to even 
@@ -276,7 +276,7 @@ the Poorest of the Poorest 14.000 Children, 25.000  People in 22 villages,
 schools, colleges, clinics and hospitals.', 
 'Indian Ocean', '500000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018499/campaigns/7_shflwc.jpg', 
-'2022-02-01', '2022-04-01'),
+'2022-02-01', '2022-09-01'),
 ('Help saving the animals', N'1 in 5 animals lack access to nutritious foods. 
 We’re on a mission to change that. We provide nutritious foods for thousands of neglected animals. 
 Our mission is to help prevent Animal Cruelty and help provide for animals 
@@ -285,7 +285,7 @@ To end Animal Cruelty, we must work together to bring
 Safe Haven to the animals who need it most.', 
 'Global', '20000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018498/campaigns/8_qkky3d.jpg', 
-'2021-12-01', '2022-02-01'),
+'2021-12-01', '2022-10-01'),
 ('Feed Africa', N'No child should be subjected to poverty and lack…… 
 We work to feed, empower, cloth, and provide basic amenities such as 
 food, water, electricity, housing, and healthcare to the poorest of Africa. 
@@ -319,7 +319,7 @@ Children are nurtured to become exuberant, fully rounded individuals,
 in harmony with themselves and the world.', 
 'Uganda', '50000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018499/campaigns/12_a7zian.jpg', 
-'2022-01-01', '2022-03-24')
+'2022-01-01', '2022-07-24')
 
 INSERT INTO donationHistoryTbl (userID, campaignID, donation, donationDate, transactionCode, donationStatus)
 VALUES (1, 12, 100, '2022-02-15', 'UIWHJBFHSGFNSJDKFHBIUDS', 0),
@@ -332,8 +332,8 @@ VALUES (1, 12, 100, '2022-02-15', 'UIWHJBFHSGFNSJDKFHBIUDS', 0),
 (8, 3, 320, '2022-04-29', 'QIOHNJHDSNILKSNJSKHFSAFJK', 0),
 (6, 12, 500, '2022-03-15', 'OPJKSKJBVNASFDYIUAGFBJHSF', 0),
 (3, 4, 50, '2022-03-17', 'OIYEBJKNBSUSYAIUHNJKGDJKSH', 0),
-(6, 3, 1000000, '2022-03-16', 'POYEFBVHGUYGAWJHFBSDJKFH', 0),
+(6, 3, 1000, '2022-03-16', 'POYEFBVHGUYGAWJHFBSDJKFH', 0),
 (6, 3, 20, '2022-03-19', 'MNJHAUIHJNJKVIULHNUHFUSSHFD', 0),
-(1, 4, 500000, '2022-03-27', 'QUIHFNSNMBNJKDSSKLDJFKLDSFSFD', 0)
+(1, 4, 500, '2022-03-27', 'QUIHFNSNMBNJKDSSKLDJFKLDSFSFD', 0)
 
 COMMIT TRANSACTION

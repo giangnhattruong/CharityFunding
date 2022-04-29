@@ -106,7 +106,7 @@
 </form:form>
 </c:if>
 
-<c:if test="${email == null && campaign.campaignStatus == true}">
+<c:if test="${email == null && campaign.campaignStatus == 1}">
 <div class="d-flex flex-column align-items-center">
 <h5>Please login first to donate.</h5>
 <a class="btn btn-outline-warning py-2 px-5"

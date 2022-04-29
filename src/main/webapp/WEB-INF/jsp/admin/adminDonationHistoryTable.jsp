@@ -33,12 +33,12 @@
 <span class="text-brink-red">(csv file only)</span>
 <div class="d-flex mb-3">
 <input class="form-control" type="file" id="file" name="file" required>
-<button id="submitButton" class="btn btn-secondary ms-1">Upload</button>
+<button id="submitButton" class="btn bg-sm-green-gradient ms-1">Upload</button>
 </div>
 </form>	
 	
 <div class="table-responsive dashboard-table p-1">
-<table style="width: 1800px" 
+<table style="width: 1500px" 
 		class="table table-borderless table-fixed table-hover table-sm">
     <thead class="bottom-shadow">
       <tr>

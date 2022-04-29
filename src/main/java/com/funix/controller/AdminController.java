@@ -830,7 +830,7 @@ public class AdminController {
 				if (originalUser.getUserStatus() != 0) {
 					// Check if user is banned by admin or not.
 					int userStatus = request
-							.getParameter("activated") != null ? 1 : 2;
+							.getParameter("activate") != null ? 1 : 2;
 					user.setUserStatus(userStatus);
 				}
 				
