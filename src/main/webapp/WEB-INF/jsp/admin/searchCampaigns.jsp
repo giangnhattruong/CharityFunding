@@ -56,28 +56,28 @@
 	path="sortBy">
   <form:option value="date-desc">
 	Sort by descending date(default)</form:option>
+  <form:option value="title-desc">
+	Sort by descending title</form:option>
   <form:option value="target-desc">
 	Sort by descending donation target</form:option>
-  <form:option value="total-donations-desc">
+  <%-- <form:option value="total-donations-desc">
 	Sort by descending total donations</form:option>
   <form:option value="total-supporters-desc">
 	Sort by descending total supporters</form:option>
   <form:option value="latest-donation-date-desc">
-	Sort by descending latest donation date</form:option>
-  <form:option value="title-desc">
-	Sort by descending title</form:option>
+	Sort by descending latest donation date</form:option> --%>
   <form:option value="date-asc">
 	Sort by ascending date</form:option>
+  <form:option value="title-asc">
+	Sort by ascending title</form:option>
   <form:option value="target-asc">
 	Sort by ascending donation target</form:option>
-  <form:option value="total-donations-asc">
+  <%-- <form:option value="total-donations-asc">
 	Sort by ascending total donations</form:option>
   <form:option value="total-supporters-asc">
 	Sort by ascending total supporters</form:option>
   <form:option value="latest-donation-date-asc">
-	Sort by ascending latest donation date</form:option>
-  <form:option value="title-asc">
-	Sort by ascending title</form:option>
+	Sort by ascending latest donation date</form:option> --%>
 </form:select>
 
 <div class="d-flex justify-content-center mt-3">

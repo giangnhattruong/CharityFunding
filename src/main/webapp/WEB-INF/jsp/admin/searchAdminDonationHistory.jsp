@@ -53,22 +53,22 @@
 	path="sortBy">
   <form:option value="date-desc">
   	Sort by descending date(default)</form:option>
-  <form:option value="donation-desc">
-  	Sort by descending donation</form:option>
   <form:option value="email-desc">
   	Sort by descending email</form:option>
   <form:option value="title-desc">
   	Sort by descending title</form:option>
+  <form:option value="donation-desc">
+  	Sort by descending donation</form:option>
   <form:option value="transaction-code-desc">	
   	Sort by descending transaction code</form:option>
   <form:option value="date-asc">
   	Sort by ascending date</form:option>
-  <form:option value="donation-asc">
-  	Sort by ascending donation</form:option>
   <form:option value="email-asc">
   	Sort by ascending email</form:option>
   <form:option value="title-asc">
   	Sort by ascending title</form:option>
+  <form:option value="donation-asc">
+  	Sort by ascending donation</form:option>
   <form:option value="transaction-code-asc">
   	Sort by ascending transaction code</form:option>
 </form:select>

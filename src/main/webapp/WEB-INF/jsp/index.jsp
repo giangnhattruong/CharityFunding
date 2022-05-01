@@ -20,7 +20,7 @@
 </head>
 <body class="d-flex h-100 text-center text-white">
 
-<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+<div class="cover-container d-flex p-3 mx-auto flex-column">
 <header class="mb-auto">
 <div>
 <h3 class="float-md-start mb-0">
