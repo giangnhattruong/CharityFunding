@@ -5,6 +5,7 @@
 package com.funix.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.funix.model.DonationHistory;
 import com.funix.model.DonationHistoryFilter;
@@ -30,7 +31,7 @@ public interface IDonationHistoryDAO {
 	 * transaction code list.
 	 * @param transactionCodeList
 	 */
-	void verifyHistoryStatus(List<String> transactionCodeList);
+	void verifyHistoryStatus(Map<String, Boolean> transactionCodeList);
 	
 	/**
 	 * Get all transaction code list.

@@ -7,6 +7,7 @@ package com.funix.controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -127,11 +128,11 @@ public class AdminController {
 			IDonationHistoryDAO historyDAO = 
 					new DonationHistoryDAOImpl(dataSource);
 			ITransaction transaction = new TransactionImpl();
-			List<String> transactionCodeList =
+			Map<String, Boolean> transactionCodeMap =
 					transaction.verify(historyDAO.getTransactionCodeList());
 
 			// Verify transaction codes.
-			historyDAO.verifyHistoryStatus(transactionCodeList);
+			historyDAO.verifyHistoryStatus(transactionCodeMap);
 			
 			// Get donation history.
 			List<DonationHistory> historyList = historyDAO
@@ -800,10 +801,22 @@ public class AdminController {
 		// If user is not admin, redirect to home page.
 		if (!isLegalUser(request, getUserFromSession(request))) {
 			mv.setViewName("redirect:/explore");
-		} else {
+		} else {			
 			String validatingMessage = user.validate();
 			IUserDAO userDAO = new UserDAOImpl(dataSource);
 			User originalUser = userDAO.getUserSimpleInfo(userID);
+
+			/*
+			 * If user have activate their account, then admin can
+			 * ban or re-activate that user. Otherwise, keep their status
+			 * as 0-not-verified.
+			 */
+			if (originalUser.getUserStatus() != 0) {
+				// Check if user is banned by admin or not.
+				int userStatus = request
+						.getParameter("activate") != null ? 1 : 2;
+				user.setUserStatus(userStatus);
+			}
 			
 			/**
 			 * Check if original user is not admin or deleted,
@@ -822,22 +835,10 @@ public class AdminController {
 					.addFlashAttribute("user", user);
 				mv.setViewName("redirect:/admin/users/update/" + userID);
 			} else {
-				/*
-				 * If user have activate their account, then admin can
-				 * ban or re-activate that user. Otherwise, keep their status
-				 * as 0-not-verified.
-				 */
-				if (originalUser.getUserStatus() != 0) {
-					// Check if user is banned by admin or not.
-					int userStatus = request
-							.getParameter("activate") != null ? 1 : 2;
-					user.setUserStatus(userStatus);
-				}
-				
 				// Update user.
 				userDAO.update(userID, user);
 				redirectAttributes
-				.addFlashAttribute("message", 
+					.addFlashAttribute("message", 
 						"User has been successfully updated.");
 				mv.setViewName("redirect:/admin/users");
 			}

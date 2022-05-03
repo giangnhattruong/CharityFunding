@@ -39,6 +39,7 @@ public class Navigation {
 		navItemMap.put("Campaigns", "/admin/campaigns");
 		navItemMap.put("Users", "/admin/users");
 		navItemMap.put("Donation history", "/admin/donation-history");
+		navItemMap.put("Profile", "/user/update-profile");
 		mv.addObject("navItemMap", navItemMap);
 		mv.addObject("currentPosition", "admin pages");
 	}

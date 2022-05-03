@@ -66,8 +66,11 @@ public class DonationHistory {
 	
 	/**
 	 * Donation status: verified or not verified.
+	 * 0-Not verified
+	 * 1-Verified
+	 * 2-Failed
 	 */
-	private boolean donationStatus;
+	private int donationStatus;
 
 	/**
 	 * Default constructor.
@@ -101,7 +104,7 @@ public class DonationHistory {
 			String email, String fullname, int campaignID,
 			String title, String location, double donation, 
 			LocalDate donationDate, String transactionCode,
-			boolean donationStatus) {
+			int donationStatus) {
 		this.donationHistoryID = donationHistoryID;
 		this.userID = userID;
 		this.email = email;
@@ -214,11 +217,11 @@ public class DonationHistory {
 		this.transactionCode = transactionCode;
 	}
 
-	public boolean getDonationStatus() {
+	public int getDonationStatus() {
 		return donationStatus;
 	}
 
-	public void setDonationStatus(boolean donationStatus) {
+	public void setDonationStatus(int donationStatus) {
 		this.donationStatus = donationStatus;
 	}
 

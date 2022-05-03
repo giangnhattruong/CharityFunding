@@ -5,6 +5,7 @@
 package com.funix.banktransaction;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Handle bank transaction.
@@ -23,7 +24,7 @@ public interface ITransaction {
 	 * @param transactionCodeList
 	 * @return
 	 */
-	List<String> verify(List<String> transactionCodeList);
+	Map<String, Boolean> verify(List<String> transactionCodeList);
 	
 	/**
 	 * Validate transaction input.

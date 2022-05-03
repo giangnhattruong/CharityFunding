@@ -4,8 +4,9 @@
 
 package com.funix.banktransaction;
 
-import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -17,7 +18,7 @@ public class TransactionImpl implements ITransaction {
 	
 	/**
 	 * Simulating a bank transaction success rate 
-	 * when transferring (from 1-10).
+	 * on transferring (from 1-10).
 	 */
 	private static final double TRANSACTION_SUCCESS_RATE = 7;
 	
@@ -28,12 +29,18 @@ public class TransactionImpl implements ITransaction {
 	private static final double TRANSACTION_CODE_VERIFIED_RATE = 0.3;
 	
 	/**
-	 * Min amount allower per transaction.
+	 * Simulating a bank transaction failed rate after 
+	 * transferring (from 0 - 1).
+	 */
+	private static final double TRANSACTION_CODE_DENIED_RATE = 0.05;
+	
+	/**
+	 * Min amount allowed per transaction.
 	 */
 	private static final int MIN_AMOUNT_ALLOWED = 5;
 	
 	/**
-	 * MAX amount allower per transaction.
+	 * MAX amount allowed per transaction.
 	 */
 	private static final int MAX_AMOUNT_ALLOWED = 10000;
 	
@@ -122,18 +129,27 @@ public class TransactionImpl implements ITransaction {
 	 * @return
 	 */
 	@Override
-	public List<String> verify(List<String> transactionCodeList) {
+	public Map<String, Boolean> verify(List<String> transactionCodeList) {
 		// Simulate verifying list of transaction codes.
+		Map<String, Boolean> transactionCodeMap = new HashMap<>();
 		Random random = new Random();
-		int removeSize = (int) (transactionCodeList.size() 
-				* (1 - TRANSACTION_CODE_VERIFIED_RATE));
+		int totalSize = transactionCodeList.size();
+		int verifiedSize = (int) Math.ceil(totalSize * TRANSACTION_CODE_VERIFIED_RATE);
+		int deniedSize = (int) Math.round(totalSize * TRANSACTION_CODE_DENIED_RATE);
 		
-		for (int i = 0; i < removeSize; i++) {
+		// Mark random list of transaction code to verified.
+		for (int i = 0; i < verifiedSize; i++) {
 			int randomIndex = random.nextInt(transactionCodeList.size());
-			transactionCodeList.remove(randomIndex);
+			transactionCodeMap.put(transactionCodeList.get(randomIndex), true);
 		}
 		
-		return transactionCodeList;
+		// Mark random list of transaction code to denied.
+		for (int i = 0; i < deniedSize; i++) {
+			int randomIndex = random.nextInt(transactionCodeList.size());
+			transactionCodeMap.put(transactionCodeList.get(randomIndex), false);
+		}
+		
+		return transactionCodeMap;
 	}
 	
 	/**

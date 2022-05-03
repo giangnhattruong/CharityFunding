@@ -44,7 +44,7 @@
   </li>
   </c:if>
   
-  <c:if test="${email != null && currentPosition != 'user pages'}">
+  <c:if test="${email != null && userRole == 0 && currentPosition != 'user pages'}">
   <li class="nav-item">
     <a class="nav-link" 
     	href="<c:url value="/user" />">User dashboard</a>

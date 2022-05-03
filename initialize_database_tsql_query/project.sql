@@ -162,12 +162,13 @@ AS
 GO
 
 CREATE OR ALTER PROCEDURE dbo.updateHistoryStatus
-	@transactionCode varchar(255)
+	@transactionCode varchar(255),
+	@newStatus int
 AS
 	UPDATE donationHistoryTbl
-	SET donationStatus = 1
+	SET donationStatus = @newStatus
 	WHERE transactionCode = @transactionCode AND
-		donationStatus != 1
+		donationStatus = 0
 GO
 
 CREATE OR ALTER TRIGGER dbo.deleteUser

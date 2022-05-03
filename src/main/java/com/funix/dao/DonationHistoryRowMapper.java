@@ -36,8 +36,7 @@ public class DonationHistoryRowMapper implements RowMapper<DonationHistory> {
 		LocalDate donationDate = NullConvert
 				.toLocalDate(resultSet.getDate("donationDate"));
 		String transactionCode = resultSet.getString("transactionCode");
-		int status = resultSet.getInt("donationStatus");
-		boolean donationStatus = status == 1 ? true : false;
+		int donationStatus = resultSet.getInt("donationStatus");
 		
 		return new DonationHistory(donationHistoryID, userID, 
 				email, fullname, campaignID, title, location, 

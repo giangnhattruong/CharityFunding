@@ -29,6 +29,14 @@
 <label class="form-check-label" for="verifiedStatus">
 	Verified</label>
 </div>
+
+<div class="form-check me-3 mb-3">
+<input type="checkbox" class="form-check-input" name="statuses"
+	id="failedStatus" value="2" 
+	${filter.getStatuses().contains('2') ? 'checked' : ''}/>
+<label class="form-check-label" for="failedStatus">
+	Failed</label>
+</div>
 </div>
 
 <div class="row">

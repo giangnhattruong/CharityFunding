@@ -5,6 +5,7 @@
 package com.funix.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -90,9 +91,11 @@ public class UserController {
 			IDonationHistoryDAO historyDAO = 
 					new DonationHistoryDAOImpl(dataSource);
 			ITransaction transaction = new TransactionImpl();
-			List<String> transactionCodeList =
+			Map<String, Boolean> transactionCodeMap =
 					transaction.verify(historyDAO.getTransactionCodeList());
-			historyDAO.verifyHistoryStatus(transactionCodeList);
+			
+			// Verify transaction codes.
+			historyDAO.verifyHistoryStatus(transactionCodeMap);
 			
 			// Get all history.
 			List<DonationHistory> historyList = historyDAO
@@ -168,7 +171,13 @@ public class UserController {
 				user = userDAO.getUserSimpleInfo(authUser.getEmail());
 			}
 			
-			Navigation.addUserNavItemMap(mv);
+			//Handle nav menu in case admin or user render profile page.
+			if (authUser.getUserRole() == 0) {
+				Navigation.addUserNavItemMap(mv);
+			} else if (authUser.getUserRole() == 1) {
+				Navigation.addAdminNavItemMap(mv);
+			}
+			
 			mv.addObject("user", user);
 			mv.addObject("message", message);
 			mv.addObject("error", error);
@@ -242,11 +251,20 @@ public class UserController {
 			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
 		
+		// Get user object contains email and user role from token.
+		User authUser = getUserFromSession(request);
+		
 		// Redirect to home page if user is not legal.
-		if (!isLegalUser(request, getUserFromSession(request))) {
+		if (!isLegalUser(request, authUser)) {
 			mv.setViewName("redirect:/explore");
 		} else {
-			Navigation.addUserNavItemMap(mv);
+			//Handle nav menu in case admin or user render profile page.
+			if (authUser.getUserRole() == 0) {
+				Navigation.addUserNavItemMap(mv);
+			} else if (authUser.getUserRole() == 1) {
+				Navigation.addAdminNavItemMap(mv);
+			}
+			
 			mv.addObject("message", message);
 			mv.addObject("isOldPasswordRequired", true);
 			mv.setViewName("user/updatePassword");

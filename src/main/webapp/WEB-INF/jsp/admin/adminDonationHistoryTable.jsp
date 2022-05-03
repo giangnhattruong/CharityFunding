@@ -65,7 +65,17 @@
          	type="number"/></td>
 	    <td>${history.donationDate}</td>
 	    <td>${history.transactionCode}</td>
-	    <td>${history.donationStatus == true ? "Verified" : "Not Verified"}</td>
+
+		<c:if test="${history.donationStatus == 0}">
+	    <c:set var="donationStatus" value="Not verified" />
+	    </c:if>
+	    <c:if test="${history.donationStatus == 1}">
+	    <c:set var="donationStatus" value="Verified" />
+	    </c:if>
+	    <c:if test="${history.donationStatus == 2}">
+	    <c:set var="donationStatus" value="Failed" />
+	    </c:if>
+	    <td>${donationStatus}</td>
 	  </tr>
 	</c:forEach>
 	</tbody>

@@ -5,6 +5,7 @@
 package com.funix.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -62,12 +63,21 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 	 * transaction code list.
 	 */
 	@Override
-	public void verifyHistoryStatus(List<String> transactionCodeList) {
-		String SQL = "EXECUTE updateHistoryStatus ?";
+	public void verifyHistoryStatus(Map<String, Boolean> transactionCodeList) {
+		String SQL = "EXECUTE updateHistoryStatus ?, ?";
 		
-		for (String transactionCode: transactionCodeList) {
+		/*
+		 * If a transactionCode in the map is true, 
+		 * then update this transaction to 1-verified, 
+		 * otherwise update this transaction to 2-denied.
+		 */
+		for (String transactionCode: transactionCodeList.keySet()) {
 			try {
-				jdbcTemplate.update(SQL, transactionCode);
+				if (transactionCodeList.get(transactionCode) == true) {
+					jdbcTemplate.update(SQL, transactionCode, 1);
+				} else {
+					jdbcTemplate.update(SQL, transactionCode, 2);
+				}
 			} catch (DataAccessException e) {
 				System.out.println("Transaction failed to update: " 
 						+ transactionCode);
@@ -81,7 +91,8 @@ public class DonationHistoryDAOImpl implements IDonationHistoryDAO {
 	 * @return
 	 */
 	public List<String> getTransactionCodeList() {
-		String SQL = "SELECT transactionCode FROM donationHistoryTbl";
+		String SQL = "SELECT transactionCode FROM donationHistoryTbl "
+				+ "WHERE donationStatus = 0";
 		return jdbcTemplate.queryForList(SQL, String.class);
 	}
 
