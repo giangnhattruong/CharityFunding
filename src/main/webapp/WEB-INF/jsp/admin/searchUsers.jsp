@@ -14,7 +14,7 @@
 	action="${action}" >
 	
 <strong>Status</strong>
-<div class="d-flex flex-wrap">
+<div class="search-check d-flex flex-wrap">
 <div class="form-check me-3 mb-3">
 <input type="checkbox" class="form-check-input" name="statuses"
 	id="inactiveStatus" value="0" 
@@ -49,7 +49,7 @@
 </div>
 
 <strong>Role</strong>
-<div class="d-flex flex-wrap">
+<div class="search-check d-flex flex-wrap">
 <div class="form-check me-3 mb-3">
 <input type="checkbox" class="form-check-input" name="roles"
 	id="userRole" value="0" 

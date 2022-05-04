@@ -24,7 +24,7 @@
 </c:when>
 <c:otherwise>
 <div class="table-responsive dashboard-table p-1">
-<table style="width: 1300px" 
+<table style="width: 1020px" 
 		class="table table-borderless table-fixed table-hover table-sm">
     <thead class="bottom-shadow">
       <tr>

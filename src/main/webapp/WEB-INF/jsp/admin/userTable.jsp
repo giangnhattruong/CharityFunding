@@ -49,6 +49,7 @@
 				id="selectOrDeselectAll">
 			<span class="ms-1">All</span></th>
         <th scope="col">No</th>
+        <th scope="col">ID</th>
         <th scope="col">Email</th>
         <th scope="col">Full-name</th>
         <th scope="col">Phone</th>
@@ -94,6 +95,7 @@
 	    </c:if>
 	    
 	    <td>${loopStatus.index + 1}</td>
+	    <td>${user.userID}</td>
 	    <td>${user.email}</td>
 	    <td>${user.fullname}</td>
 	    <td>${user.phone}</td>

@@ -51,6 +51,7 @@
 				id="selectOrDeselectAll">
 				<span class="ms-1">All</span></th>
         <th scope="col">No</th>
+        <th scope="col">ID</th>
         <th scope="col">Title</th>
         <th scope="col">Location</th>
         <!-- <th scope="col">Start</th> -->
@@ -89,6 +90,7 @@
 	    </c:if>
 	    
 	    <td>${loopStatus.index + 1}</td>
+	    <td>${campaign.campaignID}</td>
 	    <td>${campaign.title}</td>
 	    <td>${campaign.location}</td>
 	    <%-- <td>${campaign.startDate}</td> --%>

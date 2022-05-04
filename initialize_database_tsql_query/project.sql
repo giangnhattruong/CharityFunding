@@ -206,17 +206,17 @@ GO
 
 INSERT INTO userTbl (email, password, fullname, address, phone, userRole, userStatus)
 VALUES ('truonggn@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'GIANG NHAT TRUONG', 'LAM DONG', '0938798685', 1, 1),
-	('andnt@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'NGUYEN THI TAM ANH', 'HO CHI MINH', '0951576853', 0, 1),
+	('andnt@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'NGUYEN THI TAM ANH', 'HO CHI MINH', '0951576853', 0, 0),
 	('danhng@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'NGUYEN VAN DANH', 'HA NOI', '0935489321', 0, 1),
-	('tungdb@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'DUONG BACH TUNG', 'QUANG NGAI', '0348962895', 0, 1),
-	('lannt@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'NGUYEN THI LAN', 'HUE', '0758965345', 0, 1),
+	('tungdb@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'DUONG BACH TUNG', 'QUANG NGAI', '0348962895', 0, 2),
+	('lannt@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'NGUYEN THI LAN', 'HUE', '0758965345', 0, 0),
 	('trungdq@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'DUONG QUOC TRUNG', 'QUANG NAM', '0953548624', 0, 1),
 	('namnv@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'NGUYEN VAN NAM', 'THANH HOA', '0853487962', 0, 0),
 	('sarahrivers@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'Sarah Rivers', 'Florida', '0762356875', 0, 1),
 	('johndoe@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'John Doe', 'California', '0876325884', 1, 1),
-	('janesmith@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'Jane Smith', 'New York', '0957365254', 0, 1),
+	('janesmith@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'Jane Smith', 'New York', '0957365254', 0, 0),
 	('marktimber@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'Mark Timber', 'Alabama', '0356682635', 1, 1),
-	('clementthomas@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'Clement Thomas', 'Texas', '0865216896', 0, 1)
+	('clementthomas@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitXQo1uFICv.ZK', 'Clement Thomas', 'Texas', '0865216896', 0, 0)
 
 INSERT INTO campaignTbl (title, description, location, targetAmount, imgURL, startDate, endDate)
 VALUES 
