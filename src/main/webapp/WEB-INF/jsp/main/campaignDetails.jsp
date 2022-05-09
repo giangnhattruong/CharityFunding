@@ -109,13 +109,18 @@
 <c:if test="${email == null && campaign.campaignStatus == 1}">
 <div class="d-flex flex-column align-items-center">
 <h5>Please login first to donate.</h5>
-<a class="btn btn-outline-warning py-2 px-5"
+<a class="btn btn-outline-warning py-2 px-5 mb-3"
 	href="<c:url value='/login' />">Login Now</a>
+<p>OR</p>
+<span id="showBankInfo"
+	class="btn btn-outline-warning py-2 px-5">Transfer directly</span>
 </div>
 </c:if>
 
 </div>
 </section>
+
+<c:import url="/WEB-INF/jsp/common/bankInfoModal.jsp"></c:import>
 
 <c:if test="${message != null && message != ''}">
 <c:import url="/WEB-INF/jsp/common/notifyModal.jsp"></c:import>

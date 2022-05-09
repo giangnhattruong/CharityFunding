@@ -90,6 +90,11 @@ $("#modal-action-btn").on("click", function() {
 	$(".waiting-modal").show();
 })
 
+//Show bank info modal
+$("#showBankInfo").on("click", function() {
+	$("#bankInfoModal").show();
+})
+
 // Hide model when user click on close/return button
 $(".modal-close-btn").on("click", function() {
 	$(".my-modal").hide();

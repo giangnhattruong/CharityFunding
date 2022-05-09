@@ -36,9 +36,9 @@ CREATE TABLE userTbl (
 	fullname nvarchar(255) NOT NULL,
 	address nvarchar(255),
 	phone char(10),
-	userRole int DEFAULT 0,
-	userStatus int DEFAULT 0,
-	dateCreated date DEFAULT GETDATE()
+	userRole int DEFAULT 0 NOT NULL,
+	userStatus int DEFAULT 0 NOT NULL,
+	dateCreated date DEFAULT GETDATE() NOT NULL
 )
 GO
 
@@ -49,21 +49,21 @@ CREATE TABLE campaignTbl (
 	targetAmount money NOT NULL,
 	location nvarchar(255) NOT NULL,
 	imgURL varchar(255) NOT NULL,
-	startDate date DEFAULT GETDATE(),
-	endDate date DEFAULT DATEADD(MONTH, 3, GETDATE()),
-	campaignStatus int DEFAULT 1,
-	dateCreated date DEFAULT GETDATE()
+	startDate date DEFAULT GETDATE() NOT NULL,
+	endDate date DEFAULT DATEADD(MONTH, 3, GETDATE()) NOT NULL,
+	campaignStatus int DEFAULT 1 NOT NULL,
+	dateCreated date DEFAULT GETDATE() NOT NULL
 )
 GO
 
 CREATE TABLE donationHistoryTbl (
 	donationHistoryID int IDENTITY(1, 1) PRIMARY KEY,
-	userID int,
-	campaignID int,
+	userID int NOT NULL,
+	campaignID int NOT NULL,
 	donation money NOT NULL,
-	donationDate date DEFAULT GETDATE(),
-	transactionCode varchar(255) UNIQUE,
-	donationStatus int DEFAULT 0,
+	donationDate date DEFAULT GETDATE() NOT NULL,
+	transactionCode varchar(255) UNIQUE NOT NULL,
+	donationStatus int DEFAULT 0 NOT NULL,
 	CONSTRAINT FK_history_user FOREIGN KEY(userID) REFERENCES userTbl(userID),
 	CONSTRAINT FK_history_campaign FOREIGN KEY(campaignID) REFERENCES campaignTbl(campaignID)
 )
