@@ -5,7 +5,8 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <c:import url="/WEB-INF/jsp/common/header.jsp"></c:import>
-<script src="<c:url value="/resources/ckeditor/ckeditor.js"/>"></script>
+<script src="<c:url value='/resources/ckeditor/ckeditor.js'/>"></script>
+<script src="<c:url value='/resources/ckfinder/ckfinder.js'/>"></script>
 
 <c:url var="action" value="${formAction}" />
 <c:set var="startDate" value="${campaign.startDate.toString()}"></c:set>
@@ -136,8 +137,11 @@ href="<c:url value="/admin/campaigns" />">Return</a>
 </form:form>
 </div>
 
+<c:url var="ckfinderResource" value="/resources/ckfinder/"/>
+
 <script>
-	CKEDITOR.replace('description');
+	let ckeditor = CKEDITOR.replace('description');
+	CKFinder.setupCKEditor(ckeditor, '${ckfinderResource}');
 </script>
 
 <c:import url="/WEB-INF/jsp/common/footer.jsp"></c:import>
