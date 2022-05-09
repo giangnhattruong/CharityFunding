@@ -110,11 +110,10 @@ ${imgHTML}
  	for="open">Open</label>
 </div>
 </div>
-</div>
 
 <hr class="my-4 d-md-none">
 
-<div class="mb-3">
+<div class="mb-3 col-12 col-lg-10 offset-lg-1">
 <form:label path="description" cssClass="form-label lead">
 	Description</form:label>
 <span class="text-danger">*</span>
@@ -123,6 +122,8 @@ ${imgHTML}
 	placeholder="Enter campaign description" id="description"
 	path="description"></form:textarea>
 </div>
+</div>
+
 
 <div class="d-flex justify-content-center">
 <a id="returnBackButton" class="btn btn-secondary btn-lg px-5 me-3" 
