@@ -220,104 +220,151 @@ VALUES ('truonggn@gmail.com', '$2a$10$N1P4MkHtjPrtL9GhmkxiiOncddAj5YznFOZ.PONitX
 
 INSERT INTO campaignTbl (title, description, location, targetAmount, imgURL, startDate, endDate)
 VALUES 
-('Support child education', N'A school for the orphans and less privileged children''s.
+('<p>Support child education', N'A school for the orphans and less privileged children''s.
 Education is the best gift you can give to underprivileged children that do not 
 have proper access and social support. You can sponsor one full year of school education 
-of a child for just $67.27. Make a difference!', 
+of a child for just $67.27. Make a difference!</p>    
+<p><img alt="" src="https://insidearabia.com/wp-content/uploads/2020/05/IMG_2393-1280x640.jpg" 
+style="height:390px; width:780px" /></p>    
+<p><strong>Your donation will bring hope to a lot of people who are in need right now!</strong></p>', 
 'Nigeria', '50000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018497/campaigns/1_alnimo.jpg', 
 '2022-01-01', '2022-09-01'),
-('Feeding the Hungry', N'Help to feed less privilege children in Nigeria. 
+('Feeding the Hungry', 
+N'<p>Help to feed less privilege children in Nigeria. 
 Corona Virus is a bomb that has touched the lives of everyone; 
 rich, middle class and poor, but the bigger question is, 
 who suffers the most from its blast? With your help, 
 we can feed more kids & low-income families in rural communities. 
-Will you help us?', 
+Will you help us?</p>    
+<p><img alt="" src="https://insidearabia.com/wp-content/uploads/2020/05/IMG_2393-1280x640.jpg" 
+style="height:390px; width:780px" /></p>    
+<p><strong>Your donation will bring hope to a lot of people who are in need right now!</strong></p>', 
 'Nigeria', '100000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018498/campaigns/2_ie5rli.jpg', 
 '2021-10-01', '2022-06-01'),
-('Give Scholarship', N'Give a scholarship to youth in higher education in Nigeria. 
-We want to send 23 less privileged youths to the high institutions through 
-our scholarship program. Each scholarship is $650 for one child annually. 
-Can you donate $5 for a child to support our scholarship program?', 
+('Give Scholarship', 
+N'<p>Give a scholarship to youth in higher education in Nigeria. 
+We want to send 23 less privileged youths to the high institutions through our scholarship program. 
+Each scholarship is $650 for one child annually.</p>    
+<p><img alt="" src="https://insidearabia.com/wp-content/uploads/2020/05/IMG_2393-1280x640.jpg" 
+style="height:390px; width:780px" /></p>    
+<p><strong>Can you donate $5 for a child to support our scholarship program? 
+Your donation will bring hope to a lot of people who are in need right now!</strong></p>', 
 'Nigeria', '30000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018497/campaigns/3_mcmtpv.jpg', 
 '2022-03-01', '2022-08-01'),
-('Ukraine aid - Help now!', N'Millions of Ukrainians fell victim of the Russian invasion and 
+('Ukraine aid - Help now!', 
+N'<p>Millions of Ukrainians fell victim of the Russian invasion and 
 became hostages on their own land. The injured and wounded, orphaned children, 
 the elderly, and internal refugees urgently need your help! 
-Every donation counts, no matter how big or small! Thank you for your support!', 
+Every donation counts, no matter how big or small! Thank you for your support!</p>    
+<p><img alt="" src="https://insidearabia.com/wp-content/uploads/2020/05/IMG_2393-1280x640.jpg" 
+style="height:390px; width:780px" /></p>    
+<p><strong>Your donation will bring hope to a lot of people who are in need right now!</strong></p>', 
 'Ukraine', '150000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018497/campaigns/4_d5whoq.jpg', 
 '2022-03-01', '2022-07-01'),
-('Let''s build a future for our children', N'We are doing our best to bring the 
+('Let''s build a future for our children', 
+N'<p>We are doing our best to bring the 
 marginalized specially-abled children into the mainstream to 
 live a normal good life that they deserve. 
 We provides daily meals to the children and their accompanying mothers. 
 We also create opportunities for these children to grow in 
 their identified talents and even earn for a living, using those talents. 
-All these are possible with kind contributions from benefactors like you.', 
+All these are possible with kind contributions from benefactors like you.</p>    
+<p><img alt="" src="https://insidearabia.com/wp-content/uploads/2020/05/IMG_2393-1280x640.jpg" 
+style="height:390px; width:780px" /></p>    
+<p><strong>Your donation will bring hope to a lot of people who are in need right now!</strong></p>', 
 'India', '250000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018498/campaigns/5_ici18z.jpg', 
 '2020-05-01', '2021-04-01'),
-('Support our rivers', N'Our mission? Stop plastic before it reaches our oceans by cleaning rivers, 
+('Support our rivers', 
+N'<p>Our mission? Stop plastic before it reaches our oceans by cleaning rivers, 
 educating people and transforming organizations. We believe change is possible by 
 making a positive impact on our planet, together. Our aim for 2025? 
 To clean up 100 million kilograms of river plastics. 
 Your donation allows to increase our impact, install more technology, 
-and reach more people. Every donation counts!', 
+and reach more people. Every donation counts!</p>    
+<p><img alt="" src="https://insidearabia.com/wp-content/uploads/2020/05/IMG_2393-1280x640.jpg" 
+style="height:390px; width:780px" /></p>    
+<p><strong>Your donation will bring hope to a lot of people who are in need right now!</strong></p>', 
 'Indonesia', '50000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018498/campaigns/6_a9o9jq.jpg', 
 '2022-02-01', '2022-07-01'),
-('Ship Hospital', N'A Ship Hospital to offer medical assistance to isolated populations. 
+('Ship Hospital', 
+N'<p>A Ship Hospital to offer medical assistance to isolated populations. 
 Every day so many People live in fear, hopelessness and desperation in East Africa 
 and the Indian Ocean. An estimated ONE BILLION people lack access to even 
 basic health care in the world. Your donation will support 
 the Poorest of the Poorest 14.000 Children, 25.000  People in 22 villages, 
-schools, colleges, clinics and hospitals.', 
+schools, colleges, clinics and hospitals.</p>    
+<p><img alt="" src="https://insidearabia.com/wp-content/uploads/2020/05/IMG_2393-1280x640.jpg" 
+style="height:390px; width:780px" /></p>    
+<p><strong>Your donation will bring hope to a lot of people who are in need right now!</strong></p>', 
 'Indian Ocean', '500000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018499/campaigns/7_shflwc.jpg', 
 '2022-02-01', '2022-09-01'),
-('Help saving the animals', N'1 in 5 animals lack access to nutritious foods. 
+('Help saving the animals', 
+N'<p>1 in 5 animals lack access to nutritious foods. 
 We’re on a mission to change that. We provide nutritious foods for thousands of neglected animals. 
 Our mission is to help prevent Animal Cruelty and help provide for animals 
 who may suffer from the effects of Animal Cruelty. 
 To end Animal Cruelty, we must work together to bring 
-Safe Haven to the animals who need it most.', 
+Safe Haven to the animals who need it most.</p>    
+<p><img alt="" src="https://insidearabia.com/wp-content/uploads/2020/05/IMG_2393-1280x640.jpg" 
+style="height:390px; width:780px" /></p>    
+<p><strong>Your donation will bring hope to a lot of people who are in need right now!</strong></p>', 
 'Global', '20000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018498/campaigns/8_qkky3d.jpg', 
 '2021-12-01', '2022-10-01'),
-('Feed Africa', N'No child should be subjected to poverty and lack…… 
+('Feed Africa', 
+N'<p>No child should be subjected to poverty and lack…… 
 We work to feed, empower, cloth, and provide basic amenities such as 
 food, water, electricity, housing, and healthcare to the poorest of Africa. 
 To feed the needy children of Africa regardless of their country of origin, 
-and to provide shelter and food for the homeless children based on the Christian teaching.', 
+and to provide shelter and food for the homeless children based on the Christian teaching.</p>    
+<p><img alt="" src="https://insidearabia.com/wp-content/uploads/2020/05/IMG_2393-1280x640.jpg" 
+style="height:390px; width:780px" /></p>    
+<p><strong>Your donation will bring hope to a lot of people who are in need right now!</strong></p>', 
 'Africa', '100000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018499/campaigns/9_qzcnjq.jpg', 
 '2021-11-01', '2021-12-01'),
-('Support war child in Afghanistan', N'In light of the recent crisis, 
+('Support war child in Afghanistan', 
+N'<p>In light of the recent crisis, 
 War Child is scaling up its life-saving work to protect, 
 educate and provide for more children and families in Afghanistan than ever before. 
 War Child is committed to staying and delivering in Afghanistan. 
 We are independently assessing need, and impartially delivering 
-life-saving assistance to those who need us most, when they need us most.', 
+life-saving assistance to those who need us most, when they need us most.</p>    
+<p><img alt="" src="https://insidearabia.com/wp-content/uploads/2020/05/IMG_2393-1280x640.jpg" 
+style="height:390px; width:780px" /></p>    
+<p><strong>Your donation will bring hope to a lot of people who are in need right now!</strong></p>', 
 'Afghanistan', '120000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018499/campaigns/10_ii68pw.jpg', 
 '2022-03-01', '2022-06-01'),
-('Save the children', N'We believes every child deserves a future. 
+('Save the children', 
+N'<p>We believes every child deserves a future. 
 When crisis strikes, and children are most vulnerable, 
 we are always among the first to respond and the last to leave. 
 We ensure children''s unique needs are met and their voices are heard. 
 We deliver lasting results for millions of children, including those hardest to reach. 
 We do whatever it takes for children - every day and in times of crisis
-- transforming their lives and the future we share.', 
+- transforming their lives and the future we share.</p>    
+<p><img alt="" src="https://insidearabia.com/wp-content/uploads/2020/05/IMG_2393-1280x640.jpg" 
+style="height:390px; width:780px" /></p>    
+<p><strong>Your donation will bring hope to a lot of people who are in need right now!</strong></p>', 
 'Armenia', '30000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018499/campaigns/11_sgunii.jpg', 
 '2021-08-01', '2022-02-01'),
-('Nurture wonderful human beings', N'We are here to foster a new generation of rural African youth 
+('Nurture wonderful human beings', 
+N'<p>We are here to foster a new generation of rural African youth 
 to become changemakers, dedicated to improving the communities and world they inhabit. 
 Children are nurtured to become exuberant, fully rounded individuals, 
-in harmony with themselves and the world.', 
+in harmony with themselves and the world.</p>    
+<p><img alt="" src="https://insidearabia.com/wp-content/uploads/2020/05/IMG_2393-1280x640.jpg" 
+style="height:390px; width:780px" /></p>    
+<p><strong>Your donation will bring hope to a lot of people who are in need right now!</strong></p>', 
 'Uganda', '50000',
 'https://res.cloudinary.com/truonggnfx13372/image/upload/v1648018499/campaigns/12_a7zian.jpg', 
 '2022-01-01', '2022-07-24')

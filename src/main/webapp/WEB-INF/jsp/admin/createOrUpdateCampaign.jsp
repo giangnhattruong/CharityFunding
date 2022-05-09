@@ -5,6 +5,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <c:import url="/WEB-INF/jsp/common/header.jsp"></c:import>
+<script src="<c:url value="/resources/ckeditor/ckeditor.js"/>"></script>
 
 <c:url var="action" value="${formAction}" />
 <c:set var="startDate" value="${campaign.startDate.toString()}"></c:set>
@@ -59,14 +60,22 @@
 </div>
 </div>
 
+<hr class="my-4">
+
 <div class="mb-3">
-<form:label path="description" cssClass="form-label lead">
-	Description</form:label>
+${imgHTML}
+</div>
+
+<div class="mb-3">
+<form:label path="file" cssClass="form-label">
+	${formTitle == "Create" ? "Upload" : "Replace"} cover image (below 5MB)
+	</form:label>
+<c:if test="${formTitle == 'Upload'}">
 <span class="text-danger">*</span>
-<form:textarea style="height: 180px" cssClass="form-control"
-	aria-label="Campaign description"
-	placeholder="Enter campaign description" id="description"
-	path="description"></form:textarea>
+</c:if>
+<form:input cssClass="form-control" type="file"
+	id="file" path="file"/>
+<div><form:errors path="file" cssclass="small text-danger" /></div>
 </div>
 
 <hr class="my-4 d-md-none">
@@ -93,24 +102,7 @@
 
 <hr class="my-4">
 
-<div class="mb-3">
-${imgHTML}
-</div>
-
-<div class="mb-3">
-<form:label path="file" cssClass="form-label">
-	${formTitle == "Create" ? "Upload" : "Replace"} cover image (below 5MB)
-	</form:label>
-<c:if test="${formTitle == 'Upload'}">
-<span class="text-danger">*</span>
-</c:if>
-<form:input cssClass="form-control" type="file"
-	id="file" path="file"/>
-<div><form:errors path="file" cssclass="small text-danger" /></div>
-</div>
-
-<hr class="my-4">
-
+<span class="lead">Status: </span>
 <div class="form-check form-switch">
 <input type="checkbox" name="open" class="form-check-input"
 	id="open" ${campaign.campaignStatus == 1 ? "checked" : ""}/>
@@ -118,6 +110,18 @@ ${imgHTML}
  	for="open">Open</label>
 </div>
 </div>
+</div>
+
+<hr class="my-4 d-md-none">
+
+<div class="mb-3">
+<form:label path="description" cssClass="form-label lead">
+	Description</form:label>
+<span class="text-danger">*</span>
+<form:textarea style="height: 180px" cssClass="form-control"
+	aria-label="Campaign description"
+	placeholder="Enter campaign description" id="description"
+	path="description"></form:textarea>
 </div>
 
 <div class="d-flex justify-content-center">
@@ -130,5 +134,9 @@ href="<c:url value="/admin/campaigns" />">Return</a>
 <form:hidden path="imgURL" value="${campaign.imgURL}"/>
 </form:form>
 </div>
+
+<script>
+	CKEDITOR.replace('description');
+</script>
 
 <c:import url="/WEB-INF/jsp/common/footer.jsp"></c:import>

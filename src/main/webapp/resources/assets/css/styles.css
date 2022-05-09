@@ -862,6 +862,7 @@
 @media (min-width: 992px) {
 	/* Campaign details page styles */
 	#campaignDetails {
+		height: 450px;
 		border-radius: 1rem;
 		padding: 1.8rem 3rem 3rem 3rem;
 		background-color: var(--spring-green-transparent);

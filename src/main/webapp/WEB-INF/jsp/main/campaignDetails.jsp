@@ -18,7 +18,7 @@
 
 <section id="campaignContent" class="container py-5">
 <div class="row">
-<div id="description" class="col-12 order-2 col-lg-7 order-lg-1">
+<div id="description" class="col-12 order-2 col-lg-7 order-lg-1 overflow-hidden">
 <p>${campaign.description}</p>
 </div>
 
